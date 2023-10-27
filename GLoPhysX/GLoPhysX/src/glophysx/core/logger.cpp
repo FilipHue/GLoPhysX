@@ -22,9 +22,20 @@ namespace GLOPHYSX {
 		s_client_logger->flush_on(spdlog::level::trace);
 		spdlog::register_logger(s_client_logger);
 	}
+
 	void Logger::Shutdown()
 	{
 		spdlog::shutdown();
+	}
+
+	std::shared_ptr<spdlog::logger> Logger::GetCoreLogger()
+	{
+		return s_core_logger;
+	}
+
+	std::shared_ptr<spdlog::logger> Logger::GetClientLogger()
+	{
+		return s_client_logger;
 	}
 }
 
