@@ -25,6 +25,7 @@ project "GLoPhysX"
 
 	includedirs
 	{
+		"%{prj.name}/src",
 		"%{prj.name}/dependencies/SPDLOG/"
 	}
 

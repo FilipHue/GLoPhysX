@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "core.h"
+#include "glophysx/core/core.h"
 
 namespace GLOPHYSX {
 

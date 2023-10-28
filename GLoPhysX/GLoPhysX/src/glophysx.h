@@ -6,7 +6,7 @@
 * to access all necessary functionality of the GLoPhysX engine.
 */
 
-#include "glophysx/core/application.h"
-#include "glophysx/core/logger.h"
+#include "glophysx/core/application/application.h"
+#include "glophysx/core/logger/logger.h"
 
 #include "glophysx/core/entry_point.h"

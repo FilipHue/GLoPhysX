@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core.h"
+#include "glophysx/core/core.h"
 
 #include <spdlog/spdlog.h>
 #include "spdlog/sinks/stdout_color_sinks.h"
