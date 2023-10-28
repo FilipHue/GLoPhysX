@@ -1,3 +1,5 @@
+#include "gxpch.h"
+
 #include "application.h"
 
 namespace GLOPHYSX {

@@ -17,6 +17,9 @@ project "GLoPhysX"
 	targetdir ("%{wks.location}/bin/" .. output_dir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. output_dir .. "/%{prj.name}")
 
+	pchheader "gxpch.h"
+	pchsource "GLoPhysX/src/gxpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",

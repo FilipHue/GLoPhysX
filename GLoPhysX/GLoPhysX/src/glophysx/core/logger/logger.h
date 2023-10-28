@@ -5,9 +5,6 @@
 #include <spdlog/spdlog.h>
 #include "spdlog/sinks/stdout_color_sinks.h"
 
-#include <vector>
-#include <memory>
-
 namespace GLOPHYSX {
 
 	constexpr auto CORE_LOGGER_NAME = "CORE";

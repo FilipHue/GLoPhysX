@@ -1,3 +1,5 @@
+#include "gxpch.h"
+
 #include "logger.h"
 
 namespace GLOPHYSX {
