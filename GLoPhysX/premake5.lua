@@ -23,14 +23,41 @@ project "GLoPhysX"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/dependencies/GLAD/include/glad.c",
+		"%{prj.name}/dependencies/GLAD/include/glad/**.h",
+		"%{prj.name}/dependencies/GLAD/include/KHR/**.h"
 	}
 
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/dependencies/SPDLOG/"
+		"%{prj.name}/dependencies/SPDLOG",
+		"%{prj.name}/dependencies/GLFW/include",
+		"%{prj.name}/dependencies/GLAD/include"
 	}
+
+	libdirs
+	{
+		"%{prj.name}/dependencies/GLFW"
+	}
+
+	links
+	{
+		"glfw3.lib",
+		"opengl32.lib",
+		"Shell32.lib",
+		"User32.lib",
+		"Gdi32.lib"
+	}
+
+	linkoptions
+	{ 
+		"/NODEFAULTLIB:MSVCRT.lib"
+	}
+
+	filter "files:**.c"
+        flags { "NoPCH" }
 
 	filter "system:windows"
 		cppdialect "C++17"
@@ -49,6 +76,8 @@ project "GLoPhysX"
 		}
 
 	filter "configurations:Debug"
+		staticruntime "off"
+		runtime "Debug"
 		defines "GLOP_DEBUG"
 		symbols "On"
 
@@ -72,8 +101,10 @@ project "Sandbox"
 
 	includedirs
 	{
+		"GLoPhysX/src",
 		"GLoPhysX/dependencies/SPDLOG",
-		"GLoPhysX/src"
+		"GLoPhysX/dependencies/GLFW/include",
+		"GLoPhysX/dependencies/GLAD/include"
 	}
 
 	links
