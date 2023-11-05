@@ -123,6 +123,7 @@ project "Sandbox"
 		}
 
 	filter "configurations:Debug"
+		staticruntime "off"
 		runtime "Debug"
 		defines "GLOP_DEBUG"
 		symbols "On"

@@ -9,7 +9,7 @@
 * class is intended to be subclassed by the client application to provide
 * custom behavior.
 * 
-*  Exporting functions and members selectively is crucial for maintaining a stable
+* Exporting functions and members selectively is crucial for maintaining a stable
 * and error-free interface, especially when dealing with STL templates. STL
 * implementations can vary, and exporting them directly might lead to issues and
 * warnings due to possible inconsistencies across different compiler versions or
@@ -24,6 +24,7 @@
 #include "glophysx/core/window/platforms/windows/wwindow.h"
 
 #include "glophysx/core/core.h"
+#include "glophysx/core/layers/layers_container.h"
 
 namespace GLOPHYSX {
 
@@ -43,14 +44,19 @@ namespace GLOPHYSX {
 
 		GLOP_API void OnEvent(Event& e);
 
+		GLOP_API void PushLayer(Layer* layer);
+		GLOP_API void PushOverlay(Layer* overlay);
+
 		GLOP_API void Run();
 
 	private:
-		void OnWindowClose(Event& e);
+		bool OnWindowClose(Event& e);
 
 	private:
 		bool m_running;
 		std::unique_ptr<WWindow> m_window;
+
+		LayersContainer m_layers_container;
 	};
 
 	/**

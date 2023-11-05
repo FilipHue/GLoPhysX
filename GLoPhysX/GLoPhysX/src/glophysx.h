@@ -8,5 +8,6 @@
 
 #include "glophysx/core/application/application.h"
 #include "glophysx/core/logger/logger.h"
+#include "glophysx/core/layers/layer.h"
 
 #include "glophysx/core/entry_point.h"

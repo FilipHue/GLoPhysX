@@ -85,9 +85,13 @@ namespace GLOPHYSX {
 		template<typename T, typename F>
 		static void Dispatch(Event& e, const F& func) {
 			if (e.GetType() == T::GetStaticType()) {
-				func(static_cast<T&>(e));
-				e.m_handled = true;
+				e.m_handled |= func(static_cast<T&>(e));
 			}
 		}
 	};
+
+	inline std::ostream& operator<<(std::ostream& os, const Event& e)
+	{
+		return os << e.ToString();
+	}
 }
