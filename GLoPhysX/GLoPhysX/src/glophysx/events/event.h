@@ -35,6 +35,16 @@ namespace GLOPHYSX {
 		MouseButtonPress, MouseButtonRelease, MouseMove, MouseScroll
 	} EventType;
 
+	typedef enum event_category
+	{
+		None = 0,
+		EventCategoryApplication = 1,
+		EventCategoryInput = 2,
+		EventCategoryKeyboard = 4,
+		EventCategoryMouse = 8,
+		EventCategoryMouseButton = 16
+	} EventCategory;
+
 	/**
 	* @class Event
 	* @brief Abstract base class for events in the GLoPhysX engine.
@@ -49,6 +59,9 @@ namespace GLOPHYSX {
 
 		virtual EventType GetType() const = 0;
 		virtual const char* GetName() const = 0;
+		virtual int GetCategoryFlags() const = 0;
+
+		bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
 
 		virtual std::string ToString() const { return GetName(); }
 

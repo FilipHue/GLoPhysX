@@ -116,7 +116,7 @@ namespace GLOPHYSX {
 
 		void SetEventCallback(const EventCallbackFn& callback) override;
 
-		void* GetWindow() const override;
+		void* GetNativeWindow() const override;
 
 	private:
 		void SetWindowCallbacks() override;

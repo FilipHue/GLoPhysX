@@ -88,7 +88,7 @@ namespace GLOPHYSX {
 		m_window_data.event_callback = callback;
 	}
 
-	void* WWindow::GetWindow() const
+	void* WWindow::GetNativeWindow() const
 	{
 		return m_window;
 	}

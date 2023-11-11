@@ -53,12 +53,16 @@ namespace GLOPHYSX {
 
         const char* GetName() const override { return "KeyPress"; }
 
+        int GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
+
         // Outputs a formatted string containing the event details.
         std::string ToString() const override {
             std::stringstream ss;
             ss << "KeyPressEvent: " << m_keycode << ", mods: " << m_mods << ", repeat: " << m_repeat;
             return ss.str();
         }
+
+        inline int GetKeycode() { return m_keycode; }
 
     private:
         int m_keycode; // The key code of the pressed key.
@@ -84,12 +88,16 @@ namespace GLOPHYSX {
 
         const char* GetName() const override { return "KeyRelease"; }
 
+        int GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
+
         // Outputs a formatted string containing the event details.
         std::string ToString() const override {
             std::stringstream ss;
             ss << "KeyReleaseEvent: " << m_keycode << ", mods: " << m_mods;
             return ss.str();
         }
+
+        inline int GetKeycode() { return m_keycode; }
 
     private:
         int m_keycode; // The key code of the released key.
@@ -115,12 +123,16 @@ namespace GLOPHYSX {
 
         const char* GetName() const override { return "KeyTyped"; }
 
+        int GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
+
         // Outputs a formatted string containing the event details.
         std::string ToString() const override {
             std::stringstream ss;
             ss << "KeyTypedEvent: unicode: " << m_unicode_key;
             return ss.str();
         }
+
+        inline int GetUnicodeKey() { return m_unicode_key; }
 
     private:
         int m_unicode_key; // The Unicode key code of the typed character.

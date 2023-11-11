@@ -3,8 +3,12 @@
 #include "application.h"
 
 namespace GLOPHYSX {
+	Application* Application::s_instance = nullptr;
+
 	Application::Application()
 	{
+		s_instance = this;
+
 		#ifdef GLOP_PLATFORM_WINDOWS
 			m_window = Window::Create<WWindow>(new WindowProperties());
 			m_window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
@@ -12,6 +16,9 @@ namespace GLOPHYSX {
 			#error "GLoPhysX only supports Windows!"
 		#endif
 		m_running = true;
+
+		m_gui_layer = new GUILayer();
+		PushOverlay(m_gui_layer);
 	}
 
 	Application::~Application()
@@ -21,8 +28,7 @@ namespace GLOPHYSX {
 	void Application::OnEvent(Event& e)
 	{	
 		EventDispatcher::Dispatch<WindowCloseEvent>(e, std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
-
-		GLOP_CORE_TRACE("{0}", e.ToString());
+		EventDispatcher::Dispatch<WindowResizeEvent>(e, std::bind(&Application::OnWindowResize, this, std::placeholders::_1));
 
 		for (auto it = m_layers_container.rbegin(); it != m_layers_container.rend(); ++it) {
 			if (e.m_handled) {
@@ -55,13 +61,33 @@ namespace GLOPHYSX {
 				layer->OnUpdate();
 			}
 
+			m_gui_layer->Begin();
+			for (Layer* layer : m_layers_container) {
+				layer->OnGUIRender();
+			}
+			m_gui_layer->End();
+
 			m_window->Update();
 		}
 	}
-	bool Application::OnWindowClose(Event& e)
+	Application& Application::GetInstance()
+	{
+		return *s_instance;
+	}
+	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
 		m_running = false;
 
 		return true;
+	}
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		glViewport(0, 0, e.GetWidth(), e.GetHeight());
+
+		return false;
+	}
+	WWindow& Application::GetWindow()
+	{
+		return *m_window;
 	}
 }

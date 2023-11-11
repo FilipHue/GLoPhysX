@@ -50,6 +50,8 @@ namespace GLOPHYSX {
         EventType GetType() const override { return GetStaticType(); }
         // Returns a string name of the event for logging or debugging
         const char* GetName() const override { return "WindowClose"; }
+
+        int GetCategoryFlags() const override { return EventCategoryApplication; }
     };
 
     /**
@@ -74,12 +76,17 @@ namespace GLOPHYSX {
         EventType GetType() const override { return GetStaticType(); }
         const char* GetName() const override { return "WindowResize"; }
 
+        int GetCategoryFlags() const override { return EventCategoryApplication; }
+
         // Provides a text representation of the event data for logging
         std::string ToString() const override {
             std::stringstream ss;
             ss << "WindowResizeEvent: " << m_width << ", " << m_height;
             return ss.str();
         }
+
+        inline int GetWidth() { return m_width; }
+        inline int GetHeight() { return m_height; }
 
     private:
         int m_width;   // The new width of the window
@@ -106,6 +113,8 @@ namespace GLOPHYSX {
 
         EventType GetType() const override { return GetStaticType(); }
         const char* GetName() const override { return "WindowMove"; }
+
+        int GetCategoryFlags() const override { return EventCategoryApplication; }
 
         // Outputs a string with the new window position for logging
         std::string ToString() const override {
@@ -140,6 +149,8 @@ namespace GLOPHYSX {
         EventType GetType() const override { return GetStaticType(); }
         const char* GetName() const override { return "WindowFocus"; }
 
+        int GetCategoryFlags() const override { return EventCategoryApplication; }
+
         // Converts the event focus state to a string for output or logging
         std::string ToString() const override {
             std::stringstream ss;
@@ -171,6 +182,8 @@ namespace GLOPHYSX {
 
         EventType GetType() const override { return GetStaticType(); }
         const char* GetName() const override { return "WindowIconify"; }
+
+        int GetCategoryFlags() const override { return EventCategoryApplication; }
 
         // Generates a string describing the iconification event for logging
         std::string ToString() const override {

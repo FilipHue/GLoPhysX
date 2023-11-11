@@ -22,9 +22,11 @@
 */
 
 #include "glophysx/core/window/platforms/windows/wwindow.h"
+#include "glophysx/core/input/input.h"
 
 #include "glophysx/core/core.h"
 #include "glophysx/core/layers/layers_container.h"
+#include "glophysx/gui/gui_layer.h"
 
 namespace GLOPHYSX {
 
@@ -49,14 +51,21 @@ namespace GLOPHYSX {
 
 		GLOP_API void Run();
 
+		GLOP_API static Application& GetInstance();
+
+		WWindow& GetWindow();
 	private:
-		bool OnWindowClose(Event& e);
+		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 	private:
 		bool m_running;
 		std::unique_ptr<WWindow> m_window;
 
 		LayersContainer m_layers_container;
+		GUILayer* m_gui_layer;
+
+		static Application* s_instance;
 	};
 
 	/**

@@ -26,7 +26,11 @@ project "GLoPhysX"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/dependencies/GLAD/include/glad.c",
 		"%{prj.name}/dependencies/GLAD/include/glad/**.h",
-		"%{prj.name}/dependencies/GLAD/include/KHR/**.h"
+		"%{prj.name}/dependencies/GLAD/include/KHR/**.h",
+		"%{prj.name}/dependencies/IMGUI/**.h",
+		"%{prj.name}/dependencies/IMGUI/**.cpp",
+		"%{prj.name}/dependencies/GLM/**.hpp",
+		"%{prj.name}/dependencies/GLM/**.inl"
 	}
 
 	includedirs
@@ -34,7 +38,9 @@ project "GLoPhysX"
 		"%{prj.name}/src",
 		"%{prj.name}/dependencies/SPDLOG",
 		"%{prj.name}/dependencies/GLFW/include",
-		"%{prj.name}/dependencies/GLAD/include"
+		"%{prj.name}/dependencies/GLAD/include",
+		"%{prj.name}/dependencies/IMGUI",
+		"%{prj.name}/dependencies/GLM"
 	}
 
 	libdirs
@@ -58,6 +64,9 @@ project "GLoPhysX"
 
 	filter "files:**.c"
         flags { "NoPCH" }
+
+	filter  "files:GLoPhysX/dependencies/IMGUI/**.cpp"
+		flags { "NoPCH" }
 
 	filter "system:windows"
 		cppdialect "C++17"
@@ -104,7 +113,9 @@ project "Sandbox"
 		"GLoPhysX/src",
 		"GLoPhysX/dependencies/SPDLOG",
 		"GLoPhysX/dependencies/GLFW/include",
-		"GLoPhysX/dependencies/GLAD/include"
+		"GLoPhysX/dependencies/GLAD/include",
+		"GLoPhysX/dependencies/IMGUI",
+		"GLoPhysX/dependencies/GLM"
 	}
 
 	links

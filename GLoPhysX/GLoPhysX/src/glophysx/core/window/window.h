@@ -62,7 +62,10 @@ namespace GLOPHYSX {
          */
         virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 
-        virtual void* GetWindow() const = 0;
+        virtual void* GetNativeWindow() const = 0;
+
+        int GetWidth() { return properties->width; }
+        int GetHeight() { return properties->height; }
 
         /**
          * @brief Factory method for creating windows of a specific type.

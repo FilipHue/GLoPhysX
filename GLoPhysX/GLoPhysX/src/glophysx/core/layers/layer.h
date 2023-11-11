@@ -40,6 +40,7 @@ namespace GLOPHYSX {
 		GLOP_API virtual void OnDetach() {};
 		GLOP_API virtual void OnUpdate() {};
 		GLOP_API virtual void OnEvent(Event& event) {};
+		GLOP_API virtual void OnGUIRender() {};
 
 	protected:
 		std::string m_name;

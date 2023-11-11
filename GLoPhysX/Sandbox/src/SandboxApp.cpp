@@ -2,12 +2,15 @@
 
 #include "glophysx.h"
 
+#include "glm.hpp"
+
 class ExampleLayer : public GLOPHYSX::Layer {
 public:
 	ExampleLayer() : Layer("Example") {}
 
 	void OnUpdate() override {
-		GLOP_CLIENT_INFO("ExampleLayer::Update");
+		//GLOP_CLIENT_INFO("ExampleLayer::Update");
+		//GLOP_CLIENT_TRACE("Tab is pressed: {0}", GLOPHYSX::Input::IsKeyPressed(GLOP_KEY_TAB));
 	}
 
 	void OnEvent(GLOPHYSX::Event& e) override {

@@ -39,12 +39,16 @@ namespace GLOPHYSX {
 
         const char* GetName() const override { return "MouseButtonPress"; }
 
+        int GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton; }
+
         // Generates a string representation of the event for logging or debugging.
         std::string ToString() const override {
             std::stringstream ss;
             ss << "MouseButtonPressEvent: button=" << m_button << ", mods=" << m_mods;
             return ss.str();
         }
+
+        inline int GetMouseButton() { return m_button; }
 
     private:
         int m_button;  // Identifier for the mouse button that was pressed.
@@ -69,12 +73,16 @@ namespace GLOPHYSX {
 
         const char* GetName() const override { return "MouseButtonRelease"; }
 
+        int GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton; }
+
         // Generates a string representation of the event.
         std::string ToString() const override {
             std::stringstream ss;
             ss << "MouseButtonReleaseEvent: button=" << m_button << ", mods=" << m_mods;
             return ss.str();
         }
+
+        inline int GetMouseButton() { return m_button; }
 
     private:
         int m_button;  // Identifier for the mouse button that was released.
@@ -99,12 +107,17 @@ namespace GLOPHYSX {
 
         const char* GetName() const override { return "MouseMove"; }
 
+        int GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
+
         // Generates a string representation of the event.
         std::string ToString() const override {
             std::stringstream ss;
             ss << "MouseMoveEvent: x_pos=" << m_x_pos << ", y_pos=" << m_y_pos;
             return ss.str();
         }
+
+        inline double GetXPos() { return m_x_pos; }
+        inline double GetYPos() { return m_y_pos; }
 
     private:
         double m_x_pos; // The new X position of the mouse cursor.
@@ -129,12 +142,17 @@ namespace GLOPHYSX {
 
         const char* GetName() const override { return "MouseScroll"; }
 
+        int GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
+
         // Generates a string representation of the event.
         std::string ToString() const override {
             std::stringstream ss;
             ss << "MouseScrollEvent: x_offset=" << m_x_offset << ", y_offset=" << m_y_offset;
             return ss.str();
         }
+
+        inline double GetXOffset() { return m_x_offset; }
+        inline double GetYOffset() { return m_y_offset; }
 
     private:
         double m_x_offset; // The scroll offset along the X-axis.
