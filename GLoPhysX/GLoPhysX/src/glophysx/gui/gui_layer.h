@@ -16,18 +16,18 @@ namespace GLOPHYSX {
 	class GUILayer: public Layer
 	{
 	public:
-		GLOP_API GUILayer();
-		GLOP_API ~GUILayer();
+		GUILayer();
+		~GUILayer();
 
-		GLOP_API void OnAtach() override;
-		GLOP_API void OnDetach() override;
-		GLOP_API void OnUpdate() override {};
-		GLOP_API void OnEvent(Event& e) override;
+		void OnAtach() override;
+		void OnDetach() override;
+		void OnUpdate() override {};
+		void OnEvent(Event& e) override;
 
-		GLOP_API void OnGUIRender() override;
+		void OnGUIRender() override;
 
-		GLOP_API void Begin();
-		GLOP_API void End();
+		void Begin();
+		void End();
 	};
 }
 

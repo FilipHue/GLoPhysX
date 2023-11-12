@@ -63,18 +63,18 @@ namespace GLOPHYSX {
 		e.m_handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
 		e.m_handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
 	}
-	GLOP_API void GUILayer::OnGUIRender()
+	void GUILayer::OnGUIRender()
 	{
 		static bool show = true;
 		ImGui::ShowDemoWindow(&show);
 	}
-	GLOP_API void GUILayer::Begin()
+	void GUILayer::Begin()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 	}
-	GLOP_API void GUILayer::End()
+	void GUILayer::End()
 	{
 		ImGuiIO& io = ImGui::GetIO();
 

@@ -104,19 +104,19 @@ namespace GLOPHYSX {
 	* using GLFW. It provides the necessary interfaces to handle window events
 	* and integrates seamlessly with the GLoPhysX engine’s event system.
 	*/
-	class GLOP_API WWindow : public Window
+	class WWindow : public Window
 	{
 	public:
-		WWindow(WindowProperties* wp);
-		~WWindow();
+		GLOP_API WWindow(WindowProperties* wp);
+		GLOP_API ~WWindow();
 
-		void Initialize(WindowProperties* wp) override;
-		void Update() override;
-		void Destroy() override;
+		GLOP_API void Initialize(WindowProperties* wp) override;
+		GLOP_API void Update() override;
+		GLOP_API void Destroy() override;
 
-		void SetEventCallback(const EventCallbackFn& callback) override;
+		GLOP_API void SetEventCallback(const EventCallbackFn& callback) override;
 
-		void* GetNativeWindow() const override;
+		GLOP_API void* GetNativeWindow() const override;
 
 	private:
 		void SetWindowCallbacks() override;

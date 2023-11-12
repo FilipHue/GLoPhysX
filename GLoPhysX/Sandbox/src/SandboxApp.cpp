@@ -2,8 +2,6 @@
 
 #include "glophysx.h"
 
-#include "glm.hpp"
-
 class ExampleLayer : public GLOPHYSX::Layer {
 public:
 	ExampleLayer() : Layer("Example") {}

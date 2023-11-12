@@ -41,7 +41,7 @@ namespace GLOPHYSX {
      * environments. It encapsulates all common and platform-independent functionality
      * for window operations.
      */
-    class GLOP_API Window
+    class Window
     {
     public:
         using EventCallbackFn = std::function<void(Event&)>;

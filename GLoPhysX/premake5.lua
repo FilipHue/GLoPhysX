@@ -11,8 +11,17 @@ output_dir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "GLoPhysX"
 	location "GLoPhysX"
-	kind "SharedLib"
+
+	-- USE StaticLib IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
+	-- USE SharedLib IF YOU WANT TO LINK AGAINST THE DYNAMIC LIBRARY --
+
+	kind "StaticLib"
+
+	------------------------------------------------------------------
+
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
 
 	targetdir ("%{wks.location}/bin/" .. output_dir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. output_dir .. "/%{prj.name}")
@@ -24,11 +33,14 @@ project "GLoPhysX"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+
 		"%{prj.name}/dependencies/GLAD/include/glad.c",
 		"%{prj.name}/dependencies/GLAD/include/glad/**.h",
 		"%{prj.name}/dependencies/GLAD/include/KHR/**.h",
+
 		"%{prj.name}/dependencies/IMGUI/**.h",
 		"%{prj.name}/dependencies/IMGUI/**.cpp",
+
 		"%{prj.name}/dependencies/GLM/**.hpp",
 		"%{prj.name}/dependencies/GLM/**.inl"
 	}
@@ -51,10 +63,7 @@ project "GLoPhysX"
 	links
 	{
 		"glfw3.lib",
-		"opengl32.lib",
-		"Shell32.lib",
-		"User32.lib",
-		"Gdi32.lib"
+		"opengl32.lib"
 	}
 
 	linkoptions
@@ -69,23 +78,28 @@ project "GLoPhysX"
 		flags { "NoPCH" }
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
+
+		-- USE ONLY GLOP_PLATFORM_WINDOWS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
+		-- USE GLOP_DYNAMIC_LIB AND GLOP_BUILD_DLL IF YOU WANT TO LINK AGAINST THE DYNAMIC LIBRARY --
 
 		defines
 		{
-			"GLOP_PLATFORM_WINDOWS",
-			"GLOP_BUILD_DLL"
+			"GLOP_PLATFORM_WINDOWS"
 		}
 
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. output_dir .. "/Sandbox")
-		}
+		----------------------------------------------------------------------------------------------
+
+		-- COMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
+
+		-- postbuildcommands
+		-- {
+		-- 	("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. output_dir .. "/Sandbox")
+		-- }
+
+		------------------------------------------------------------------
 
 	filter "configurations:Debug"
-		staticruntime "off"
 		runtime "Debug"
 		defines "GLOP_DEBUG"
 		symbols "On"
@@ -98,6 +112,8 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
 
 	targetdir ("%{wks.location}/bin/" .. output_dir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. output_dir .. "/%{prj.name}")
@@ -118,23 +134,34 @@ project "Sandbox"
 		"GLoPhysX/dependencies/GLM"
 	}
 
+	-- UNCOMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
+
+	linkoptions
+	{ 
+		"/NODEFAULTLIB:MSVCRT.lib"
+	}
+
+	--------------------------------------------------------------------
+
 	links
 	{
 		"GLoPhysX"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
+
+		-- USE ONLY GLOP_PLATFORM_WINDOWS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
+		-- USE GLOP_DYNAMIC_LIB IF YOU WANT TO LINK AGAINST THE DYNAMIC LIBRARY --
 
 		defines
 		{
 			"GLOP_PLATFORM_WINDOWS"
 		}
 
+		-----------------------------------------------------------------------------------
+
 	filter "configurations:Debug"
-		staticruntime "off"
 		runtime "Debug"
 		defines "GLOP_DEBUG"
 		symbols "On"

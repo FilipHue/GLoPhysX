@@ -43,17 +43,13 @@ namespace GLOPHYSX {
 	public:
 		GLOP_API Application();
 		GLOP_API ~Application();
-
 		GLOP_API void OnEvent(Event& e);
-
 		GLOP_API void PushLayer(Layer* layer);
 		GLOP_API void PushOverlay(Layer* overlay);
-
 		GLOP_API void Run();
-
 		GLOP_API static Application& GetInstance();
 
-		WWindow& GetWindow();
+		GLOP_API WWindow& GetWindow();
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);

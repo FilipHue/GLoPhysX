@@ -32,13 +32,13 @@ namespace GLOPHYSX {
 	* The class allows querying of keyboard and mouse states as a singleton, delegating to protected
 	* virtual methods for actual platform-specific state checks.
 	*/
-	class GLOP_API Input {
+	class Input {
 	public:
-		inline static bool IsKeyPressed(int keycode) { return s_instance->PIsKeyPressed(keycode); }
+		GLOP_API inline static bool IsKeyPressed(int keycode) { return s_instance->PIsKeyPressed(keycode); }
 
-		inline static bool IsMouseButtonPressed(int button) { return s_instance->PIsMouseButtonPressed(button); }
-		inline static double GetMouseX() { return s_instance->PGetMouseX(); }
-		inline static double GetMouseY(int button) { return s_instance->PGetMouseY(); }
+		GLOP_API inline static bool IsMouseButtonPressed(int button) { return s_instance->PIsMouseButtonPressed(button); }
+		GLOP_API inline static double GetMouseX() { return s_instance->PGetMouseX(); }
+		GLOP_API inline static double GetMouseY(int button) { return s_instance->PGetMouseY(); }
 
 	protected:
 		virtual bool PIsKeyPressed(int keycode) = 0;
