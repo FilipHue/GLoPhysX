@@ -1,3 +1,4 @@
+#pragma once
 /**
 * @file key_events.h
 * @brief Key event classes for the GLOPHYSX engine.
@@ -23,12 +24,11 @@
 * and event subscription for keyboard input, enabling interactive application behavior and
 * control schemes.
 * 
+* @see Event
 * @version 1.0
 * @date 2023-10-27
-* @see Event
+* @author Secareanu Filip
 */
-
-#pragma once
 
 #include "event.h"
 
@@ -49,13 +49,11 @@ namespace GLOPHYSX {
         KeyPressEvent(int keycode, int mods, int repeat) : m_keycode(keycode), m_mods(mods), m_repeat(repeat) {};
 
         static EventType GetStaticType() { return EventType::KeyPress; }
+
         EventType GetType() const override { return GetStaticType(); }
-
         const char* GetName() const override { return "KeyPress"; }
-
         int GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
 
-        // Outputs a formatted string containing the event details.
         std::string ToString() const override {
             std::stringstream ss;
             ss << "KeyPressEvent: " << m_keycode << ", mods: " << m_mods << ", repeat: " << m_repeat;
@@ -85,12 +83,9 @@ namespace GLOPHYSX {
 
         static EventType GetStaticType() { return EventType::KeyRelease; }
         EventType GetType() const override { return GetStaticType(); }
-
         const char* GetName() const override { return "KeyRelease"; }
-
         int GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
 
-        // Outputs a formatted string containing the event details.
         std::string ToString() const override {
             std::stringstream ss;
             ss << "KeyReleaseEvent: " << m_keycode << ", mods: " << m_mods;
@@ -119,13 +114,11 @@ namespace GLOPHYSX {
         KeyTypedEvent(int unicode_key) : m_unicode_key(unicode_key) {};
 
         static EventType GetStaticType() { return EventType::KeyTyped; }
+
         EventType GetType() const override { return GetStaticType(); }
-
         const char* GetName() const override { return "KeyTyped"; }
-
         int GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
 
-        // Outputs a formatted string containing the event details.
         std::string ToString() const override {
             std::stringstream ss;
             ss << "KeyTypedEvent: unicode: " << m_unicode_key;

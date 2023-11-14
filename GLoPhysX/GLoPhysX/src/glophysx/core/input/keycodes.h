@@ -1,5 +1,13 @@
 #pragma once
 
+/*
+* @file keycodes.h
+* @brief File that contains platform dependent keycodes
+* 
+* Here you put the keycodes of the platform that you used for creating
+* the window
+*/
+
 #ifdef GLOP_PLATFORM_WINDOWS
 
 	// GLFW keycodes

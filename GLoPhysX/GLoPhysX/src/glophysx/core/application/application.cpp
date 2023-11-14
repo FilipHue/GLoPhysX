@@ -2,11 +2,18 @@
 
 #include "application.h"
 
+#include "glophysx/renderer/renderer.h"
+
 namespace GLOPHYSX {
+
+	using namespace RENDERER;
+
 	Application* Application::s_instance = nullptr;
 
 	Application::Application()
 	{
+		RendererAPI::SetApi(API::OPENGL);
+
 		s_instance = this;
 
 		#ifdef GLOP_PLATFORM_WINDOWS
@@ -86,7 +93,7 @@ namespace GLOPHYSX {
 
 		return false;
 	}
-	WWindow& Application::GetWindow()
+	Window& Application::GetWindow()
 	{
 		return *m_window;
 	}

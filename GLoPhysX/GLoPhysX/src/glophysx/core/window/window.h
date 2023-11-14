@@ -1,3 +1,4 @@
+#pragma once
 /**
 * @file window.h
 * @brief Header file for the Window class in the GLoPhysX engine.
@@ -24,13 +25,12 @@
 *
 * @version 1.0
 * @date 2023-10-27
+* @author Secareanu Filip
 */
-
-#pragma once
 
 #include "glophysx/core/core.h"
 #include "window_properties.h"
-#include "glophysx/events/event.h"
+#include "glophysx/core/events/event.h"
 
 namespace GLOPHYSX {
 
@@ -46,20 +46,14 @@ namespace GLOPHYSX {
     public:
         using EventCallbackFn = std::function<void(Event&)>;
 
-        /**
-         * @brief Virtual destructor for safe polymorphic destruction.
-         */
+        // Virtual destructor for safe polymorphic destruction.
         virtual ~Window() = default;
 
         virtual void Initialize(WindowProperties* wp) = 0;
         virtual void Update() = 0;
         virtual void Destroy() = 0;
 
-        /**
-         * @brief Sets the event callback function for window events.
-         *
-         * @param callback The function to call when an event occurs.
-         */
+        // Sets the event callback function for all window events.
         virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 
         virtual void* GetNativeWindow() const = 0;
@@ -77,7 +71,7 @@ namespace GLOPHYSX {
          * @return A unique_ptr to the created window instance of type WindowType.
          */
         template <typename WindowType>
-        static std::unique_ptr<WindowType> Create(WindowProperties* wp)
+        static std::unique_ptr<Window> Create(WindowProperties* wp)
         {
             return std::make_unique<WindowType>(wp);
         }
@@ -93,25 +87,8 @@ namespace GLOPHYSX {
         */
         void SetCallbacks();
 
-        /**
-         * @brief Sets window-specific callbacks.
-         *
-         * Derived classes must provide the implementation for setting window event callbacks.
-         */
         virtual void SetWindowCallbacks() = 0;
-
-        /**
-         * @brief Sets keyboard-specific callbacks.
-         *
-         * Derived classes must provide the implementation for setting keyboard event callbacks.
-         */
         virtual void SetKeyCallbacks() = 0;
-
-        /**
-         * @brief Sets mouse-specific callbacks.
-         *
-         * Derived classes must provide the implementation for setting mouse event callbacks.
-         */
         virtual void SetMouseCallbacks() = 0;
 
     protected:

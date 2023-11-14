@@ -1,3 +1,4 @@
+#pragma once
 /**
 * @file application_events.h
 * @brief Application(window) event classes for the GLOPHYSX engine.
@@ -20,12 +21,11 @@
 * window events in a standardized way throughout the engine. They also provide a consistent
 * interface for logging and debugging window state changes.
 *
+* @see Event
 * @version 1.0
 * @date 2023-10-27
-* @see Event
+* @author Secareanu Filip
 */
-
-#pragma once
 
 #include "event.h"
 
@@ -46,11 +46,8 @@ namespace GLOPHYSX {
         // Returns the static type of the event for comparison purposes
         static EventType GetStaticType() { return EventType::WindowClose; }
 
-        // Returns the dynamic type of the event for dispatching
         EventType GetType() const override { return GetStaticType(); }
-        // Returns a string name of the event for logging or debugging
         const char* GetName() const override { return "WindowClose"; }
-
         int GetCategoryFlags() const override { return EventCategoryApplication; }
     };
 
@@ -75,10 +72,8 @@ namespace GLOPHYSX {
 
         EventType GetType() const override { return GetStaticType(); }
         const char* GetName() const override { return "WindowResize"; }
-
         int GetCategoryFlags() const override { return EventCategoryApplication; }
 
-        // Provides a text representation of the event data for logging
         std::string ToString() const override {
             std::stringstream ss;
             ss << "WindowResizeEvent: " << m_width << ", " << m_height;
@@ -113,10 +108,8 @@ namespace GLOPHYSX {
 
         EventType GetType() const override { return GetStaticType(); }
         const char* GetName() const override { return "WindowMove"; }
-
         int GetCategoryFlags() const override { return EventCategoryApplication; }
 
-        // Outputs a string with the new window position for logging
         std::string ToString() const override {
             std::stringstream ss;
             ss << "WindowMoveEvent: " << m_new_x << ", " << m_new_y;
@@ -148,10 +141,8 @@ namespace GLOPHYSX {
 
         EventType GetType() const override { return GetStaticType(); }
         const char* GetName() const override { return "WindowFocus"; }
-
         int GetCategoryFlags() const override { return EventCategoryApplication; }
 
-        // Converts the event focus state to a string for output or logging
         std::string ToString() const override {
             std::stringstream ss;
             ss << "WindowFocusEvent: " << (m_focused ? "focused" : "unfocused");
@@ -182,10 +173,8 @@ namespace GLOPHYSX {
 
         EventType GetType() const override { return GetStaticType(); }
         const char* GetName() const override { return "WindowIconify"; }
-
         int GetCategoryFlags() const override { return EventCategoryApplication; }
 
-        // Generates a string describing the iconification event for logging
         std::string ToString() const override {
             std::stringstream ss;
             ss << "WindowIconifyEvent: " << (m_iconified ? "iconified" : "restored");

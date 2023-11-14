@@ -1,5 +1,13 @@
 #pragma once
 
+/*
+* @file mouse_codes.h
+* @brief File that contains platform dependent mouse codes
+*
+* Here you put the mouse codes of the platform that you used for creating
+* the window
+*/
+
 #ifdef GLOP_PLATFORM_WINDOWS
 
 	// GLFW codes

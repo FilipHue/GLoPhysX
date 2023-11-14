@@ -8,12 +8,12 @@
 
 #include "glophysx/core/application/application.h"
 #include "glophysx/core/logger/logger.h"
+
 #include "glophysx/core/layers/layer.h"
+#include "glophysx/core/gui/gui_layer.h" 
 
 #include "glophysx/core/input/input.h"
 #include "glophysx/core/input/keycodes.h"
 #include "glophysx/core/input/mouse_codes.h"
-
-#include "glophysx/gui/gui_layer.h"
 
 #include "glophysx/core/entry_point.h"

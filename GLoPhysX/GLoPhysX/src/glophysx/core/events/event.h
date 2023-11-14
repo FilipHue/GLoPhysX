@@ -1,3 +1,4 @@
+#pragma once
 /**
 * @file event.h
 * @brief Header file defining the Event base class and EventDispatcher in the GLoPhysX engine.
@@ -12,9 +13,8 @@
 *
 * @version 1.0
 * @date 2023-10-27
+* @author Secareanu Filip
 */
-
-#pragma once
 
 #include "gxpch.h"
 
@@ -35,6 +35,15 @@ namespace GLOPHYSX {
 		MouseButtonPress, MouseButtonRelease, MouseMove, MouseScroll
 	} EventType;
 
+	/*
+	* @enum EventCategory
+	* @brief Enumerates the categories and event can be apart of in the GLoPhysX engine.
+	* 
+	* This enumeration defines a list of event categories, including Window, Keyboard and
+	* mouse. These categories help classify the event types so that it is more convinient
+	* to check for them. The number attributed are for the use with the "or ( | ) operator,
+	* so it becomes easier to check for multiple events.
+	*/
 	typedef enum event_category
 	{
 		None = 0,
@@ -57,18 +66,21 @@ namespace GLOPHYSX {
 	public:
 		virtual ~Event() = default;
 
+		// Returns the dynamic type of the event for dispatching
 		virtual EventType GetType() const = 0;
+		// Returns a string name of the event for logging or debugging
 		virtual const char* GetName() const = 0;
+		// Returns the event categories the event is in
 		virtual int GetCategoryFlags() const = 0;
 
+		// Return if the event is in a category or group of categories
 		bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
 
+		// Provides a text representation of the event data for logging
 		virtual std::string ToString() const { return GetName(); }
 
 	public:
 		bool m_handled = false;
-
-	private:
 	};
 
 	/**
@@ -82,7 +94,8 @@ namespace GLOPHYSX {
 	 */
 	class EventDispatcher {
 	public:
-		EventDispatcher() = delete;	// Prevents instantiation of this static class.
+		// Prevents instantiation of this static class.
+		EventDispatcher() = delete;	
 
 		/**
 		* @brief Dispatches an event to the given handler if the event is of type T.
@@ -103,6 +116,7 @@ namespace GLOPHYSX {
 		}
 	};
 
+	// Operator overloading for the event class
 	inline std::ostream& operator<<(std::ostream& os, const Event& e)
 	{
 		return os << e.ToString();

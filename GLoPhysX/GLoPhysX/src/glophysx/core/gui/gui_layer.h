@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glophysx/core/core.h"
+
 #include "glophysx/core/layers/layer.h"
 
 namespace GLOPHYSX {
@@ -30,5 +31,3 @@ namespace GLOPHYSX {
 		void End();
 	};
 }
-
-

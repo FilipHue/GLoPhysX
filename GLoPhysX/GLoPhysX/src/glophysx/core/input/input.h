@@ -1,3 +1,4 @@
+#pragma once
 /**
 * @file input.h
 * @brief Input abstraction for the GLoPhysX engine.
@@ -15,9 +16,8 @@
 *
 * @version 1.0
 * @date 2023-10-27
+* @author Secareanu Filip
 */
-
-#pragma once
 
 #include "glophysx/core/core.h"
 
@@ -41,10 +41,14 @@ namespace GLOPHYSX {
 		GLOP_API inline static double GetMouseY(int button) { return s_instance->PGetMouseY(); }
 
 	protected:
+		// The implementation of IsKeyPressed that is platform dependent
 		virtual bool PIsKeyPressed(int keycode) = 0;
 
+		// The implementation of IsMouseButtonPressed that is platform dependent
 		virtual bool PIsMouseButtonPressed(int button) = 0;
+		// The implementation of GetMouseX that is platform dependent
 		virtual double PGetMouseX() = 0;
+		// The implementation of GetMouseY that is platform dependent
 		virtual double PGetMouseY() = 0;
 
 	private:

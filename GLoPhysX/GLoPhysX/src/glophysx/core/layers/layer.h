@@ -1,3 +1,4 @@
+#pragma once
 /**
 * @file Layer.h
 * @brief Layer system for GLOPHYSX engine.
@@ -12,12 +13,11 @@
 *
 * @version 1.0
 * @date 2023-10-27
+* @author Secareanu Filip
 */
 
-#pragma once
-
 #include "glophysx/core/core.h"
-#include "glophysx/events/event.h"
+#include "glophysx/core/events/event.h"
 
 namespace GLOPHYSX {
 
@@ -36,13 +36,19 @@ namespace GLOPHYSX {
 		GLOP_API Layer(const std::string& name = "Layer") : m_name(name) {};
 		GLOP_API virtual ~Layer() = default;
 
+		// Method that defines what happens when you first introduce the layer in the layer stack
 		GLOP_API virtual void OnAtach() {};
+		// Method that defines what happens when you take the layer from the layer stack
 		GLOP_API virtual void OnDetach() {};
+		// Method to update the layer
 		GLOP_API virtual void OnUpdate() {};
+		// Method for the layer to handle events
 		GLOP_API virtual void OnEvent(Event& event) {};
+
+		// Method used to render GUI, if it exists
 		GLOP_API virtual void OnGUIRender() {};
 
 	protected:
-		std::string m_name;
+		std::string m_name; // Layer's name (for debugging purposes)
 	};
 }

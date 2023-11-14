@@ -1,5 +1,7 @@
 #pragma once
 
+#include "glophysx/core/application/application.h"
+
 #if defined(GLOP_PLATFORM_WINDOWS)
 
 extern GLOPHYSX::Application* GLOPHYSX::CreateApplication();

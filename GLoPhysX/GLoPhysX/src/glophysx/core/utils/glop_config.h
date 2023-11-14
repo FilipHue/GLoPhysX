@@ -3,7 +3,7 @@
 /*
 * Define GLOP_API for DLL export/import, if the engine is linked dynamically
 * 
-* Define GLOP_VERSION_MAJOR, GLOP_VERSION_MINOR anf GLOP_VERSION_PATCH for version control and logging
+* Define GLOP_VERSION_MAJOR, GLOP_VERSION_MINOR and GLOP_VERSION_PATCH for version control and logging
 */
 
 #if defined(GLOP_PLATFORM_WINDOWS)

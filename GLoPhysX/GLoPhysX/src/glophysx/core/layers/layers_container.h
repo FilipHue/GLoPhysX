@@ -1,8 +1,9 @@
+#pragma once
 /**
 * @file LayersContainer.h
 * @brief Manages layers and overlays within the GLOPHYSX engine's runtime environment.
 *
-* The LayersContainer class serves as a dynamic array, housing two distinct types of Layer-derived objects:
+* The LayersContainer class serves as a dynamic array, housing two distinct types of layer objects:
 * regular layers and overlays. While both types are fundamentally Layer instances and share the same base
 * functionality, they differ in their intended use and the order in which they receive updates and events.
 *
@@ -22,11 +23,11 @@
 * overlays are appended beyond this point. Such an arrangement simplifies the management of layers while allowing
 * for complex interactions between different layer types within a unified structure.
 * 
+* @see Layer
 * @version 1.0
 * @date 2023-10-27
+* @author Secareanu Filip
 */
-
-#pragma once
 
 #include "layer.h"
 
@@ -67,5 +68,3 @@ namespace GLOPHYSX {
 		unsigned int m_layer_insert_index = 0;
 	};
 }
-
-

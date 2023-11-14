@@ -32,7 +32,6 @@ namespace GLOPHYSX {
 	* and safe interface for Logger, ensuring its reliability and integrity across
 	* diverse application architectures and DLL interactions.
 	*/
-
 	class Logger
 	{
 	public:
@@ -65,4 +64,3 @@ namespace GLOPHYSX {
 	#define GLOP_CLIENT_ERROR(...)			GLOPHYSX::Logger::GetClientLogger()->error(__VA_ARGS__);
 	#define GLOP_CLIENT_CRITICAL(...)		GLOPHYSX::Logger::GetClientLogger()->critical(__VA_ARGS__);
 }
-

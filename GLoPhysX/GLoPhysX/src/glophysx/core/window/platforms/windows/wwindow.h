@@ -1,6 +1,7 @@
+#pragma once
 /**
 * @file wwindow.h
-* @brief Header file for the WWindow class, a concrete implementation of the Window class for GLFW windowing system.
+* @brief Header file for the WWindow class, a concrete implementation of the Window class for Windows system.
 *
 * This file defines the WWindow class, a specific implementation of the Window abstract class tailored for
 * the GLFW windowing system. The WWindow class provides functionalities to create, manage, and destroy windows,
@@ -9,21 +10,15 @@
 * The class is designed to be used within the GLoPhysX engine to abstract away the complexities of window management
 * and provide a uniform interface for window operations, irrespective of the underlying windowing system.
 *
-* The inclusion order of headers in this file is crucial to avoid compilation issues and warnings. This is due
-* to the interactions between the windows.h, glad.h, and glfw3.h headers. The core.h header includes windows.h,
-* while glad.h explicitly undefines the APIENTRY macro defined by windows.h. To prevent redefinition issues and
-* maintain a clean compilation process, core.h must be included before glad.h and glfw3.h. Additionally, glad.h
-* must be included before glfw3.h to ensure that the OpenGL function pointers provided by glad are available
-* and correctly configured before any GLFW headers that may use these functions.
-*
 * @see Window
 * @see WindowProperties
-*
+* @see GraphicContext
+* 
 * @version 1.0
 * @date 2023-10-27
+* @author Secareanu Filip
 */
 
-#pragma once
 
 /*
 * The inclusion order of headers is crucial to prevent compilation issues and warnings.
@@ -60,11 +55,15 @@
 
 #include "glophysx/core/window/window.h"
 
-#include "glophysx/events/application_events.h"
-#include "glophysx/events/key_events.h"
-#include "glophysx/events/mouse_events.h"
+#include "glophysx/core/events/application_events.h"
+#include "glophysx/core/events/key_events.h"
+#include "glophysx/core/events/mouse_events.h"
+
+#include "glophysx/renderer/graphics_context.h"
 
 namespace GLOPHYSX {
+
+	using namespace RENDERER;
 
 	/**
 	* @struct WindowData
@@ -86,7 +85,6 @@ namespace GLOPHYSX {
 	* GLFW callback can retrieve a window's contextual data through the GLFWwindow user pointer,
 	* facilitating access to custom GLoPhysX engine data and callbacks from within the GLFW callback
 	* functions.
-	*
 	*/
 	typedef struct window_data WindowData;
 	struct window_data {
@@ -98,7 +96,7 @@ namespace GLOPHYSX {
 
 	/**
 	* @class WWindow
-	* @brief Concrete implementation of the Window class for the GLFW windowing system.
+	* @brief Concrete implementation of the Window class for the Windows system.
 	*
 	* WWindow encapsulates the creation, management, and destruction of windows
 	* using GLFW. It provides the necessary interfaces to handle window events
@@ -126,11 +124,10 @@ namespace GLOPHYSX {
 	private:
 		GLFWmonitor* m_monitor;
 		GLFWwindow* m_window;
+		std::unique_ptr<GraphicsContext> m_contex;
 
 		const GLFWvidmode* m_video_mode;
 
 		WindowData m_window_data;
 	};
 }
-
-

@@ -1,6 +1,12 @@
 #include "gxpch.h"
 #include "wwindow.h"
 
+#include "glophysx/renderer/graphics_context.h"
+
+#include "glophysx/core/events/application_events.h"
+#include "glophysx/core/events/key_events.h"
+#include "glophysx/core/events/mouse_events.h"
+
 namespace GLOPHYSX {
 
 	static uint8_t s_window_count = 0;
@@ -39,8 +45,8 @@ namespace GLOPHYSX {
 		m_window_data.wp = properties;
 		s_window_count++;
 
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		m_monitor = glfwGetPrimaryMonitor();
@@ -51,12 +57,12 @@ namespace GLOPHYSX {
 			glfwTerminate();
 			return;
 		}
-		glfwMakeContextCurrent(m_window);
 
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			GLOP_CORE_ERROR("GLAD not initialized");
+		m_contex = GraphicsContext::Create(m_window);
+		if (m_contex == nullptr) {
+			exit(-1);
 		}
+		m_contex->Init();
 
 		GLOP_CORE_INFO("Window succesfully created");
 
@@ -70,7 +76,7 @@ namespace GLOPHYSX {
 	void WWindow::Update()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_window);
+		m_contex->SwapBuffers();
 	}
 
 	void WWindow::Destroy()
