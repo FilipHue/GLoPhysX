@@ -1,8 +1,6 @@
 #include "gxpch.h"
 #include "wwindow.h"
 
-#include "glophysx/renderer/graphics_context.h"
-
 #include "glophysx/core/events/application_events.h"
 #include "glophysx/core/events/key_events.h"
 #include "glophysx/core/events/mouse_events.h"
@@ -71,6 +69,8 @@ namespace GLOPHYSX {
 		GLOP_CORE_INFO("Setting window callbacks");
 
 		SetCallbacks();
+
+		GLOP_CORE_INFO("Window succesfully initialised");
 	}
 
 	void WWindow::Update()

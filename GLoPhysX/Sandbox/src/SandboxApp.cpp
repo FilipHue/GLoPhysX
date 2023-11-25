@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "glophysx.h"
+#include "glophysx/renderer/primitives/buffer/buffer_layout.h"
 
 class ExampleLayer : public GLOPHYSX::Layer {
 public:
@@ -12,7 +13,7 @@ public:
 	}
 
 	void OnEvent(GLOPHYSX::Event& e) override {
-		GLOP_CLIENT_TRACE("{0}", e.ToString())
+		//GLOP_CLIENT_TRACE("{0}", e.ToString());
 	}
 };
 

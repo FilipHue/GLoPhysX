@@ -29,6 +29,10 @@
 #include "glophysx/core/layers/layers_container.h"
 #include "glophysx/core/gui/gui_layer.h"
 
+#include "glophysx/renderer/primitives/buffer/buffer.h"
+#include "glophysx/renderer/primitives/buffer/buffer_layout.h"
+#include "glophysx/renderer/primitives/vertex_array.h"
+
 /*
 * @brief Forward declaration of the main function
 * 
@@ -66,7 +70,7 @@ namespace GLOPHYSX {
 		GLOP_API Window& GetWindow();
 
 	private:
-		void Run();
+		GLOP_API void Run();
 
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
@@ -77,6 +81,14 @@ namespace GLOPHYSX {
 
 		LayersContainer m_layers_container;
 		GUILayer* m_gui_layer;
+
+		std::shared_ptr<VertexArray> m_tr_vertex_array;
+		std::shared_ptr<VertexBuffer> m_tr_vertex_buffer;
+		std::shared_ptr<IndexBuffer> m_tr_index_buffer;
+
+		std::shared_ptr<VertexArray> m_sq_vertex_array;
+		std::shared_ptr<VertexBuffer> m_sq_vertex_buffer;
+		std::shared_ptr<IndexBuffer> m_sq_index_buffer;
 
 	private:
 		static Application* s_instance;

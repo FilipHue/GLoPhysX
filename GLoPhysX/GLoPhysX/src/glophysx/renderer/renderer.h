@@ -6,7 +6,7 @@ namespace GLOPHYSX {
 	
 	namespace RENDERER {
 
-		GLOP_API enum class API {
+		enum class API {
 			NONE,
 			OPENGL
 		};

@@ -16,6 +16,7 @@ project "GLoPhysX"
 	-- USE SharedLib IF YOU WANT TO LINK AGAINST THE DYNAMIC LIBRARY --
 
 	kind "StaticLib"
+	-- kind "SharedLib"
 
 	------------------------------------------------------------------
 
@@ -81,14 +82,23 @@ project "GLoPhysX"
 		systemversion "latest"
 
 		-- USE ONLY GLOP_PLATFORM_WINDOWS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
-		-- USE GLOP_DYNAMIC_LIB AND GLOP_BUILD_DLL IF YOU WANT TO LINK AGAINST THE DYNAMIC LIBRARY --
+		-- USE GLOP_PLATFORM_WINDOWS, GLOP_DYNAMIC_LIB AND GLOP_BUILD_DLL IF YOU WANT TO LINK AGAINST THE DYNAMIC LIBRARY --
 
 		defines
 		{
 			"GLOP_PLATFORM_WINDOWS"
 		}
 
+		-- defines
+		-- {
+		-- 	"GLOP_PLATFORM_WINDOWS",
+		-- 	"GLOP_DYNAMIC_LIB",
+		-- 	"GLOP_BUILD_DLL"
+		-- }
+
 		----------------------------------------------------------------------------------------------
+
+
 
 		-- COMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
 
@@ -152,12 +162,18 @@ project "Sandbox"
 		systemversion "latest"
 
 		-- USE ONLY GLOP_PLATFORM_WINDOWS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
-		-- USE GLOP_DYNAMIC_LIB IF YOU WANT TO LINK AGAINST THE DYNAMIC LIBRARY --
+		-- USE GLOP_PLATFORM_WINDOWS AND GLOP_DYNAMIC_LIB IF YOU WANT TO LINK AGAINST THE DYNAMIC LIBRARY --
 
 		defines
 		{
 			"GLOP_PLATFORM_WINDOWS"
 		}
+
+		-- defines
+		-- {
+		-- 	"GLOP_PLATFORM_WINDOWS",
+		-- 	"GLOP_DYNAMIC_LIB"
+		-- }
 
 		-----------------------------------------------------------------------------------
 
