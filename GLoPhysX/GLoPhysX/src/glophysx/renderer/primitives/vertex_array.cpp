@@ -2,7 +2,7 @@
 #include "vertex_array.h"
 
 #include "glophysx/renderer/primitives/platforms/opengl/opengl_vertex_array.h"
-#include "glophysx/renderer/renderer.h"
+#include "glophysx/renderer/renderer/renderer_api.h"
 
 namespace GLOPHYSX {
 

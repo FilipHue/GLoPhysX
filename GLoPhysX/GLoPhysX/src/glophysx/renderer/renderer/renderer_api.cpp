@@ -1,5 +1,5 @@
 #include "gxpch.h"
-#include "renderer.h"
+#include "renderer_api.h"
 
 namespace GLOPHYSX {
 

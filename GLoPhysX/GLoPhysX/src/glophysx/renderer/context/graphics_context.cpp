@@ -1,7 +1,7 @@
 #include "gxpch.h"
 #include "graphics_context.h"
 #include "glophysx/renderer/context/platforms/opengl/opengl_context.h"
-#include "glophysx/renderer/renderer.h"
+#include "glophysx/renderer/renderer/renderer_api.h"
 
 namespace GLOPHYSX {
 
