@@ -1,10 +1,6 @@
 #include "gxpch.h"
 #include "wwindow.h"
 
-#include "glophysx/core/events/application_events.h"
-#include "glophysx/core/events/key_events.h"
-#include "glophysx/core/events/mouse_events.h"
-
 namespace GLOPHYSX {
 
 	static uint8_t s_window_count = 0;

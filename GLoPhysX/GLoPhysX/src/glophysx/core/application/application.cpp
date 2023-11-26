@@ -2,7 +2,7 @@
 
 #include "application.h"
 
-#include "glophysx/renderer/renderer/renderer_api.h"
+#include "glophysx/renderer/renderer/renderer.h"
 
 namespace GLOPHYSX {
 
@@ -13,12 +13,14 @@ namespace GLOPHYSX {
 	Application::Application()
 	{
 		RendererAPI::SetApi(API::OPENGL);
+		RendererCommands::SetApi();
 
 		s_instance = this;
 
 		#ifdef GLOP_PLATFORM_WINDOWS
 			m_window = Window::Create<WWindow>(new WindowProperties());
 			m_window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+			GLOP_CORE_TRACE("===========================================================================")
 		#else
 			#error "GLoPhysX only supports Windows!"
 		#endif
@@ -104,14 +106,15 @@ namespace GLOPHYSX {
 	{
 		while (m_running)
 		{
-			glClearColor(0.1f, 0.1f, 0.1f, 1);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			RendererCommands::SetClearColor();
+			RendererCommands::Clear();
 
-			m_tr_vertex_array->Bind();
-			glDrawElements(GL_TRIANGLES, m_tr_vertex_array->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::BeginScene();
 
-			m_sq_vertex_array->Bind();
-			glDrawElements(GL_TRIANGLES, m_sq_vertex_array->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_tr_vertex_array);
+			Renderer::Submit(m_sq_vertex_array);
+
+			Renderer::EndScene();
 
 			for (Layer* layer : m_layers_container) {
 				layer->OnUpdate();
@@ -138,7 +141,7 @@ namespace GLOPHYSX {
 	}
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
-		glViewport(0, 0, e.GetWidth(), e.GetHeight());
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
 		return false;
 	}

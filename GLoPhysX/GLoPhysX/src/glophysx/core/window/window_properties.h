@@ -2,15 +2,14 @@
 
 #include "gxpch.h"
 
-typedef struct window_properties WindowProperties;
-struct window_properties {
+struct WindowProperties {
 	const char* title;
 
 	unsigned int width;
 	unsigned int height;
 	double aspect_ration;
 
-	window_properties(
+	WindowProperties(
 		const char* title = "GLoPhysX Engine",
 
 		unsigned int width = 1600,

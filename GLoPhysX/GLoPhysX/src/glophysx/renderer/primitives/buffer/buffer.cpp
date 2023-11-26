@@ -2,7 +2,7 @@
 #include "buffer.h"
 #include "glophysx/renderer/primitives/platforms/opengl/opengl_buffer.h"
 
-#include "glophysx/renderer/renderer/renderer_api.h"
+#include "glophysx/renderer/renderer/api/renderer_api.h"
 
 namespace GLOPHYSX {
 

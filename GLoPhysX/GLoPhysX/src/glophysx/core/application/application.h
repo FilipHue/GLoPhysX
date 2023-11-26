@@ -1,5 +1,4 @@
 #pragma once
-
 /**
 * @file application.h
 * @brief This file contains the declaration of the Application class and the CreateApplication function.

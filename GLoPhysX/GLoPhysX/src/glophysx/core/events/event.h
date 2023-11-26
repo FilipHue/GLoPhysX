@@ -40,8 +40,8 @@ namespace GLOPHYSX {
 	* @brief Enumerates the categories and event can be apart of in the GLoPhysX engine.
 	* 
 	* This enumeration defines a list of event categories, including Window, Keyboard and
-	* mouse. These categories help classify the event types so that it is more convinient
-	* to check for them. The number attributed are for the use with the "or ( | ) operator,
+	* Mouse. These categories help classify the event types so that it is more convinient
+	* to check for them. The number attributed are for the use with the "or" ( | ) operator,
 	* so it becomes easier to check for multiple events.
 	*/
 	typedef enum event_category
@@ -76,7 +76,7 @@ namespace GLOPHYSX {
 		// Return if the event is in a category or group of categories
 		bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
 
-		// Provides a text representation of the event data for logging
+		// Provides a text representation of the event data for logging and debuging
 		virtual std::string ToString() const { return GetName(); }
 
 	public:

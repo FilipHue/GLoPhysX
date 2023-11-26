@@ -19,7 +19,6 @@
 * @author Secareanu Filip
 */
 
-
 /*
 * The inclusion order of headers is crucial to prevent compilation issues and warnings.
 * core.h includes windows.h, which defines various macros, including APIENTRY.
