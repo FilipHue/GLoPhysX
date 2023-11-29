@@ -1,6 +1,6 @@
 #include "gxpch.h"
 #include "buffer.h"
-#include "glophysx/renderer/primitives/platforms/opengl/opengl_buffer.h"
+#include "glophysx/renderer/objects/platforms/opengl/opengl_buffer.h"
 
 #include "glophysx/renderer/renderer/api/renderer_api.h"
 

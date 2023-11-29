@@ -14,7 +14,7 @@
 * @author Secareanu Filip
 */
 
-#include "glophysx/renderer/primitives/vertex_array.h"
+#include "glophysx/renderer/objects/vertex_array.h"
 
 namespace GLOPHYSX {
 	

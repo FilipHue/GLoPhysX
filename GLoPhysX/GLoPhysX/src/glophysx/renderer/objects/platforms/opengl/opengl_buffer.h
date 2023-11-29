@@ -14,8 +14,8 @@
  * @author Secareanu Filip
  */
 
-#include "glophysx/renderer/primitives/buffer/buffer.h"
-#include "glophysx/renderer/primitives/buffer/buffer_layout.h"
+#include "glophysx/renderer/objects/buffer/buffer.h"
+#include "glophysx/renderer/objects/buffer/buffer_layout.h"
 
 namespace GLOPHYSX {
 

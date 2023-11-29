@@ -14,7 +14,7 @@
 
 #include "glophysx/core/core.h"
 
-#include "glophysx/renderer/primitives/buffer/buffer.h"
+#include "glophysx/renderer/objects/buffer/buffer.h"
 
 namespace GLOPHYSX {
 

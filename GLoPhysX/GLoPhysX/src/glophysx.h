@@ -16,4 +16,7 @@
 #include "glophysx/core/input/keycodes.h"
 #include "glophysx/core/input/mouse_codes.h"
 
+#include "glophysx/renderer/renderer/renderer.h"
+#include "glophysx/renderer/renderer/commands/renderer_commands.h"
+
 #include "glophysx/core/entry_point.h"

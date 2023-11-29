@@ -17,7 +17,7 @@
 #include "glophysx/core/core.h"
 #include "glm.hpp"
 
-#include "glophysx/renderer/primitives/vertex_array.h"
+#include "glophysx/renderer/objects/vertex_array.h"
 
 namespace GLOPHYSX {
 	
