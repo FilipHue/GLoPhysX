@@ -63,8 +63,12 @@ namespace GLOPHYSX {
 	{
 		while (m_running)
 		{
+			float current_time = (float)glfwGetTime();
+			m_dt = current_time - m_previous_time;
+			m_previous_time = current_time;
+
 			for (Layer* layer : m_layers_container) {
-				layer->OnUpdate();
+				layer->OnUpdate(m_dt);
 			}
 
 			m_gui_layer->Begin();

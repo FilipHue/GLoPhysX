@@ -22,7 +22,7 @@ namespace GLOPHYSX {
 
 		void OnAtach() override;
 		void OnDetach() override;
-		void OnUpdate() override {};
+		void OnUpdate(DeltaTime dt) override {};
 		void OnEvent(Event& e) override;
 
 		void OnGUIRender() override;

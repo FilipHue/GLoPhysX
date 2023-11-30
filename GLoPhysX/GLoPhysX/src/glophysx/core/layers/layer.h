@@ -18,6 +18,7 @@
 
 #include "glophysx/core/core.h"
 #include "glophysx/core/events/event.h"
+#include "glophysx/core/time/time.h"
 
 namespace GLOPHYSX {
 
@@ -41,7 +42,7 @@ namespace GLOPHYSX {
 		// Method that defines what happens when you take the layer from the layer stack
 		GLOP_API virtual void OnDetach() {};
 		// Method to update the layer
-		GLOP_API virtual void OnUpdate() {};
+		GLOP_API virtual void OnUpdate(DeltaTime dt) {};
 		// Method for the layer to handle events
 		GLOP_API virtual void OnEvent(Event& event) {};
 

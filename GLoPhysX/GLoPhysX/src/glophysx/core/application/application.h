@@ -28,10 +28,6 @@
 #include "glophysx/core/layers/layers_container.h"
 #include "glophysx/core/gui/gui_layer.h"
 
-#include "glophysx/renderer/objects/buffer/buffer.h"
-#include "glophysx/renderer/objects/buffer/buffer_layout.h"
-#include "glophysx/renderer/objects/vertex_array.h"
-
 /*
 * @brief Forward declaration of the main function
 * 
@@ -80,6 +76,9 @@ namespace GLOPHYSX {
 
 		LayersContainer m_layers_container;
 		GUILayer* m_gui_layer;
+
+		DeltaTime m_dt;
+		float m_previous_time;
 
 	private:
 		static Application* s_instance;

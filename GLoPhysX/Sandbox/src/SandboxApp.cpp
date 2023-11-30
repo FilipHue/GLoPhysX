@@ -52,7 +52,10 @@ public:
 		m_sq_vertex_array->AddIndexBuffer(m_sq_index_buffer);
 	}
 
-	void OnUpdate() override {
+	void OnUpdate(DeltaTime dt) override {
+
+		GLOP_CLIENT_INFO("Delta time is: {0} ({1} ms)", dt.GetDeltaTimeSec(), dt.GetDeltaTimeMil())
+
 		RendererCommands::SetClearColor();
 		RendererCommands::Clear();
 
