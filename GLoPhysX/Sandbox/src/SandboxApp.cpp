@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "glophysx.h"
+
 #include "gtc/type_ptr.hpp"
 
 using namespace GLOPHYSX;
@@ -65,12 +66,14 @@ public:
 				layout(location = 0) in vec3 a_position;
 				layout(location = 1) in vec3 a_color;
 
+				uniform mat4 u_view_projection;
+
 				out vec3 v_color;
 
 				void main()
 				{	
 					v_color = a_color;
-					gl_Position = vec4(a_position, 1.0);
+					gl_Position = u_view_projection * vec4(a_position, 1.0);
 				}
 			)";
 
@@ -92,9 +95,11 @@ public:
 
 				layout(location = 0) in vec3 a_position;
 
+				uniform mat4 u_view_projection;
+
 				void main()
 				{	
-					gl_Position = vec4(a_position, 1.0);
+					gl_Position = u_view_projection * vec4(a_position, 1.0);
 				}
 			)";
 
@@ -102,7 +107,7 @@ public:
 				#version 460 core
 
 				layout(location = 0) out vec4 color;
-				
+
 				uniform vec3 u_color;
 
 				void main()
@@ -114,11 +119,40 @@ public:
 			m_shader_tr = Shader::Create(tr_vertex_src, tr_fragment_src);
 			m_shader_sq = Shader::Create(sq_vertex_src, sq_fragment_src);
 		}
+
+		m_camera = new OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f);
 	}
 
 	void OnUpdate(DeltaTime dt) override {
 
 		//GLOP_CLIENT_INFO("Delta time is: {0} ({1} ms)", dt.GetDeltaTimeSec(), dt.GetDeltaTimeMil())
+
+		if (Input::IsKeyPressed(GLOP_KEY_LEFT)) {
+			m_camera_position.x -= m_camera_speed * dt;
+		}
+
+		if (Input::IsKeyPressed(GLOP_KEY_RIGHT)) {
+			m_camera_position.x += m_camera_speed * dt;
+		}
+
+		if (Input::IsKeyPressed(GLOP_KEY_UP)) {
+			m_camera_position.y += m_camera_speed * dt;
+		}
+
+		if (Input::IsKeyPressed(GLOP_KEY_DOWN)) {
+			m_camera_position.y -= m_camera_speed * dt;
+		}
+
+		if (Input::IsKeyPressed(GLOP_KEY_Q)) {
+			m_camera_rotation -= m_camera_rotation_speed * dt;
+		}
+
+		if (Input::IsKeyPressed(GLOP_KEY_E)) {
+			m_camera_rotation += m_camera_rotation_speed * dt;
+		}
+
+		m_camera->SetPosition(m_camera_position);
+		m_camera->SetRotation(m_camera_rotation);
 
 		RendererCommands::SetClearColor();
 		RendererCommands::Clear();
@@ -127,8 +161,11 @@ public:
 
 		m_shader_sq->Bind();
 		m_shader_sq->SetVec3("u_color", m_sq_color);
+		m_shader_sq->SetMat4("u_view_projection", m_camera->GetVPMatrix());
 		Renderer::Submit(m_shader_sq, m_sq_vertex_array);
-
+		
+		m_shader_tr->Bind();
+		m_shader_tr->SetMat4("u_view_projection", m_camera->GetVPMatrix());
 		Renderer::Submit(m_shader_tr, m_tr_vertex_array);
 
 		Renderer::EndScene();
@@ -156,7 +193,13 @@ private:
 	std::shared_ptr<Shader> m_shader_tr;
 	std::shared_ptr<Shader> m_shader_sq;
 
-	glm::vec3 m_sq_color;
+	glm::vec3 m_sq_color = glm::vec3(0.f);
+
+	OrthographicCamera* m_camera;
+	glm::vec3 m_camera_position = glm::vec3(0.f);
+	float m_camera_rotation = 0.f;
+	float m_camera_speed = 5.f;
+	float m_camera_rotation_speed = 90.f;
 };
 
 class Sandbox : public Application {
