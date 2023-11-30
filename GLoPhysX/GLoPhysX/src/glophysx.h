@@ -19,4 +19,6 @@
 #include "glophysx/renderer/renderer/renderer.h"
 #include "glophysx/renderer/renderer/commands/renderer_commands.h"
 
+#include "glophysx/renderer/shader/shader.h"
+
 #include "glophysx/core/entry_point.h"

@@ -21,6 +21,7 @@
 
 #include "glophysx/core/core.h"
 #include "glophysx/renderer/renderer/commands/renderer_commands.h"
+#include "glophysx/renderer/shader/shader.h"
 
 namespace GLOPHYSX {
 
@@ -37,7 +38,7 @@ namespace GLOPHYSX {
 			static void BeginScene();
 			static void EndScene();
 
-			static void Submit(const std::shared_ptr<VertexArray>& vertex_array, uint32_t index_count = 0);
+			static void Submit(const std::shared_ptr<Shader> shader, const std::shared_ptr<VertexArray>& vertex_array, uint32_t index_count = 0);
 
 			static API GetApi() { return RendererAPI::GetApi(); }
 		};

@@ -65,8 +65,8 @@ namespace GLOPHYSX {
 	}
 	void GUILayer::OnGUIRender()
 	{
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
+		/*static bool show = true;
+		ImGui::ShowDemoWindow(&show);*/
 	}
 	void GUILayer::Begin()
 	{

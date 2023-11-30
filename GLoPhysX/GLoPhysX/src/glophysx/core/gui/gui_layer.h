@@ -3,6 +3,7 @@
 #include "glophysx/core/core.h"
 
 #include "glophysx/core/layers/layer.h"
+#include "imgui.h"
 
 namespace GLOPHYSX {
 

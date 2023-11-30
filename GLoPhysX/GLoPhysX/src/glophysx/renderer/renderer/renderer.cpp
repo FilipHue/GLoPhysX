@@ -27,8 +27,9 @@ namespace GLOPHYSX {
 		{
 		}
 
-		void Renderer::Submit(const std::shared_ptr<VertexArray>& vertex_array, uint32_t index_count)
+		void Renderer::Submit(const std::shared_ptr<Shader> shader, const std::shared_ptr<VertexArray>& vertex_array, uint32_t index_count)
 		{
+			shader->Bind();
 			vertex_array->Bind();
 			RendererCommands::DrawIndexed(vertex_array, index_count);
 		}
