@@ -21,7 +21,7 @@ namespace GLOPHYSX {
 			RendererCommands::SetViewport(0, 0, width, height);
 		}
 
-		void Renderer::BeginScene(const std::shared_ptr<Camera> camera)
+		void Renderer::BeginScene(const Shared<Camera> camera)
 		{
 			m_vp_scene_matrix = camera->GetVPMatrix();
 		}
@@ -30,7 +30,7 @@ namespace GLOPHYSX {
 		{
 		}
 
-		void Renderer::Submit(const std::shared_ptr<Shader> shader, const std::shared_ptr<VertexArray>& vertex_array, const glm::mat4 model_matrix, uint32_t index_count)
+		void Renderer::Submit(const Shared<Shader> shader, const Shared<VertexArray>& vertex_array, const glm::mat4 model_matrix, uint32_t index_count)
 		{
 			shader->Bind();
 			vertex_array->Bind();

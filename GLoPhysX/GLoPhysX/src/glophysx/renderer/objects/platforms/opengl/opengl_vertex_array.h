@@ -29,17 +29,17 @@ namespace GLOPHYSX {
 			virtual void Bind() override;
 			virtual void Unbind() override;
 
-			virtual void AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertex_buffer) override;
-			virtual void AddIndexBuffer(const std::shared_ptr<IndexBuffer>& index_buffer) override;
+			virtual void AddVertexBuffer(const Shared<VertexBuffer>& vertex_buffer) override;
+			virtual void AddIndexBuffer(const Shared<IndexBuffer>& index_buffer) override;
 
-			virtual const std::vector<std::shared_ptr<VertexBuffer>>& GetVertexBuffers() const override { return m_vertex_buffers; }
-			virtual const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const override { return m_index_buffer; }
+			virtual const std::vector<Shared<VertexBuffer>>& GetVertexBuffers() const override { return m_vertex_buffers; }
+			virtual const Shared<IndexBuffer>& GetIndexBuffer() const override { return m_index_buffer; }
 
 		private:
 			uint32_t m_id;
 			uint32_t m_index;
-			std::vector<std::shared_ptr<VertexBuffer>> m_vertex_buffers;
-			std::shared_ptr<IndexBuffer> m_index_buffer;
+			std::vector<Shared<VertexBuffer>> m_vertex_buffers;
+			Shared<IndexBuffer> m_index_buffer;
 		};
 	}
 }

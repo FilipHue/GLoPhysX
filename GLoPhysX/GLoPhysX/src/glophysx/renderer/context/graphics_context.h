@@ -62,7 +62,7 @@ namespace GLOPHYSX {
 			* @param window A pointer or handle to the window associated with the graphics context.
 			* @return A unique pointer to the created graphics context.
 			*/
-			GLOP_API static std::unique_ptr<GraphicsContext> Create(void* window);
+			GLOP_API static Unique<GraphicsContext> Create(void* window);
 		};
 	}
 }

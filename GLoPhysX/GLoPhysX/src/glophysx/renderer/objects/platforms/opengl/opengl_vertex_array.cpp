@@ -24,7 +24,7 @@ namespace GLOPHYSX {
 		{
 			glBindVertexArray(0);
 		}
-		void OpenglVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertex_buffer)
+		void OpenglVertexArray::AddVertexBuffer(const Shared<VertexBuffer>& vertex_buffer)
 		{	
 			if (vertex_buffer->GetLayout().GetElements().size() == 0) {
 				GLOP_CORE_WARN("Please provide the elements for the layout");
@@ -52,7 +52,7 @@ namespace GLOPHYSX {
 
 			m_vertex_buffers.push_back(vertex_buffer);
 		}
-		void OpenglVertexArray::AddIndexBuffer(const std::shared_ptr<IndexBuffer>& index_buffer)
+		void OpenglVertexArray::AddIndexBuffer(const Shared<IndexBuffer>& index_buffer)
 		{
 			glBindVertexArray(m_id);
 			index_buffer->Bind();

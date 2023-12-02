@@ -23,18 +23,18 @@ namespace GLOPHYSX {
 		class VertexArray
 		{
 		public:
-			virtual ~VertexArray() = default;
+			GLOP_API virtual ~VertexArray() = default;
 
-			virtual void Bind() = 0;
-			virtual void Unbind() = 0;
+			GLOP_API virtual void Bind() = 0;
+			GLOP_API virtual void Unbind() = 0;
 
-			virtual void AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertex_buffer) = 0;
-			virtual void AddIndexBuffer(const std::shared_ptr<IndexBuffer>& index_buffer) = 0;
+			GLOP_API virtual void AddVertexBuffer(const Shared<VertexBuffer>& vertex_buffer) = 0;
+			GLOP_API virtual void AddIndexBuffer(const Shared<IndexBuffer>& index_buffer) = 0;
 
-			virtual const std::vector<std::shared_ptr<VertexBuffer>>& GetVertexBuffers() const = 0;
-			virtual const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const = 0;
+			GLOP_API virtual const std::vector<Shared<VertexBuffer>>& GetVertexBuffers() const = 0;
+			GLOP_API virtual const Shared<IndexBuffer>& GetIndexBuffer() const = 0;
 
-			static std::shared_ptr<VertexArray> Create();
+			GLOP_API static Shared<VertexArray> Create();
 		};
 	}
 }

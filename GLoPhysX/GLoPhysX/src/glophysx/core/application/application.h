@@ -72,7 +72,7 @@ namespace GLOPHYSX {
 
 	private:
 		bool m_running;
-		std::unique_ptr<Window> m_window;
+		Unique<Window> m_window;
 
 		LayersContainer m_layers_container;
 		GUILayer* m_gui_layer;

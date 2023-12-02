@@ -7,7 +7,7 @@
 namespace GLOPHYSX {
 
 	namespace RENDERER {
-		std::shared_ptr<VertexArray> VertexArray::Create()
+		Shared<VertexArray> VertexArray::Create()
 		{
 			switch (RendererAPI::GetApi())
 			{
@@ -15,7 +15,7 @@ namespace GLOPHYSX {
 				GLOP_CORE_CRITICAL("Please specify a rendering API");
 				return nullptr;
 			case API::OPENGL:
-				return std::make_shared<OpenglVertexArray>();
+				return MakeShared<OpenglVertexArray>();
 			default:
 				break;
 			}

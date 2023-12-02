@@ -28,7 +28,7 @@ namespace GLOPHYSX {
 			virtual void SetClearColor(const glm::vec4& color) override;
 			virtual void Clear() override;
 
-			virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertex_array, uint32_t index_count = 0) override;
+			virtual void DrawIndexed(const Shared<VertexArray>& vertex_array, uint32_t index_count = 0) override;
 		};
 	}
 }

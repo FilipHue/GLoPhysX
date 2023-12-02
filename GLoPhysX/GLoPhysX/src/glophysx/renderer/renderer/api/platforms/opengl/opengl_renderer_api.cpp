@@ -22,7 +22,7 @@ namespace GLOPHYSX {
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
-		void OpenglRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vertex_array, uint32_t index_count)
+		void OpenglRendererAPI::DrawIndexed(const Shared<VertexArray>& vertex_array, uint32_t index_count)
 		{
 			vertex_array->Bind();
 			uint32_t count = index_count ? index_count : vertex_array->GetIndexBuffer()->GetCount();

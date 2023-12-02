@@ -22,18 +22,18 @@ namespace GLOPHYSX {
 		class RendererCommands
 		{
 		public:
-			static void Init() { s_renderer_api->Init(); }
+			GLOP_API static void Init() { s_renderer_api->Init(); }
 
-			static void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) { s_renderer_api->SetViewport(x, y, width, height); }
-			static void SetClearColor(const glm::vec4& color = glm::vec4(1.f, 0.f, 1.f, 1.f)) { s_renderer_api->SetClearColor(color); }
-			static void Clear() { s_renderer_api->Clear(); }
+			GLOP_API static void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) { s_renderer_api->SetViewport(x, y, width, height); }
+			GLOP_API static void SetClearColor(const glm::vec4& color = glm::vec4(1.f, 0.f, 1.f, 1.f)) { s_renderer_api->SetClearColor(color); }
+			GLOP_API static void Clear() { s_renderer_api->Clear(); }
 
-			static void DrawIndexed(const std::shared_ptr<VertexArray>& vertex_array, uint32_t index_count = 0) { s_renderer_api->DrawIndexed(vertex_array, index_count); }
+			GLOP_API static void DrawIndexed(const Shared<VertexArray>& vertex_array, uint32_t index_count = 0) { s_renderer_api->DrawIndexed(vertex_array, index_count); }
 
 			GLOP_API static void SetApi() { s_renderer_api = RendererAPI::Create(); }
 
 		private:
-			static std::unique_ptr<RendererAPI> s_renderer_api;
+			static Unique<RendererAPI> s_renderer_api;
 		};
 	}
 }

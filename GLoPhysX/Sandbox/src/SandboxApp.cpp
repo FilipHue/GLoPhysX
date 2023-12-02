@@ -122,7 +122,7 @@ public:
 			m_shader_sq = Shader::Create(sq_vertex_src, sq_fragment_src);
 		}
 
-		m_camera = std::make_shared<OrthographicCamera>(-1.6f, 1.6f, -0.9f, 0.9f);
+		m_camera = MakeShared<OrthographicCamera>(-1.6f, 1.6f, -0.9f, 0.9f);
 	}
 
 	void OnUpdate(DeltaTime dt) override {
@@ -199,22 +199,22 @@ public:
 	}
 
 private:
-	std::shared_ptr<VertexArray> m_tr_vertex_array;
-	std::shared_ptr<VertexBuffer> m_tr_vertex_buffer;
-	std::shared_ptr<IndexBuffer> m_tr_index_buffer;
+	Shared<VertexArray> m_tr_vertex_array;
+	Shared<VertexBuffer> m_tr_vertex_buffer;
+	Shared<IndexBuffer> m_tr_index_buffer;
 
-	std::shared_ptr<VertexArray> m_sq_vertex_array;
-	std::shared_ptr<VertexBuffer> m_sq_vertex_buffer;
-	std::shared_ptr<IndexBuffer> m_sq_index_buffer;
+	Shared<VertexArray> m_sq_vertex_array;
+	Shared<VertexBuffer> m_sq_vertex_buffer;
+	Shared<IndexBuffer> m_sq_index_buffer;
 
-	std::shared_ptr<Shader> m_shader_tr;
-	std::shared_ptr<Shader> m_shader_sq;
+	Shared<Shader> m_shader_tr;
+	Shared<Shader> m_shader_sq;
 
 	glm::vec3 m_sq_color = glm::vec3(0.f);
 	glm::vec3 m_sq_position = glm::vec3(0.f);
 	float m_sq_speed = 3.f;
 
-	std::shared_ptr<OrthographicCamera> m_camera;
+	Shared<OrthographicCamera> m_camera;
 	glm::vec3 m_camera_position = glm::vec3(0.f);
 	float m_camera_rotation = 0.f;
 	float m_camera_speed = 5.f;

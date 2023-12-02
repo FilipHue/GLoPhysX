@@ -8,7 +8,7 @@ namespace GLOPHYSX {
 	namespace RENDERER {
 
 		API RendererAPI::s_API = API::NONE;
-		std::unique_ptr<RendererAPI> RendererAPI::Create()
+		Unique<RendererAPI> RendererAPI::Create()
 		{
 			switch (s_API)
 			{
@@ -16,7 +16,7 @@ namespace GLOPHYSX {
 				GLOP_CORE_CRITICAL("Please specify a rendering API")
 				return nullptr;
 			case API::OPENGL:
-				return std::make_unique<OpenglRendererAPI>();
+				return MakeUnique<OpenglRendererAPI>();
 			default:
 				break;
 			}

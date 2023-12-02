@@ -40,13 +40,13 @@ namespace GLOPHYSX {
 			virtual void SetClearColor(const glm::vec4& color) = 0;
 			virtual void Clear() = 0;
 
-			// Method used to draw vertices on the screenm using and index buffer
-			virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertex_array, uint32_t index_count = 0) = 0;
+			// Method used to draw vertices on the screen using and index buffer
+			virtual void DrawIndexed(const Shared<VertexArray>& vertex_array, uint32_t index_count = 0) = 0;
 
 			GLOP_API static API GetApi() { return s_API; }
 			GLOP_API static void SetApi(API graphics_api) { s_API = graphics_api; }
 
-			static std::unique_ptr<RendererAPI> Create();
+			static Unique<RendererAPI> Create();
 
 		private:
 			static API s_API;

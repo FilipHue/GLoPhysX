@@ -123,7 +123,7 @@ namespace GLOPHYSX {
 	private:
 		GLFWmonitor* m_monitor;
 		GLFWwindow* m_window;
-		std::unique_ptr<GraphicsContext> m_contex;
+		Unique<GraphicsContext> m_contex;
 
 		const GLFWvidmode* m_video_mode;
 

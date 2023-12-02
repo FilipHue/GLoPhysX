@@ -5,6 +5,6 @@ namespace GLOPHYSX {
 
 	namespace RENDERER {
 
-		std::unique_ptr<RendererAPI> RendererCommands::s_renderer_api = nullptr;
+		Unique<RendererAPI> RendererCommands::s_renderer_api = nullptr;
 	}
 }

@@ -41,9 +41,9 @@ namespace GLOPHYSX {
 		GLOP_API static void Init();
 		GLOP_API static void Shutdown();
 
-		GLOP_API static std::shared_ptr<spdlog::logger> GetCoreLogger();
+		GLOP_API static std::shared_ptr<spdlog::logger>& GetCoreLogger();
 
-		GLOP_API static std::shared_ptr<spdlog::logger> GetClientLogger();
+		GLOP_API static std::shared_ptr<spdlog::logger>& GetClientLogger();
 
 	private:
 		static std::shared_ptr<spdlog::logger> s_core_logger;

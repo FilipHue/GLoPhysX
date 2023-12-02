@@ -71,9 +71,9 @@ namespace GLOPHYSX {
          * @return A unique_ptr to the created window instance of type WindowType.
          */
         template <typename WindowType>
-        static std::unique_ptr<Window> Create(WindowProperties* wp)
+        static Unique<Window> Create(WindowProperties* wp)
         {
-            return std::make_unique<WindowType>(wp);
+            return MakeUnique<WindowType>(wp);
         }
 
     protected:
