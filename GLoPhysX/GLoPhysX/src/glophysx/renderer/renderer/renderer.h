@@ -22,6 +22,7 @@
 #include "glophysx/core/core.h"
 #include "glophysx/renderer/renderer/commands/renderer_commands.h"
 #include "glophysx/renderer/shader/shader.h"
+#include "glophysx/renderer/camera/camera.h"	
 
 namespace GLOPHYSX {
 
@@ -30,17 +31,20 @@ namespace GLOPHYSX {
 		class Renderer
 		{
 		public:
-			static void Init();
-			static void ShutDown();
+			GLOP_API static void Init();
+			GLOP_API static void ShutDown();
 
-			static void OnWindowResize(uint32_t width, uint32_t height);
+			GLOP_API static void OnWindowResize(uint32_t width, uint32_t height);
 
-			static void BeginScene();
-			static void EndScene();
+			GLOP_API static void BeginScene(const std::shared_ptr<Camera> camera);
+			GLOP_API static void EndScene();
 
-			static void Submit(const std::shared_ptr<Shader> shader, const std::shared_ptr<VertexArray>& vertex_array, uint32_t index_count = 0);
+			GLOP_API static void Submit(const std::shared_ptr<Shader> shader, const std::shared_ptr<VertexArray>& vertex_array, const glm::mat4 model_matrix, uint32_t index_count = 0);
 
-			static API GetApi() { return RendererAPI::GetApi(); }
+			GLOP_API static API GetApi() { return RendererAPI::GetApi(); }
+
+		private:
+			static glm::mat4 m_vp_scene_matrix;
 		};
 	}
 }

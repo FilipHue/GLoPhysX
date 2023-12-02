@@ -67,13 +67,14 @@ public:
 				layout(location = 1) in vec3 a_color;
 
 				uniform mat4 u_view_projection;
+				uniform mat4 u_model;
 
 				out vec3 v_color;
 
 				void main()
 				{	
 					v_color = a_color;
-					gl_Position = u_view_projection * vec4(a_position, 1.0);
+					gl_Position = u_view_projection * u_model * vec4(a_position, 1.0);
 				}
 			)";
 
@@ -96,10 +97,11 @@ public:
 				layout(location = 0) in vec3 a_position;
 
 				uniform mat4 u_view_projection;
+				uniform mat4 u_model;
 
 				void main()
 				{	
-					gl_Position = u_view_projection * vec4(a_position, 1.0);
+					gl_Position = u_view_projection * u_model * vec4(a_position, 1.0);
 				}
 			)";
 
@@ -120,13 +122,10 @@ public:
 			m_shader_sq = Shader::Create(sq_vertex_src, sq_fragment_src);
 		}
 
-		m_camera = new OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f);
+		m_camera = std::make_shared<OrthographicCamera>(-1.6f, 1.6f, -0.9f, 0.9f);
 	}
 
 	void OnUpdate(DeltaTime dt) override {
-
-		//GLOP_CLIENT_INFO("Delta time is: {0} ({1} ms)", dt.GetDeltaTimeSec(), dt.GetDeltaTimeMil())
-
 		if (Input::IsKeyPressed(GLOP_KEY_LEFT)) {
 			m_camera_position.x -= m_camera_speed * dt;
 		}
@@ -151,22 +150,40 @@ public:
 			m_camera_rotation += m_camera_rotation_speed * dt;
 		}
 
+		if (Input::IsKeyPressed(GLOP_KEY_A)) {
+			m_sq_position.x -= m_sq_speed * dt;
+		}
+
+		if (Input::IsKeyPressed(GLOP_KEY_D)) {
+			m_sq_position.x += m_sq_speed * dt;
+		}
+
+		if (Input::IsKeyPressed(GLOP_KEY_S)) {
+			m_sq_position.y -= m_sq_speed * dt;
+		}
+
+		if (Input::IsKeyPressed(GLOP_KEY_W)) {
+			m_sq_position.y += m_sq_speed * dt;
+		}
+
 		m_camera->SetPosition(m_camera_position);
 		m_camera->SetRotation(m_camera_rotation);
 
 		RendererCommands::SetClearColor();
 		RendererCommands::Clear();
 
-		Renderer::BeginScene();
+		Renderer::BeginScene(m_camera);
+
+		glm::mat4 model_matrix = glm::mat4(1.f);
+		model_matrix = glm::translate(model_matrix, m_sq_position);
 
 		m_shader_sq->Bind();
 		m_shader_sq->SetVec3("u_color", m_sq_color);
-		m_shader_sq->SetMat4("u_view_projection", m_camera->GetVPMatrix());
-		Renderer::Submit(m_shader_sq, m_sq_vertex_array);
-		
-		m_shader_tr->Bind();
-		m_shader_tr->SetMat4("u_view_projection", m_camera->GetVPMatrix());
-		Renderer::Submit(m_shader_tr, m_tr_vertex_array);
+		Renderer::Submit(m_shader_sq, m_sq_vertex_array, model_matrix);
+
+		model_matrix = glm::mat4(1.f);
+
+		Renderer::Submit(m_shader_tr, m_tr_vertex_array, model_matrix);
 
 		Renderer::EndScene();
 	}
@@ -194,8 +211,10 @@ private:
 	std::shared_ptr<Shader> m_shader_sq;
 
 	glm::vec3 m_sq_color = glm::vec3(0.f);
+	glm::vec3 m_sq_position = glm::vec3(0.f);
+	float m_sq_speed = 3.f;
 
-	OrthographicCamera* m_camera;
+	std::shared_ptr<OrthographicCamera> m_camera;
 	glm::vec3 m_camera_position = glm::vec3(0.f);
 	float m_camera_rotation = 0.f;
 	float m_camera_speed = 5.f;
