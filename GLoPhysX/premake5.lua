@@ -43,7 +43,10 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/IMGUI/**.cpp",
 
 		"%{prj.name}/dependencies/GLM/**.hpp",
-		"%{prj.name}/dependencies/GLM/**.inl"
+		"%{prj.name}/dependencies/GLM/**.inl",
+
+		"%{prj.name}/dependencies/STB/**.h",
+		"%{prj.name}/dependencies/STB/**.cpp"
 	}
 
 	includedirs
@@ -53,7 +56,8 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/GLFW/include",
 		"%{prj.name}/dependencies/GLAD/include",
 		"%{prj.name}/dependencies/IMGUI",
-		"%{prj.name}/dependencies/GLM"
+		"%{prj.name}/dependencies/GLM",
+		"%{prj.name}/dependencies/STB"
 	}
 
 	libdirs
@@ -141,7 +145,8 @@ project "Sandbox"
 		"GLoPhysX/dependencies/GLFW/include",
 		"GLoPhysX/dependencies/GLAD/include",
 		"GLoPhysX/dependencies/IMGUI",
-		"GLoPhysX/dependencies/GLM"
+		"GLoPhysX/dependencies/GLM",
+		"GLoPhysX/dependencies/STB"
 	}
 
 	-- UNCOMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --

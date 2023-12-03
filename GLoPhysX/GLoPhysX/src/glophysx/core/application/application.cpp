@@ -20,11 +20,13 @@ namespace GLOPHYSX {
 		#ifdef GLOP_PLATFORM_WINDOWS
 			m_window = Window::Create<WWindow>(new WindowProperties());
 			m_window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+			m_running = true;
 			GLOP_CORE_TRACE("===========================================================================")
 		#else
 			#error "GLoPhysX only supports Windows!"
 		#endif
-		m_running = true;
+
+		Renderer::Init();
 
 		m_gui_layer = new GUILayer();
 		PushOverlay(m_gui_layer);

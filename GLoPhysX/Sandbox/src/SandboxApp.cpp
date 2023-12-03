@@ -16,9 +16,9 @@ public:
 		{
 			// Triangle
 			std::vector<float> tr_vertices = {
-				-0.5f, -0.5f, 0.0f, 0.5f, 0.f, 0.f,
-				0.5f, -0.5f, 0.0f, 0.f, 0.5f, 0.f,
-				0.0f, 0.5f, 0.0f, 0.f, 0.f, 0.5f
+				-0.5f,	-0.5f,	0.0f,		0.5f,	0.f,	0.f,
+				0.5f,	-0.5f,	0.0f,		0.f,	0.5f,	0.f,
+				0.0f,	0.5f,	0.0f,		0.f,	0.f,	0.5f
 			};
 			std::vector<unsigned int> tr_indices = { 0, 1, 2 };
 			BufferLayout tr_layout = {
@@ -30,14 +30,15 @@ public:
 
 			// Square
 			std::vector<float> sq_vertices = {
-				-0.75f, -0.75f, 0.0f,
-				0.75f, -0.75f, 0.0f,
-				0.75f, 0.75f, 0.0f,
-				-0.75f, 0.75f, 0.0f
+				-0.75f, -0.75f, 0.0f,	0.f, 0.f,
+				 0.75f, -0.75f, 0.0f,	1.f, 0.f,
+				 0.75f,  0.75f, 0.0f,	1.f, 1.f,
+				-0.75f,  0.75f, 0.0f,	0.f, 1.f
 			};
 			std::vector<unsigned int> sq_indices = { 0, 1, 2, 2, 3, 0 };
 			BufferLayout sq_layout = {
-				{ShaderDataType::Float3, "a_position"}
+				{ShaderDataType::Float3, "a_position"},
+				{ShaderDataType::Float2, "a_texcoord"}
 			};
 
 			m_square = MakeUnique<Mesh>(sq_vertices, sq_indices, sq_layout);
@@ -80,12 +81,16 @@ public:
 				#version 460 core
 
 				layout(location = 0) in vec3 a_position;
+				layout(location = 0) in vec2 a_texcoord;
+
+				out vec2 v_texcoord;
 
 				uniform mat4 u_view_projection;
 				uniform mat4 u_model;
 
 				void main()
 				{	
+					v_texcoord = a_texcoord;
 					gl_Position = u_view_projection * u_model * vec4(a_position, 1.0);
 				}
 			)";
@@ -103,11 +108,34 @@ public:
 				}
 			)";
 
+			std::string sq_tex_fragment_src = R"(
+				#version 460 core
+
+				layout(location = 0) out vec4 color;
+				
+				uniform vec3 u_color;
+				uniform sampler2D u_texture;
+
+				in vec2 v_texcoord;
+
+				void main()
+				{	
+					color = texture(u_texture, v_texcoord) * vec4(u_color, 1.0);
+				}
+			)";
+
 			m_shader_tr = Shader::Create(tr_vertex_src, tr_fragment_src);
 			m_shader_sq = Shader::Create(sq_vertex_src, sq_fragment_src);
+			m_shader_sq_tex = Shader::Create(sq_vertex_src, sq_tex_fragment_src);
 		}
 
 		m_camera = MakeShared<OrthographicCamera>(-1.6f, 1.6f, -0.9f, 0.9f);
+
+		m_texture_1 = Texture2D::Create("assets/textures/checkerboard.png");
+		m_texture_2 = Texture2D::Create("assets/textures/logo.png");
+
+		m_shader_sq_tex->Bind();
+		m_shader_sq_tex->SetInt("u_texture", 0);
 	}
 
 	void OnUpdate(DeltaTime dt) override {
@@ -166,9 +194,12 @@ public:
 		glm::mat4 model_matrix = glm::mat4(1.f);
 		model_matrix = glm::translate(model_matrix, m_sq_position);
 
-		m_shader_sq->Bind();
-		m_shader_sq->SetVec3("u_color", m_sq_color);
-		Renderer::Submit(m_shader_sq, m_square->GetVertexArray(), model_matrix);
+		m_shader_sq_tex->Bind();
+		m_shader_sq_tex->SetVec3("u_color", m_sq_color);
+		m_texture_1->Bind();
+		Renderer::Submit(m_shader_sq_tex, m_square->GetVertexArray(), model_matrix);
+		m_texture_2->Bind();
+		Renderer::Submit(m_shader_sq_tex, m_square->GetVertexArray(), model_matrix);
 
 		model_matrix = glm::mat4(1.f);
 
@@ -193,8 +224,12 @@ private:
 
 	Shared<Shader> m_shader_tr;
 	Shared<Shader> m_shader_sq;
+	Shared<Shader> m_shader_sq_tex;
 
-	glm::vec3 m_sq_color = glm::vec3(0.f);
+	Shared<Texture2D> m_texture_1;
+	Shared<Texture2D> m_texture_2;
+
+	glm::vec3 m_sq_color = glm::vec3(1.f);
 	glm::vec3 m_sq_position = glm::vec3(0.f);
 	float m_sq_speed = 3.f;
 
