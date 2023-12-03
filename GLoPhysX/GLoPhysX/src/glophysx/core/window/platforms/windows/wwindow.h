@@ -58,7 +58,7 @@
 #include "glophysx/core/events/key_events.h"
 #include "glophysx/core/events/mouse_events.h"
 
-#include "glophysx/renderer/context/graphics_context.h"
+#include "glophysx/rendering/context/graphics_context.h"
 
 namespace GLOPHYSX {
 

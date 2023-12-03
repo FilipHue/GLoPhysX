@@ -2,7 +2,7 @@
 
 #include "application.h"
 
-#include "glophysx/renderer/renderer/renderer.h"
+#include "glophysx/rendering/renderer/renderer.h"
 
 namespace GLOPHYSX {
 

@@ -16,11 +16,11 @@
 #include "glophysx/core/input/keycodes.h"
 #include "glophysx/core/input/mouse_codes.h"
 
-#include "glophysx/renderer/renderer/renderer.h"
-#include "glophysx/renderer/renderer/commands/renderer_commands.h"
+#include "glophysx/rendering/renderer/renderer.h"
+#include "glophysx/rendering/renderer/commands/renderer_commands.h"
 
-#include "glophysx/renderer/camera/orthographic/orthographic_camera.h"
+#include "glophysx/rendering/camera/orthographic/orthographic_camera.h"
 
-#include "glophysx/renderer/shader/shader.h"
+#include "glophysx/rendering/shader/shader.h"
 
 #include "glophysx/core/entry_point.h"
