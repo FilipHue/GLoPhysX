@@ -62,7 +62,7 @@
 
 namespace GLOPHYSX {
 
-	using namespace RENDERER;
+	using namespace RENDERING;
 
 	/**
 	* @struct WindowData

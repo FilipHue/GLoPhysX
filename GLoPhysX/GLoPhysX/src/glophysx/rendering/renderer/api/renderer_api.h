@@ -4,7 +4,7 @@
 * @brief Declaration of the RendererAPI class
 * 
 * This header file defines the RendererAPI class, which represents an abstraction for the
-* rendering API of the GLoPhysX renderer. It provides the means to set and get the renderere API
+* rendering API of the GLoPhysX RENDERING. It provides the means to set and get the renderere API
 * used by the system (OpenGL, Vulkan, DirectX3D etc.), as well as an interface for basic
 * functionalities like setting the viewport, clearing the screen and drawing.
 * This file must be subclassed to provide paltform-specific functionality.
@@ -21,7 +21,7 @@
 
 namespace GLOPHYSX {
 	
-	namespace RENDERER {
+	namespace RENDERING {
 
 		// The rendering API types that are suppported
 		enum class API {

@@ -6,7 +6,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		class OrthographicCamera : public Camera
 		{

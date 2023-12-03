@@ -5,7 +5,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		class OpenglShader : public Shader
 		{

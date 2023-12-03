@@ -4,7 +4,7 @@
 * @brief Declaration of VertexArray class.
 *
 * This header file defines the VertexArray class, which represents an abstraction for handling vertex
-* arrays in the GLoPhysX renderer. The VertexArray class provides a common interface for binding,
+* arrays in the GLoPhysX RENDERING. The VertexArray class provides a common interface for binding,
 * unbinding, adding vertex buffers, adding an index buffer, and retrieving associated buffers.
 *
 * @version 1.0
@@ -18,7 +18,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		class VertexArray
 		{

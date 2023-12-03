@@ -5,7 +5,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		API RendererAPI::s_API = API::NONE;
 		Unique<RendererAPI> RendererAPI::Create()

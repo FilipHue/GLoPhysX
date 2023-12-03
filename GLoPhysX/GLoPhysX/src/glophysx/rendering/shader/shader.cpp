@@ -6,7 +6,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		Shared<Shader> Shader::Create(std::string& source_vs, std::string& source_fs)
 		{

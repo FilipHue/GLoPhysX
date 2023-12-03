@@ -5,7 +5,7 @@
 #include "gtc/type_ptr.hpp"
 
 using namespace GLOPHYSX;
-using namespace RENDERER;
+using namespace RENDERING;
 
 class ExampleLayer : public Layer {
 public:

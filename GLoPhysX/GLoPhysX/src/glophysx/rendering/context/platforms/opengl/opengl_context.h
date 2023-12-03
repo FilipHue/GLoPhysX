@@ -23,7 +23,7 @@ struct GLFWwindow;
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		class OpenglContext : public GraphicsContext
 		{

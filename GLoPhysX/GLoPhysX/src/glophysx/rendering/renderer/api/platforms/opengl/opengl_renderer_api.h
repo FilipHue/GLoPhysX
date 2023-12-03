@@ -4,7 +4,7 @@
 * @brief Declaration of the OpenGL rendering API class
 * 
 * This header file contains the platfrom-specific implementation of the GLoPhysX
-* renderer engine, for OpenGL
+* RENDERING engine, for OpenGL
 * 
 * @see RendererAPI
 * 
@@ -18,7 +18,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		class OpenglRendererAPI : public RendererAPI
 		{

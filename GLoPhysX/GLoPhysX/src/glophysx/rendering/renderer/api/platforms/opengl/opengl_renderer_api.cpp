@@ -5,7 +5,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 		void OpenglRendererAPI::Init()
 		{
 			glEnable(GL_DEPTH_TEST);

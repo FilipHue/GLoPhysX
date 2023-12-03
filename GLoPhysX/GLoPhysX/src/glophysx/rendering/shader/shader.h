@@ -6,7 +6,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		enum ShaderType {
 			NONE,

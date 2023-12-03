@@ -5,7 +5,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		Unique<GraphicsContext> GraphicsContext::Create(void* window)
 		{

@@ -4,7 +4,7 @@
 * @brief Declaration of VertexBuffer and IndexBuffer classes.
 *
 * This header file defines the VertexBuffer and IndexBuffer classes, which represent the abstraction
-* for handling vertex and index buffers in the GLoPhysX renderer. These classes provide interfaces for
+* for handling vertex and index buffers in the GLoPhysX RENDERING. These classes provide interfaces for
 * binding, unbinding, setting layouts, and creating buffers.
 *
 * @version 1.0
@@ -17,7 +17,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		class VertexBuffer {
 		public:

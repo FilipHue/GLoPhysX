@@ -5,7 +5,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		OpenglVertexBuffer::OpenglVertexBuffer(float* vertices, uint32_t size)
 		{

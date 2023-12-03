@@ -1,9 +1,9 @@
 #pragma once
 /*
-* @file renderer.h
-* @brief Delcaration of the GLoPhysX renderer
+* @file RENDERING.h
+* @brief Delcaration of the GLoPhysX RENDERING
 * 
-* This file contains the logic and implementation of the GLoPhysX renderer.
+* This file contains the logic and implementation of the GLoPhysX RENDERING.
 * It handles the intialization and shuttingdown of the render engine,
 * submitting data to be rendered and calls for begining and ending of a scene.
 * 
@@ -26,7 +26,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		class Renderer
 		{

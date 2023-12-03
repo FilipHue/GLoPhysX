@@ -4,7 +4,7 @@
  * @brief Declaration of OpenglVertexBuffer and OpenglIndexBuffer classes.
  *
  * This header file defines the OpenglVertexBuffer and OpenglIndexBuffer classes, which represent the
- * OpenGL implementations for handling vertex and index buffers in the GLoPhysX renderer. These classes
+ * OpenGL implementations for handling vertex and index buffers in the GLoPhysX RENDERING. These classes
  * extend the VertexBuffer and IndexBuffer base classes, providing platform-specific functionality for
  * OpenGL graphics rendering.
  *
@@ -19,7 +19,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		class OpenglVertexBuffer: public VertexBuffer
 		{

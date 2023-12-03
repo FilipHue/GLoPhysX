@@ -6,7 +6,7 @@
 
 namespace GLOPHYSX {
 
-	using namespace RENDERER;
+	using namespace RENDERING;
 
 	Application* Application::s_instance = nullptr;
 

@@ -3,7 +3,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		Unique<RendererAPI> RendererCommands::s_renderer_api = nullptr;
 	}

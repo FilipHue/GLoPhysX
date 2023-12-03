@@ -3,7 +3,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		glm::mat4 Renderer::m_vp_scene_matrix = glm::mat4(1.f);
 

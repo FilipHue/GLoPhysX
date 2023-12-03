@@ -5,7 +5,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 		OpenglVertexArray::OpenglVertexArray()
 		{
 			m_id = 1;

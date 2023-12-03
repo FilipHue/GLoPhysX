@@ -5,7 +5,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float z_near, float z_far)
 		{

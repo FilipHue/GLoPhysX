@@ -6,7 +6,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		std::shared_ptr<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
 		{

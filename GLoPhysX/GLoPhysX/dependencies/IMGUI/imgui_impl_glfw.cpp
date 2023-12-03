@@ -1,5 +1,5 @@
 // dear imgui: Platform Backend for GLFW
-// This needs to be used along with a Renderer (e.g. OpenGL3, Vulkan, WebGPU..)
+// This needs to be used along with a RENDERING (e.g. OpenGL3, Vulkan, WebGPU..)
 // (Info: GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
 // (Requires: GLFW 3.1+. Prefer GLFW 3.3+ or GLFW 3.4+ for full feature support.)
 
@@ -1193,7 +1193,7 @@ static void ImGui_ImplGlfw_SwapBuffers(ImGuiViewport* viewport, void*)
 }
 
 //--------------------------------------------------------------------------------------------------------
-// Vulkan support (the Vulkan renderer needs to call a platform-side support function to create the surface)
+// Vulkan support (the Vulkan RENDERING needs to call a platform-side support function to create the surface)
 //--------------------------------------------------------------------------------------------------------
 
 // Avoid including <vulkan.h> so we can build without it
@@ -1224,7 +1224,7 @@ static int ImGui_ImplGlfw_CreateVkSurface(ImGuiViewport* viewport, ImU64 vk_inst
 
 static void ImGui_ImplGlfw_InitPlatformInterface()
 {
-    // Register platform interface (will be coupled with a renderer interface)
+    // Register platform interface (will be coupled with a RENDERING interface)
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
     platform_io.Platform_CreateWindow = ImGui_ImplGlfw_CreateWindow;

@@ -6,7 +6,7 @@
 * The GraphicsContext class defines an interface for graphics rendering contexts in GLoPhysX. It serves
 * as the base class for specific graphics context implementations, such as OpenGL or DirectX. The interface
 * includes methods for context initialization, buffer swapping, and context destruction.
-* It can be extended with other functionalities, depending on the renderer used.
+* It can be extended with other functionalities, depending on the RENDERING used.
 *
 * @version 1.0
 * @date 2023-10-27
@@ -17,7 +17,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 
 		/**
 		* @class GraphicsContext

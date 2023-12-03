@@ -7,7 +7,7 @@
 
 namespace GLOPHYSX {
 
-	namespace RENDERER {
+	namespace RENDERING {
 		OpenglShader::OpenglShader(std::string& source_vs, std::string& source_fs)
 		{
 			// Vertex shader
