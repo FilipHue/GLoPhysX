@@ -3,7 +3,7 @@
 * @file shader_data_types.h
 * @brief Declaration of ShaderDataType, BufferElement, and BufferLayout classes.
 *
-* This header file defines key components related to shader data types and buffer layouts within the GLoPhysX RENDERING.
+* This header file defines key components related to shader data types and buffer layouts within the GLoPhysX renderer.
 * It introduces the ShaderDataType enum, the BufferElement struct, and the BufferLayout class, providing a comprehensive
 * set of tools for managing data types used in shaders and organizing buffer layouts efficiently.
 *

@@ -4,7 +4,7 @@
 * @brief Declaration of the OpenGL rendering API class
 * 
 * This header file contains the platfrom-specific implementation of the GLoPhysX
-* RENDERING engine, for OpenGL
+* renderer engine, for OpenGL
 * 
 * @see RendererAPI
 * 

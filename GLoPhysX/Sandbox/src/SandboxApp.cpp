@@ -6,6 +6,7 @@
 
 using namespace GLOPHYSX;
 using namespace RENDERING;
+using namespace COMPONENTS;
 
 class ExampleLayer : public Layer {
 public:
@@ -14,48 +15,32 @@ public:
 		// Objects creation
 		{
 			// Triangle
-			m_tr_vertex_array = VertexArray::Create();
-
-			float tr_vertices[18] = {
+			std::vector<float> tr_vertices = {
 				-0.5f, -0.5f, 0.0f, 0.5f, 0.f, 0.f,
 				0.5f, -0.5f, 0.0f, 0.f, 0.5f, 0.f,
 				0.0f, 0.5f, 0.0f, 0.f, 0.f, 0.5f
 			};
-			unsigned int tr_indices[3] = { 0, 1, 2 };
-
-			m_tr_vertex_buffer = VertexBuffer::Create(tr_vertices, sizeof(tr_vertices));
-			m_tr_index_buffer = IndexBuffer::Create(tr_indices, sizeof(tr_indices) / sizeof(uint32_t));
-
+			std::vector<unsigned int> tr_indices = { 0, 1, 2 };
 			BufferLayout tr_layout = {
 				{ShaderDataType::Float3, "a_position"},
 				{ShaderDataType::Float3, "a_color"}
 			};
-			m_tr_vertex_buffer->SetLayout(tr_layout);
 
-			m_tr_vertex_array->AddVertexBuffer(m_tr_vertex_buffer);
-			m_tr_vertex_array->AddIndexBuffer(m_tr_index_buffer);
+			m_triangle = MakeUnique<Mesh>(tr_vertices, tr_indices, tr_layout);
 
 			// Square
-			m_sq_vertex_array = VertexArray::Create();
-
-			float sq_vertices[12] = {
+			std::vector<float> sq_vertices = {
 				-0.75f, -0.75f, 0.0f,
 				0.75f, -0.75f, 0.0f,
 				0.75f, 0.75f, 0.0f,
 				-0.75f, 0.75f, 0.0f
 			};
-			unsigned int sq_indices[6] = { 0, 1, 2, 2, 3, 0 };
-
-			m_sq_vertex_buffer = VertexBuffer::Create(sq_vertices, sizeof(sq_vertices));
-			m_sq_index_buffer = IndexBuffer::Create(sq_indices, sizeof(sq_indices) / sizeof(uint32_t));
-
+			std::vector<unsigned int> sq_indices = { 0, 1, 2, 2, 3, 0 };
 			BufferLayout sq_layout = {
 				{ShaderDataType::Float3, "a_position"}
 			};
-			m_sq_vertex_buffer->SetLayout(sq_layout);
 
-			m_sq_vertex_array->AddVertexBuffer(m_sq_vertex_buffer);
-			m_sq_vertex_array->AddIndexBuffer(m_sq_index_buffer);
+			m_square = MakeUnique<Mesh>(sq_vertices, sq_indices, sq_layout);
 		}
 
 		// Shader creation
@@ -126,44 +111,48 @@ public:
 	}
 
 	void OnUpdate(DeltaTime dt) override {
-		if (Input::IsKeyPressed(GLOP_KEY_LEFT)) {
-			m_camera_position.x -= m_camera_speed * dt;
-		}
 
-		if (Input::IsKeyPressed(GLOP_KEY_RIGHT)) {
-			m_camera_position.x += m_camera_speed * dt;
-		}
+		// Controls
+		{
+			if (Input::IsKeyPressed(GLOP_KEY_LEFT)) {
+				m_camera_position.x -= m_camera_speed * dt;
+			}
 
-		if (Input::IsKeyPressed(GLOP_KEY_UP)) {
-			m_camera_position.y += m_camera_speed * dt;
-		}
+			if (Input::IsKeyPressed(GLOP_KEY_RIGHT)) {
+				m_camera_position.x += m_camera_speed * dt;
+			}
 
-		if (Input::IsKeyPressed(GLOP_KEY_DOWN)) {
-			m_camera_position.y -= m_camera_speed * dt;
-		}
+			if (Input::IsKeyPressed(GLOP_KEY_UP)) {
+				m_camera_position.y += m_camera_speed * dt;
+			}
 
-		if (Input::IsKeyPressed(GLOP_KEY_Q)) {
-			m_camera_rotation -= m_camera_rotation_speed * dt;
-		}
+			if (Input::IsKeyPressed(GLOP_KEY_DOWN)) {
+				m_camera_position.y -= m_camera_speed * dt;
+			}
 
-		if (Input::IsKeyPressed(GLOP_KEY_E)) {
-			m_camera_rotation += m_camera_rotation_speed * dt;
-		}
+			if (Input::IsKeyPressed(GLOP_KEY_Q)) {
+				m_camera_rotation -= m_camera_rotation_speed * dt;
+			}
 
-		if (Input::IsKeyPressed(GLOP_KEY_A)) {
-			m_sq_position.x -= m_sq_speed * dt;
-		}
+			if (Input::IsKeyPressed(GLOP_KEY_E)) {
+				m_camera_rotation += m_camera_rotation_speed * dt;
+			}
 
-		if (Input::IsKeyPressed(GLOP_KEY_D)) {
-			m_sq_position.x += m_sq_speed * dt;
-		}
+			if (Input::IsKeyPressed(GLOP_KEY_A)) {
+				m_sq_position.x -= m_sq_speed * dt;
+			}
 
-		if (Input::IsKeyPressed(GLOP_KEY_S)) {
-			m_sq_position.y -= m_sq_speed * dt;
-		}
+			if (Input::IsKeyPressed(GLOP_KEY_D)) {
+				m_sq_position.x += m_sq_speed * dt;
+			}
 
-		if (Input::IsKeyPressed(GLOP_KEY_W)) {
-			m_sq_position.y += m_sq_speed * dt;
+			if (Input::IsKeyPressed(GLOP_KEY_S)) {
+				m_sq_position.y -= m_sq_speed * dt;
+			}
+
+			if (Input::IsKeyPressed(GLOP_KEY_W)) {
+				m_sq_position.y += m_sq_speed * dt;
+			}
 		}
 
 		m_camera->SetPosition(m_camera_position);
@@ -179,11 +168,11 @@ public:
 
 		m_shader_sq->Bind();
 		m_shader_sq->SetVec3("u_color", m_sq_color);
-		Renderer::Submit(m_shader_sq, m_sq_vertex_array, model_matrix);
+		Renderer::Submit(m_shader_sq, m_square->GetVertexArray(), model_matrix);
 
 		model_matrix = glm::mat4(1.f);
 
-		Renderer::Submit(m_shader_tr, m_tr_vertex_array, model_matrix);
+		Renderer::Submit(m_shader_tr, m_triangle->GetVertexArray(), model_matrix);
 
 		Renderer::EndScene();
 	}
@@ -199,13 +188,8 @@ public:
 	}
 
 private:
-	Shared<VertexArray> m_tr_vertex_array;
-	Shared<VertexBuffer> m_tr_vertex_buffer;
-	Shared<IndexBuffer> m_tr_index_buffer;
-
-	Shared<VertexArray> m_sq_vertex_array;
-	Shared<VertexBuffer> m_sq_vertex_buffer;
-	Shared<IndexBuffer> m_sq_index_buffer;
+	Unique<Mesh> m_triangle;
+	Unique<Mesh> m_square;
 
 	Shared<Shader> m_shader_tr;
 	Shared<Shader> m_shader_sq;

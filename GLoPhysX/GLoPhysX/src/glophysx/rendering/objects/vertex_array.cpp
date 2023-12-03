@@ -7,6 +7,7 @@
 namespace GLOPHYSX {
 
 	namespace RENDERING {
+
 		Shared<VertexArray> VertexArray::Create()
 		{
 			switch (RendererAPI::GetApi())

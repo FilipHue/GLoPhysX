@@ -4,7 +4,7 @@
 * @brief Declaration of OpenglVertexArray class.
 *
 * This header file defines the OpenglVertexArray class, which represents the OpenGL implementation
-* for handling vertex arrays in the GLoPhysX RENDERING. The OpenglVertexArray class provides methods
+* for handling vertex arrays in the GLoPhysX renderer. The OpenglVertexArray class provides methods
 * for binding, unbinding, adding vertex buffers, adding an index buffer, and retrieving associated
 * buffers in an OpenGL vertex array.
 *

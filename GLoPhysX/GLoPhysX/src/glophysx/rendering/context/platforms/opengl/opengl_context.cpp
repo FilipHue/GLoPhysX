@@ -4,6 +4,7 @@
 namespace GLOPHYSX {
 
 	namespace RENDERING {
+
 		OpenglContext::OpenglContext(GLFWwindow* window) : m_window_handle(window)
 		{
 		}
@@ -19,7 +20,7 @@ namespace GLOPHYSX {
 			}
 
 			GLOP_CORE_INFO("	Vendor: {0}", (const char*)glGetString(GL_VENDOR));
-			GLOP_CORE_INFO("	RENDERING: {0}", (const char*)glGetString(GL_RENDERER));
+			GLOP_CORE_INFO("	Renderer: {0}", (const char*)glGetString(GL_RENDERER));
 			GLOP_CORE_INFO("	Version: {0}", (const char*)glGetString(GL_VERSION));
 		}
 		void OpenglContext::SwapBuffers()
