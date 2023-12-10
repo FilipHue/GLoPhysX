@@ -22,6 +22,7 @@
 #include "glophysx/rendering/camera/orthographic/orthographic_camera.h"
 
 #include "glophysx/rendering/shader/shader.h"
+#include "glophysx/rendering/shader/shader_library.h"
 
 #include "glophysx/rendering/objects/texture/texture.h"
 

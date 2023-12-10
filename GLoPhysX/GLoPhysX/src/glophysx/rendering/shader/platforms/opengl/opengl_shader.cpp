@@ -8,88 +8,31 @@
 namespace GLOPHYSX {
 
 	namespace RENDERING {
-
-		OpenglShader::OpenglShader(std::string& source_vs, std::string& source_fs)
+		OpenglShader::OpenglShader(const std::string& file_path)
 		{
-			// Vertex shader
-			GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+			auto last_separator = file_path.find_last_of("/\\");
+			last_separator = last_separator == std::string::npos ? 0 : last_separator + 1;
 
-			const GLchar* source = (const GLchar*)source_vs.c_str();
-			glShaderSource(vertex_shader, 1, &source, 0);
+			auto last_dot = file_path.rfind(".");
+			auto name_size = last_dot == std::string::npos ? file_path.size() - last_separator : last_dot - last_separator;
+			m_name = file_path.substr(last_separator, name_size);
 
-			glCompileShader(vertex_shader);
+			std::string source = ReadShaderSource(file_path);
+			std::unordered_map<ShaderType, std::string> shader_sources = ProcessShaderSource(source);
 
-			GLint compiled = 0;
-			glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &compiled);
-			if (compiled == GL_FALSE) {
-				GLint log_length = 0;
-				glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &log_length);
+			Compile(shader_sources);
+		}
 
-				std::vector<GLchar> info_log(log_length);
-				glGetShaderInfoLog(vertex_shader, log_length, &log_length, &info_log[0]);
+		OpenglShader::OpenglShader(const std::string& name, std::string& source_vs, std::string& source_fs)
+		{
+			m_name = name;
 
-				glDeleteShader(vertex_shader);
+			std::unordered_map<ShaderType, std::string> shader_sources;
 
-				GLOP_CORE_WARN("VERTEX SHADER COMPILATION FAILED\n{0}", info_log.data());
+			shader_sources[VERTEX] = source_vs;
+			shader_sources[FRAGMENT] = source_fs;
 
-				return;
-			}
-
-			// Fragment shader
-			GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-
-			source = (const GLchar*)source_fs.c_str();
-			glShaderSource(fragment_shader, 1, &source, 0);
-
-			glCompileShader(fragment_shader);
-
-			compiled = 0;
-			glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &compiled);
-			if (compiled == GL_FALSE) {
-				GLint log_length = 0;
-				glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &log_length);
-
-				std::vector<GLchar> info_log(log_length);
-				glGetShaderInfoLog(fragment_shader, log_length, &log_length, &info_log[0]);
-
-				glDeleteShader(fragment_shader);
-
-				GLOP_CORE_WARN("FRAGMENT SHADER COMPILATION FAILED\n{0}", info_log.data());
-
-				return;
-			}
-
-			// Linking
-			m_id = glCreateProgram();
-
-			glAttachShader(m_id, vertex_shader);
-			glAttachShader(m_id, fragment_shader);
-
-			glLinkProgram(m_id);
-
-			GLint linked = 0;
-			glGetProgramiv(m_id, GL_LINK_STATUS, (int*) & linked);
-			if (linked == GL_FALSE) {
-				GLint log_length = 0;
-				glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &log_length);
-
-				std::vector<GLchar> info_log(log_length);
-				glGetProgramInfoLog(m_id, log_length, &log_length, &info_log[0]);
-
-				glDeleteProgram(m_id);
-
-				glDeleteShader(vertex_shader);
-				glDeleteShader(fragment_shader);
-
-				GLOP_CORE_WARN("SHADER PROGRAM LINKING FAILED\n{0}", info_log.data());
-
-				return;
-			}
-
-			glDetachShader(m_id, vertex_shader);
-			glDetachShader(m_id, fragment_shader);
-
-			m_types = VERTEX | FRAGMENT;
+			Compile(shader_sources);
 		}
 		OpenglShader::~OpenglShader()
 		{
@@ -105,6 +48,7 @@ namespace GLOPHYSX {
 			glUseProgram(0);
 		}
 
+		// Shader API Commands
 		void OpenglShader::SetBool(const std::string& name, bool value) const
 		{
 			SendUniformBool(name, value);
@@ -154,6 +98,7 @@ namespace GLOPHYSX {
 			SendUniformMat4(name, value);
 		}
 
+		// OpenGL Shader Commands
 		void OpenglShader::SendUniformBool(const std::string& name, bool value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
@@ -213,6 +158,73 @@ namespace GLOPHYSX {
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+		}
+
+		// OpenGL Specific
+		void OpenglShader::Compile(const std::unordered_map<ShaderType, std::string>& shader_sources)
+		{
+			GLuint program = glCreateProgram();
+			std::vector<GLenum> shader_ids;
+			shader_ids.reserve(shader_sources.size());
+
+			for (std::pair<ShaderType, std::string> pair: shader_sources) {
+				GLenum type = GetShaderType(pair.first);
+				GLuint shader = glCreateShader(type);
+
+				const GLchar* source = (const GLchar*)pair.second.c_str();
+				glShaderSource(shader, 1, &source, 0);
+
+				glCompileShader(shader);
+
+				GLint compiled = 0;
+				glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+				if (compiled == GL_FALSE) {
+					GLint log_length = 0;
+					glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
+
+					std::vector<GLchar> info_log(log_length);
+					glGetShaderInfoLog(shader, log_length, &log_length, &info_log[0]);
+
+					glDeleteShader(shader);
+
+					GLOP_CORE_WARN("{0} SHADER COMPILATION FAILED\n{1}", ShaderTypeToString(pair.first), info_log.data());
+
+					return;
+				}
+
+				shader_ids.push_back(shader);
+				type |= ShaderTypeFromString(ShaderTypeToString(pair.first));
+
+				glAttachShader(program, shader);
+			}
+
+			m_id = program;
+
+			glLinkProgram(m_id);
+
+			GLint linked = 0;
+			glGetProgramiv(m_id, GL_LINK_STATUS, (int*)&linked);
+			if (linked == GL_FALSE) {
+				GLint log_length = 0;
+				glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &log_length);
+
+				std::vector<GLchar> info_log(log_length);
+				glGetProgramInfoLog(m_id, log_length, &log_length, &info_log[0]);
+
+				glDeleteProgram(m_id);
+
+				for (GLenum id : shader_ids) {
+					glDeleteShader(id);
+				}
+
+				GLOP_CORE_WARN("SHADER PROGRAM LINKING FAILED\n{0}", info_log.data());
+
+				return;
+			}
+
+			for (GLenum id : shader_ids) {
+				glDetachShader(m_id, id);
+			}
 		}
 	}
 }

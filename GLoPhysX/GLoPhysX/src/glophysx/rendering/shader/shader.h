@@ -19,6 +19,58 @@ namespace GLOPHYSX {
 			HULL = 64 // Direct3D nomenclature
 		};
 
+		static ShaderType ShaderTypeFromString(std::string type) {
+			if (type == "VERTEX") {
+				return VERTEX;
+			}
+			if (type == "GEOMETRY") {
+				return GEOMETRY;
+			}
+			if (type == "TESSELATION") {
+				return TESSELATION;
+			}
+			if (type == "COMPUTE") {
+				return COMPUTE;
+			}
+			if (type == "FRAGMENT") {
+				return FRAGMENT;
+			}
+			if (type == "PIXEL") {
+				return PIXEL;
+			}
+			if (type == "HULL") {
+				return HULL;
+			}
+
+			return NONE;
+		}
+
+		static std::string ShaderTypeToString(ShaderType type) {
+			if (type & VERTEX) {
+				return "VERTEX";
+			}
+			if (type & GEOMETRY) {
+				return "GEOMETRY";
+			}
+			if (type & TESSELATION) {
+				return "TESSELATION";
+			}
+			if (type & COMPUTE) {
+				return "COMPUTE";
+			}
+			if (type & FRAGMENT) {
+				return "FRAGMENT";
+			}
+			if (type & PIXEL) {
+				return "PIXEL";
+			}
+			if (type & HULL) {
+				return "HULL";
+			}
+
+			return "NONE";
+		}
+
 		class Shader
 		{
 		public:
@@ -47,10 +99,17 @@ namespace GLOPHYSX {
 			GLOP_API const int GetType() const { return m_types; }
 			GLOP_API const int HasType(ShaderType type) const { return m_types & type; }
 
-			GLOP_API static Shared<Shader> Create(std::string& source_vs, std::string& source_fs);
+			GLOP_API static Shared<Shader> Create(const std::string& file_path);
+			GLOP_API static Shared<Shader> Create(const std::string& name, std::string& source_vs, std::string& source_fs);
+			GLOP_API std::string GetName() { return m_name; }
+
+		protected:
+			static std::string ReadShaderSource(const std::string& file_path);
+			static std::unordered_map<ShaderType, std::string> ProcessShaderSource(const std::string& source);
 
 		protected:
 			int m_types = NONE;
+			std::string m_name;
 		};
 	}
 }
