@@ -12,6 +12,7 @@ namespace GLOPHYSX {
 		{
 		public:
 			GLOP_API OrthographicCamera(float left, float right, float bottom, float top, float z_near=-1.f, float z_far=1.f);
+			GLOP_API void SetProjection(float left, float right, float bottom, float top);
 
 			GLOP_API void SetPosition(const glm::vec3& position) { m_position = position; RecalculateVPMatrix(); }
 			GLOP_API void SetRotation(const float& rotation) { m_rotation = rotation; RecalculateVPMatrix(); }

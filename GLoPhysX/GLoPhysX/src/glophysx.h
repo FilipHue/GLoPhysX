@@ -20,6 +20,7 @@
 #include "glophysx/rendering/renderer/commands/renderer_commands.h"
 
 #include "glophysx/rendering/camera/orthographic/orthographic_camera.h"
+#include "glophysx/rendering/camera/orthographic/ortographic_camera_controller.h"
 
 #include "glophysx/rendering/shader/shader.h"
 #include "glophysx/rendering/shader/shader_library.h"

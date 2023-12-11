@@ -52,7 +52,7 @@ public:
 			m_shader_library.Load("assets/shaders/texture.glsl");
 		}
 
-		m_camera = MakeShared<OrthographicCamera>(-1.6f, 1.6f, -0.9f, 0.9f);
+		m_camera_controller = MakeShared<OrthographicCameraController>(1280.f / 720.f);
 
 		m_texture_1 = Texture2D::Create("assets/textures/checkerboard.png");
 		m_texture_2 = Texture2D::Create("assets/textures/smileyface.png");
@@ -66,53 +66,28 @@ public:
 		// Controls
 		{
 			if (Input::IsKeyPressed(GLOP_KEY_LEFT)) {
-				m_camera_position.x -= m_camera_speed * dt;
-			}
-
-			if (Input::IsKeyPressed(GLOP_KEY_RIGHT)) {
-				m_camera_position.x += m_camera_speed * dt;
-			}
-
-			if (Input::IsKeyPressed(GLOP_KEY_UP)) {
-				m_camera_position.y += m_camera_speed * dt;
-			}
-
-			if (Input::IsKeyPressed(GLOP_KEY_DOWN)) {
-				m_camera_position.y -= m_camera_speed * dt;
-			}
-
-			if (Input::IsKeyPressed(GLOP_KEY_Q)) {
-				m_camera_rotation -= m_camera_rotation_speed * dt;
-			}
-
-			if (Input::IsKeyPressed(GLOP_KEY_E)) {
-				m_camera_rotation += m_camera_rotation_speed * dt;
-			}
-
-			if (Input::IsKeyPressed(GLOP_KEY_A)) {
 				m_sq_position.x -= m_sq_speed * dt;
 			}
 
-			if (Input::IsKeyPressed(GLOP_KEY_D)) {
+			if (Input::IsKeyPressed(GLOP_KEY_RIGHT)) {
 				m_sq_position.x += m_sq_speed * dt;
 			}
 
-			if (Input::IsKeyPressed(GLOP_KEY_S)) {
+			if (Input::IsKeyPressed(GLOP_KEY_DOWN)) {
 				m_sq_position.y -= m_sq_speed * dt;
 			}
 
-			if (Input::IsKeyPressed(GLOP_KEY_W)) {
+			if (Input::IsKeyPressed(GLOP_KEY_UP)) {
 				m_sq_position.y += m_sq_speed * dt;
 			}
 		}
 
-		m_camera->SetPosition(m_camera_position);
-		m_camera->SetRotation(m_camera_rotation);
+		m_camera_controller->OnUpdate(dt);
 
 		RendererCommands::SetClearColor();
 		RendererCommands::Clear();
 
-		Renderer::BeginScene(m_camera);
+		Renderer::BeginScene(MakeShared<OrthographicCamera>(m_camera_controller->GetCamera()));
 
 		glm::mat4 model_matrix = glm::mat4(1.f);
 		model_matrix = glm::translate(model_matrix, m_sq_position);
@@ -133,7 +108,7 @@ public:
 	}
 
 	void OnEvent(Event& e) override {
-
+		m_camera_controller->OnEvent(e);
 	}
 
 	void OnGUIRender() override {
@@ -158,7 +133,7 @@ private:
 	glm::vec3 m_sq_position = glm::vec3(0.f);
 	float m_sq_speed = 3.f;
 
-	Shared<OrthographicCamera> m_camera;
+	Shared<OrthographicCameraController> m_camera_controller;
 	glm::vec3 m_camera_position = glm::vec3(0.f);
 	float m_camera_rotation = 0.f;
 	float m_camera_speed = 5.f;
