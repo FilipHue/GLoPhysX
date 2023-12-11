@@ -63,6 +63,8 @@ namespace GLOPHYSX {
 		{
 			m_aspect_ration = (float)e.GetWidth() / (float)e.GetHeight();
 
+			m_camera.SetProjection(-m_aspect_ration * m_zoom, m_aspect_ration * m_zoom, -m_zoom, m_zoom);
+
 			return false;
 		}
 	}

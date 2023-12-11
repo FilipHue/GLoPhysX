@@ -20,6 +20,9 @@ namespace GLOPHYSX {
 			void OnUpdate(DeltaTime dt);
 			void OnEvent(Event& e);
 
+			void SetZoom(float zoom) { m_zoom = zoom; }
+			float GetZoom() const { return m_zoom; }
+
 			OrthographicCamera& GetCamera() { return m_camera; }
 			const OrthographicCamera& GetCamera() const { return m_camera; }
 
