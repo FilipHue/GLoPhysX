@@ -117,17 +117,17 @@ public:
 		glm::mat4 model_matrix = glm::mat4(1.f);
 		model_matrix = glm::translate(model_matrix, m_sq_position);
 
-		m_shader_library.Get("texture")->Bind();
-		m_shader_library.Get("texture")->SetVec3("u_color", m_sq_color);
-		m_texture_1->Bind();
 		auto m_shader = m_shader_library.Get("texture");
+		m_shader->Bind();
+		m_shader->SetVec3("u_color", m_sq_color);
+		m_texture_1->Bind();
 		Renderer::Submit(m_shader, m_square->GetVertexArray(), model_matrix);
 		m_texture_2->Bind();
 		Renderer::Submit(m_shader, m_square->GetVertexArray(), model_matrix);
 
 		model_matrix = glm::mat4(1.f);
 
-		Renderer::Submit(m_shader_tr, m_triangle->GetVertexArray(), model_matrix);
+		Renderer::Submit(m_shader_tr, m_triangle, model_matrix);
 
 		Renderer::EndScene();
 	}

@@ -17,6 +17,7 @@ namespace GLOPHYSX {
 				GLOP_API Mesh(std::vector<float>& vertices, std::vector<uint32_t>& indices, BufferLayout& layout);
 
 				GLOP_API const Shared<VertexArray>& GetVertexArray() const { return m_vertex_array; }
+				GLOP_API int GetIndicesCount() { return m_index_buffer->GetCount(); }
 
 			private:
 				Shared<VertexArray> m_vertex_array;

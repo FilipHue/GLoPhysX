@@ -22,11 +22,20 @@
 #include "glophysx/core/core.h"
 #include "glophysx/rendering/renderer/commands/renderer_commands.h"
 #include "glophysx/rendering/shader/shader.h"
-#include "glophysx/rendering/camera/camera.h"	
+#include "glophysx/rendering/camera/camera.h"
+
+#include "glophysx/rendering/components/mesh/mesh.h"
 
 namespace GLOPHYSX {
 
 	namespace RENDERING {
+
+		// Forward declaration of the Mesh class
+		// Namespace COMPOSITION is created after the Renderer class and it cannot be seen until after the mesh file is compiled
+		namespace COMPONENTS {
+			class Mesh;
+		}
+		using namespace COMPONENTS;
 
 		class Renderer
 		{
@@ -39,6 +48,7 @@ namespace GLOPHYSX {
 			GLOP_API static void BeginScene(const Shared<Camera> camera);
 			GLOP_API static void EndScene();
 
+			GLOP_API static void Submit(const Shared<Shader> shader, const Unique<Mesh>& mesh, const glm::mat4 model_matrix);
 			GLOP_API static void Submit(const Shared<Shader> shader, const Shared<VertexArray>& vertex_array, const glm::mat4 model_matrix, uint32_t index_count = 0);
 
 			GLOP_API static API GetApi() { return RendererAPI::GetApi(); }
