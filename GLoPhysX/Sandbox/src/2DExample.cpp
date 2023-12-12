@@ -42,9 +42,9 @@ void Example2D::OnUpdate(DeltaTime dt)
 	{
 		GLOP_PROFILE_SCOPE("Draw commands");
 
-		Renderer2D::DrawQuad({ -1.f, 0.5f }, { 0.7f, 0.3f }, m_square_color);
+		Renderer2D::DrawRotatedQuad({ -1.f, 0.5f }, { 0.7f, 0.3f }, glm::radians(45.f), m_square_color);
 		Renderer2D::DrawQuad({ 0.f, 0.f }, { 0.5f, 0.5f }, m_square_color);
-		Renderer2D::DrawQuad({ 1.f, 0.5f }, { 0.7f, 0.3f }, m_square_color);
+		Renderer2D::DrawRotatedQuad({ 1.f, 0.5f }, { 0.7f, 0.3f }, glm::radians(-45.f), m_square_color);
 
 		Renderer2D::DrawQuad({ 0.f, 0.0f, -0.1f }, { 10.f, 10.f }, m_checkerboard);
 	}

@@ -84,6 +84,7 @@ namespace GLOPHYSX {
 
 			s_data->white_texture->Bind();
 			s_data->shader->SetVec3("u_color", color);
+			s_data->shader->SetFloat("u_tiling_factor", 1.f);
 			s_data->shader->SetMat4("u_model", model_matrix);
 
 			RendererCommands::DrawIndexed(s_data->quad_VA);
@@ -103,6 +104,45 @@ namespace GLOPHYSX {
 
 			texture->Bind();
 			s_data->shader->SetVec3("u_color", glm::vec3(1.f, 1.f, 1.f));
+			s_data->shader->SetFloat("u_tiling_factor", 1.f);
+			s_data->shader->SetMat4("u_model", model_matrix);
+
+			RendererCommands::DrawIndexed(s_data->quad_VA);
+		}
+
+		void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color) {
+			DrawRotatedQuad({ position.x, position.y, 0.f }, size, rotation, color);
+		}
+
+		void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color) {
+			glm::mat4 model_matrix = glm::mat4(1.f);
+
+			model_matrix = glm::translate(model_matrix, position);
+			model_matrix = glm::rotate(model_matrix, rotation, {0.f, 0.f, 1.f});
+			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
+
+			s_data->white_texture->Bind();
+			s_data->shader->SetVec3("u_color", color);
+			s_data->shader->SetFloat("u_tiling_factor", 1.f);
+			s_data->shader->SetMat4("u_model", model_matrix);
+
+			RendererCommands::DrawIndexed(s_data->quad_VA);
+		}
+
+		void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture) {
+			DrawRotatedQuad({ position.x, position.y, 0.f }, size, rotation, texture);
+		}
+
+		void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture) {
+			glm::mat4 model_matrix = glm::mat4(1.f);
+
+			model_matrix = glm::translate(model_matrix, position);
+			model_matrix = glm::rotate(model_matrix, rotation, { 0.f, 0.f, 1.f });
+			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
+
+			texture->Bind();
+			s_data->shader->SetVec3("u_color", glm::vec3(1.f, 1.f, 1.f));
+			s_data->shader->SetFloat("u_tiling_factor", 1.f);
 			s_data->shader->SetMat4("u_model", model_matrix);
 
 			RendererCommands::DrawIndexed(s_data->quad_VA);
