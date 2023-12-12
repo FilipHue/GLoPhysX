@@ -14,7 +14,7 @@ namespace GLOPHYSX {
 	GUILayer::~GUILayer()
 	{
 	}
-	void GUILayer::OnAtach()
+	void GUILayer::OnAttach()
 	{
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();

@@ -28,5 +28,3 @@
 #include "glophysx/rendering/objects/texture/texture.h"
 
 #include "glophysx/rendering/components/mesh/mesh.h"
-
-#include "glophysx/core/entry_point.h"

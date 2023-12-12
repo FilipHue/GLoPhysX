@@ -38,7 +38,7 @@ namespace GLOPHYSX {
 		GLOP_API virtual ~Layer() = default;
 
 		// Method that defines what happens when you first introduce the layer in the layer stack
-		GLOP_API virtual void OnAtach() {};
+		GLOP_API virtual void OnAttach() {};
 		// Method that defines what happens when you take the layer from the layer stack
 		GLOP_API virtual void OnDetach() {};
 		// Method to update the layer

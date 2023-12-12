@@ -52,13 +52,13 @@ namespace GLOPHYSX {
 	void Application::PushLayer(Layer* layer)
 	{
 		m_layers_container.PushLayer(layer);
-		layer->OnAtach();
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
 		m_layers_container.PushOverlay(overlay);
-		overlay->OnAtach();
+		overlay->OnAttach();
 	}
 
 	void Application::Run()

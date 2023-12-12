@@ -21,7 +21,7 @@ namespace GLOPHYSX {
 		GUILayer();
 		~GUILayer();
 
-		void OnAtach() override;
+		void OnAttach() override;
 		void OnDetach() override;
 		void OnUpdate(DeltaTime dt) override {};
 		void OnEvent(Event& e) override;
