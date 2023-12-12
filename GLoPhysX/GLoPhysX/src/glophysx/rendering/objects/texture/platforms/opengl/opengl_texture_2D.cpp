@@ -38,14 +38,39 @@ namespace GLOPHYSX {
 			glTextureParameteri(m_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTextureParameteri(m_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+			glTextureParameteri(m_id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTextureParameteri(m_id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 			glTextureSubImage2D(m_id, 0, x_offset, y_offset, m_width, m_height, pixel_format[channels], GL_UNSIGNED_BYTE, data);
 
 			stbi_image_free(data);
 		}
+
+		OpenglTexture2D::OpenglTexture2D(uint32_t width, uint32_t height)
+		{
+			m_width = width;
+			m_height = height;
+
+			glCreateTextures(GL_TEXTURE_2D, 1, &m_id);
+			glTextureStorage2D(m_id, 1, GL_RGBA8, m_width, m_height);
+
+			glTextureParameteri(m_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTextureParameteri(m_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+			glTextureParameteri(m_id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTextureParameteri(m_id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		}
+
 		OpenglTexture2D::~OpenglTexture2D()
 		{
 			glDeleteTextures(1, &m_id);
 		}
+
+		void OpenglTexture2D::SetData(void* data, uint32_t size)
+		{
+			glTextureSubImage2D(m_id, 0, 0, 0, m_width, m_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		}
+
 		void OpenglTexture2D::Bind(uint32_t slot) const
 		{
 			glBindTextureUnit(slot, m_id);

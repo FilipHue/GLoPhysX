@@ -17,6 +17,7 @@
 #include "glophysx/core/input/mouse_codes.h"
 
 #include "glophysx/rendering/renderer/renderer.h"
+#include "glophysx/rendering/renderer/2d/renderer_2d.h"
 #include "glophysx/rendering/renderer/commands/renderer_commands.h"
 
 #include "glophysx/rendering/camera/orthographic/orthographic_camera.h"

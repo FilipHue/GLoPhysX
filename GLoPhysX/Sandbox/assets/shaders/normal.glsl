@@ -1,4 +1,4 @@
-type VERTEX
+#type VERTEX
 #version 460 core
 
 layout(location = 0) in vec3 a_position;
@@ -21,8 +21,11 @@ void main()
 layout(location = 0) out vec4 color;
 
 uniform vec3 u_color;
+uniform sampler2D u_texture;
+
+in vec2 v_texcoord;
 
 void main()
 {
-	color = vec4(u_color, 1.0);
+	color = texture(u_texture, v_texcoord) * vec4(u_color, 1.f);
 }

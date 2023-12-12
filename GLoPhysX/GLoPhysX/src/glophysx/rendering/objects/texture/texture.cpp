@@ -25,5 +25,21 @@ namespace GLOPHYSX {
 			GLOP_CORE_CRITICAL("Unknown rendering API");
 			return nullptr;
 		}
+		Shared<Texture2D> Texture2D::Create(uint32_t width, uint32_t height)
+		{
+			switch (RendererAPI::GetApi())
+			{
+			case API::NONE:
+				GLOP_CORE_CRITICAL("Please specify a rendering API");
+				return nullptr;
+			case API::OPENGL:
+				return MakeShared<OpenglTexture2D>(width, height);
+			default:
+				break;
+			}
+
+			GLOP_CORE_CRITICAL("Unknown rendering API");
+			return nullptr;
+		}
 	}
 }

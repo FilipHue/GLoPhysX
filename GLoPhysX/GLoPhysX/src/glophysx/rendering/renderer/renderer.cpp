@@ -1,6 +1,8 @@
 #include "gxpch.h"
 #include "renderer.h"
 
+#include "2d/renderer_2d.h"
+
 namespace GLOPHYSX {
 
 	namespace RENDERING {
@@ -10,6 +12,7 @@ namespace GLOPHYSX {
 		void Renderer::Init()
 		{
 			RendererCommands::Init();
+			Renderer2D::Init();
 		}
 
 		void Renderer::ShutDown()
