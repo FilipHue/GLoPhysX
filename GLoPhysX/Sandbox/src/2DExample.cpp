@@ -11,22 +11,6 @@ Example2D::Example2D() : Layer("Example2D")
 
 void Example2D::OnAttach()
 {	
-	/*std::vector<float> sq_vertices = {
-				-0.75f, -0.75f, 0.0f,	0.f, 0.f,
-				 0.75f, -0.75f, 0.0f,	1.f, 0.f,
-				 0.75f,  0.75f, 0.0f,	1.f, 1.f,
-				-0.75f,  0.75f, 0.0f,	0.f, 1.f
-	};
-	std::vector<unsigned int> sq_indices = { 0, 1, 2, 2, 3, 0 };
-	BufferLayout sq_layout = {
-		{ShaderDataType::Float3, "a_position"},
-		{ShaderDataType::Float2, "a_texcoord"}
-	};
-
-	m_square = MakeUnique<Mesh>(sq_vertices, sq_indices, sq_layout);
-
-	m_shader_library->Load("assets/shaders/texture_color.glsl");
-	m_shader_library->Load("assets/shaders/texture.glsl");*/
 }
 
 void Example2D::OnDetach()
@@ -35,20 +19,41 @@ void Example2D::OnDetach()
 
 void Example2D::OnUpdate(DeltaTime dt)
 {
-	m_camera_controller->OnUpdate(dt);
+	GLOP_PROFILE_FUNCTION();
 
-	RendererCommands::SetClearColor();
-	RendererCommands::Clear();
+	{
+		GLOP_PROFILE_SCOPE("Camera update");
+		m_camera_controller->OnUpdate(dt);
+	}
 
-	Renderer2D::BeginScene(m_camera_controller->GetCamera());
+	{
+		GLOP_PROFILE_SCOPE("Renderer commands");
 
-	Renderer2D::DrawQuad({ -1.f, 0.5f }, { 0.7f, 0.3f }, m_square_color);
-	Renderer2D::DrawQuad({ 0.f, 0.f }, { 0.5f, 0.5f }, m_square_color);
-	Renderer2D::DrawQuad({ 1.f, 0.5f }, { 0.7f, 0.3f }, m_square_color);
+		RendererCommands::SetClearColor();
+		RendererCommands::Clear();
+	}
 
-	Renderer2D::DrawQuad({ 0.f, 0.0f, -0.1f }, { 10.f, 10.f }, m_checkerboard);
+	{
+		GLOP_PROFILE_SCOPE("Begin Scene");
 
-	Renderer2D::EndScene();
+		Renderer2D::BeginScene(m_camera_controller->GetCamera());
+	}
+
+	{
+		GLOP_PROFILE_SCOPE("Draw commands");
+
+		Renderer2D::DrawQuad({ -1.f, 0.5f }, { 0.7f, 0.3f }, m_square_color);
+		Renderer2D::DrawQuad({ 0.f, 0.f }, { 0.5f, 0.5f }, m_square_color);
+		Renderer2D::DrawQuad({ 1.f, 0.5f }, { 0.7f, 0.3f }, m_square_color);
+
+		Renderer2D::DrawQuad({ 0.f, 0.0f, -0.1f }, { 10.f, 10.f }, m_checkerboard);
+	}
+
+	{
+		GLOP_PROFILE_SCOPE("End Scene");
+
+		Renderer2D::EndScene();
+	}
 }
 
 void Example2D::OnGUIRender()

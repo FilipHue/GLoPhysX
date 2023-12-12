@@ -29,3 +29,7 @@
 #include "glophysx/rendering/objects/texture/texture.h"
 
 #include "glophysx/rendering/components/mesh/mesh.h"
+
+#ifdef GLOP_DEBUG
+	#include "glophysx/debug/debug.h"
+#endif

@@ -18,6 +18,10 @@
 #include <algorithm>
 #include <utility>
 
+#include <thread>
+
+#include <chrono>
+
 #if defined(GLOP_PLATFORM_WINDOWS)
 	#include <Windows.h>
 #endif
