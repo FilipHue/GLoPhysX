@@ -4,6 +4,10 @@
 #include "glophysx/core/input/input.h"
 #include "glophysx/core/input/keycodes.h"
 
+#ifdef GLOP_DEBUG
+	#include "glophysx/debug/debug.h"
+#endif
+
 namespace GLOPHYSX {
 
 	namespace RENDERING {
@@ -16,6 +20,8 @@ namespace GLOPHYSX {
 
 		void OrthographicCameraController::OnUpdate(DeltaTime dt)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			if (Input::IsKeyPressed(GLOP_KEY_A)) {
 				m_camera_position.x -= m_camera_translation_speed * m_zoom * dt;
 			}

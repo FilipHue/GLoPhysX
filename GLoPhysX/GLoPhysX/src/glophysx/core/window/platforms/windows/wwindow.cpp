@@ -1,6 +1,10 @@
 #include "gxpch.h"
 #include "wwindow.h"
 
+#ifdef GLOP_DEBUG
+	#include "glophysx/debug/debug.h"
+#endif
+
 namespace GLOPHYSX {
 
 	static uint8_t s_window_count = 0;
@@ -12,17 +16,23 @@ namespace GLOPHYSX {
 
 	WWindow::WWindow(WindowProperties* wp)
 	{
+		GLOP_PROFILE_FUNCTION();
+
 		Initialize(wp);
 	}
 
 	WWindow::~WWindow()
 	{
+		GLOP_PROFILE_FUNCTION();
+
 		GLOP_CORE_INFO("Destroying window...");
 		Destroy();
 	}
 
 	void WWindow::Initialize(WindowProperties* wp)
 	{
+		GLOP_PROFILE_FUNCTION();
+
 		int succesful_init = glfwInit();
 		if (succesful_init) {
 			GLOP_CORE_INFO("Succesfully initialized glfw library");
@@ -71,12 +81,16 @@ namespace GLOPHYSX {
 
 	void WWindow::Update()
 	{
+		GLOP_PROFILE_FUNCTION();
+
 		glfwPollEvents();
 		m_contex->SwapBuffers();
 	}
 
 	void WWindow::Destroy()
 	{
+		GLOP_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(m_window);
 		s_window_count--;
 

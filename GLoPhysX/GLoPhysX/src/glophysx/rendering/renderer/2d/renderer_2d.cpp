@@ -8,6 +8,10 @@
 
 #include "gtc/matrix_transform.hpp"
 
+#ifdef GLOP_DEBUG
+	#include "glophysx/debug/debug.h"
+#endif
+
 namespace GLOPHYSX {
 
 	namespace RENDERING {
@@ -22,6 +26,8 @@ namespace GLOPHYSX {
 
 		void Renderer2D::Init()
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			s_data = new Renderer2DData();
 
 			s_data->quad_VA = VertexArray::Create();
@@ -57,26 +63,35 @@ namespace GLOPHYSX {
 
 		void Renderer2D::Shutdown()
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			delete s_data;
 		}
 
 		void Renderer2D::BeginScene(const OrthographicCamera& camera)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			s_data->shader->Bind();
 			s_data->shader->SetMat4("u_view_projection", camera.GetVPMatrix());
 		}
 
 		void Renderer2D::EndScene()
 		{
+			GLOP_PROFILE_FUNCTION();
 		}
 
 		void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			DrawQuad({ position.x, position.y, 0.f }, size, color);
 		}
 
 		void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glm::mat4 model_matrix = glm::mat4(1.f);
 
 			model_matrix = glm::translate(model_matrix, position);
@@ -92,11 +107,15 @@ namespace GLOPHYSX {
 
 		void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Shared<Texture2D>& texture)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			DrawQuad({ position.x, position.y, 0.f }, size, texture);
 		}
 
 		void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Shared<Texture2D>& texture)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glm::mat4 model_matrix = glm::mat4(1.f);
 
 			model_matrix = glm::translate(model_matrix, position);
@@ -110,11 +129,17 @@ namespace GLOPHYSX {
 			RendererCommands::DrawIndexed(s_data->quad_VA);
 		}
 
-		void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color) {
+		void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
+		{
+			GLOP_PROFILE_FUNCTION();
+
 			DrawRotatedQuad({ position.x, position.y, 0.f }, size, rotation, color);
 		}
 
-		void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color) {
+		void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color)
+		{
+			GLOP_PROFILE_FUNCTION();
+
 			glm::mat4 model_matrix = glm::mat4(1.f);
 
 			model_matrix = glm::translate(model_matrix, position);
@@ -129,11 +154,17 @@ namespace GLOPHYSX {
 			RendererCommands::DrawIndexed(s_data->quad_VA);
 		}
 
-		void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture) {
+		void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture)
+		{
+			GLOP_PROFILE_FUNCTION();
+
 			DrawRotatedQuad({ position.x, position.y, 0.f }, size, rotation, texture);
 		}
 
-		void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture) {
+		void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture)
+		{
+			GLOP_PROFILE_FUNCTION();
+
 			glm::mat4 model_matrix = glm::mat4(1.f);
 
 			model_matrix = glm::translate(model_matrix, position);

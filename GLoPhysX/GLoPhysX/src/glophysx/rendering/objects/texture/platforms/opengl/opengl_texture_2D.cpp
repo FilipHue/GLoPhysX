@@ -4,6 +4,10 @@
 #include "glad/glad.h"
 #include "stb_image.h"
 
+#ifdef GLOP_DEBUG
+	#include "glophysx/debug/debug.h"
+#endif
+
 namespace GLOPHYSX {
 
 	namespace RENDERING {
@@ -18,6 +22,8 @@ namespace GLOPHYSX {
 
 		OpenglTexture2D::OpenglTexture2D(const std::string& path, uint32_t x_offset, uint32_t y_offset)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			m_path = path;
 
 			stbi_set_flip_vertically_on_load(1);
@@ -48,6 +54,8 @@ namespace GLOPHYSX {
 
 		OpenglTexture2D::OpenglTexture2D(uint32_t width, uint32_t height)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			m_width = width;
 			m_height = height;
 
@@ -63,16 +71,22 @@ namespace GLOPHYSX {
 
 		OpenglTexture2D::~OpenglTexture2D()
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glDeleteTextures(1, &m_id);
 		}
 
 		void OpenglTexture2D::SetData(void* data, uint32_t size)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glTextureSubImage2D(m_id, 0, 0, 0, m_width, m_height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		}
 
 		void OpenglTexture2D::Bind(uint32_t slot) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glBindTextureUnit(slot, m_id);
 		}
 	}

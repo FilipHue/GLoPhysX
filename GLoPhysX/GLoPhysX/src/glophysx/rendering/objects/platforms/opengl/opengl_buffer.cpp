@@ -3,12 +3,18 @@
 
 #include "glad/glad.h"
 
+#ifdef GLOP_DEBUG
+	#include "glophysx/debug/debug.h"
+#endif
+
 namespace GLOPHYSX {
 
 	namespace RENDERING {
 
 		OpenglVertexBuffer::OpenglVertexBuffer(float* vertices, uint32_t size)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glGenBuffers(1, &m_buffer_id);
 			glBindBuffer(GL_ARRAY_BUFFER, m_buffer_id);
 
@@ -16,19 +22,27 @@ namespace GLOPHYSX {
 		}
 		OpenglVertexBuffer::~OpenglVertexBuffer()
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glDeleteBuffers(1, &m_buffer_id);
 		}
 		void OpenglVertexBuffer::Bind() const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glBindBuffer(GL_ARRAY_BUFFER, m_buffer_id);
 		}
 		void OpenglVertexBuffer::Unbind() const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 
 		OpenglIndexBuffer::OpenglIndexBuffer(uint32_t* indices, uint32_t size) : m_count(size)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glGenBuffers(1, &m_buffer_id);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer_id);
 
@@ -36,14 +50,20 @@ namespace GLOPHYSX {
 		}
 		OpenglIndexBuffer::~OpenglIndexBuffer()
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glDeleteBuffers(1, &m_buffer_id);
 		}
 		void OpenglIndexBuffer::Bind() const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer_id);
 		}
 		void OpenglIndexBuffer::Unbind() const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 	}

@@ -1,6 +1,10 @@
 #include "gxpch.h"
 #include "opengl_context.h"
 
+#ifdef GLOP_DEBUG
+	#include "glophysx/debug/debug.h"
+#endif
+
 namespace GLOPHYSX {
 
 	namespace RENDERING {
@@ -10,6 +14,8 @@ namespace GLOPHYSX {
 		}
 		void OpenglContext::Init()
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			GLOP_CORE_INFO("Intializing OpenGL context:");
 
 			glfwMakeContextCurrent(m_window_handle);
@@ -25,6 +31,8 @@ namespace GLOPHYSX {
 		}
 		void OpenglContext::SwapBuffers()
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glfwSwapBuffers(m_window_handle);
 		}
 	}

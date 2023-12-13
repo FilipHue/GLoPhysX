@@ -2,14 +2,20 @@
 #include "opengl_shader.h"
 
 #include "glad/glad.h"
-
 #include "gtc/type_ptr.hpp"
+
+#ifdef GLOP_DEBUG
+	#include "glophysx/debug/debug.h"
+#endif
 
 namespace GLOPHYSX {
 
 	namespace RENDERING {
+
 		OpenglShader::OpenglShader(const std::string& file_path)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			auto last_separator = file_path.find_last_of("/\\");
 			last_separator = last_separator == std::string::npos ? 0 : last_separator + 1;
 
@@ -25,6 +31,8 @@ namespace GLOPHYSX {
 
 		OpenglShader::OpenglShader(const std::string& name, std::string& source_vs, std::string& source_fs)
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			m_name = name;
 
 			std::unordered_map<ShaderType, std::string> shader_sources;
@@ -34,67 +42,99 @@ namespace GLOPHYSX {
 
 			Compile(shader_sources);
 		}
+
 		OpenglShader::~OpenglShader()
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glDeleteProgram(m_id);
 		}
 
 		void OpenglShader::Bind() const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glUseProgram(m_id);
 		}
+
 		void OpenglShader::Unbind() const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			glUseProgram(0);
 		}
 
 		// Shader API Commands
 		void OpenglShader::SetBool(const std::string& name, bool value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformBool(name, value);
 		}
 		void OpenglShader::SetInt(const std::string& name, int value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformInt(name, value);
 		}
 		void OpenglShader::SetIVec2(const std::string& name, const glm::ivec2& value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformIVec2(name, value);
 		}
 		void OpenglShader::SetIVec3(const std::string& name, const glm::ivec3& value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformIVec3(name, value);
 		}
 		void OpenglShader::SetIVec4(const std::string& name, const glm::ivec4& value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformIVec4(name, value);
 		}
 		void OpenglShader::SetFloat(const std::string& name, float value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformFloat(name, value);
 		}
 		void OpenglShader::SetVec2(const std::string& name, const glm::vec2& value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformVec2(name, value);
 		}
 		void OpenglShader::SetVec3(const std::string& name, const glm::vec3& value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformVec3(name, value);
 		}
 		void OpenglShader::SetVec4(const std::string& name, const glm::vec4& value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformVec4(name, value);
 		}
 		void OpenglShader::SetMat2(const std::string& name, const glm::mat2& value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformMat2(name, value);
 		}
 		void OpenglShader::SetMat3(const std::string& name, const glm::mat3& value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformMat3(name, value);
 		}
 		void OpenglShader::SetMat4(const std::string& name, const glm::mat4& value) const
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			SendUniformMat4(name, value);
 		}
 

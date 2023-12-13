@@ -4,6 +4,10 @@
 
 #include "glophysx/rendering/renderer/renderer.h"
 
+#ifdef GLOP_DEBUG
+	#include "glophysx/debug/debug.h"
+#endif
+
 namespace GLOPHYSX {
 
 	using namespace RENDERING;
@@ -12,6 +16,8 @@ namespace GLOPHYSX {
 
 	Application::Application()
 	{
+		GLOP_PROFILE_FUNCTION();
+
 		RendererAPI::SetApi(API::OPENGL);
 		RendererCommands::SetApi();
 
@@ -34,6 +40,9 @@ namespace GLOPHYSX {
 
 	Application::~Application()
 	{
+		GLOP_PROFILE_FUNCTION();
+
+		Renderer::ShutDown();
 	}
 
 	void Application::OnEvent(Event& e)
@@ -51,31 +60,45 @@ namespace GLOPHYSX {
 
 	void Application::PushLayer(Layer* layer)
 	{
+		GLOP_PROFILE_FUNCTION()
+
 		m_layers_container.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
+		GLOP_PROFILE_FUNCTION()
+
 		m_layers_container.PushOverlay(overlay);
 		overlay->OnAttach();
 	}
 
 	void Application::Run()
 	{
+		GLOP_PROFILE_FUNCTION()
+
 		while (m_running)
 		{
 			float current_time = (float)glfwGetTime();
 			m_dt = current_time - m_previous_time;
 			m_previous_time = current_time;
 
-			for (Layer* layer : m_layers_container) {
-				layer->OnUpdate(m_dt);
+			{
+				GLOP_PROFILE_SCOPE("Layer stack: On Update")
+
+				for (Layer* layer : m_layers_container) {
+					layer->OnUpdate(m_dt);
+				}
 			}
 
 			m_gui_layer->Begin();
-			for (Layer* layer : m_layers_container) {
-				layer->OnGUIRender();
+			{
+				GLOP_PROFILE_SCOPE("Layer stack: On GUI Update")
+
+				for (Layer* layer : m_layers_container) {
+					layer->OnGUIRender();
+				}
 			}
 			m_gui_layer->End();
 
@@ -94,6 +117,8 @@ namespace GLOPHYSX {
 	}
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
+		GLOP_PROFILE_FUNCTION()
+
 		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
 		return false;

@@ -11,10 +11,12 @@ Example2D::Example2D() : Layer("Example2D")
 
 void Example2D::OnAttach()
 {	
+	GLOP_PROFILE_FUNCTION();
 }
 
 void Example2D::OnDetach()
 {
+	GLOP_PROFILE_FUNCTION();
 }
 
 void Example2D::OnUpdate(DeltaTime dt)
@@ -34,23 +36,15 @@ void Example2D::OnUpdate(DeltaTime dt)
 	}
 
 	{
-		GLOP_PROFILE_SCOPE("Begin Scene");
+		GLOP_PROFILE_SCOPE("Render draw");
 
 		Renderer2D::BeginScene(m_camera_controller->GetCamera());
-	}
-
-	{
-		GLOP_PROFILE_SCOPE("Draw commands");
 
 		Renderer2D::DrawRotatedQuad({ -1.f, 0.5f }, { 0.7f, 0.3f }, glm::radians(45.f), m_square_color);
 		Renderer2D::DrawQuad({ 0.f, 0.f }, { 0.5f, 0.5f }, m_square_color);
 		Renderer2D::DrawRotatedQuad({ 1.f, 0.5f }, { 0.7f, 0.3f }, glm::radians(-45.f), m_square_color);
 
 		Renderer2D::DrawQuad({ 0.f, 0.0f, -0.1f }, { 10.f, 10.f }, m_checkerboard);
-	}
-
-	{
-		GLOP_PROFILE_SCOPE("End Scene");
 
 		Renderer2D::EndScene();
 	}
@@ -58,6 +52,8 @@ void Example2D::OnUpdate(DeltaTime dt)
 
 void Example2D::OnGUIRender()
 {
+	GLOP_PROFILE_FUNCTION();
+
 	ImGui::Begin("Settings");
 	ImGui::ColorEdit3("Square Color", glm::value_ptr(m_square_color));
 	ImGui::End();
