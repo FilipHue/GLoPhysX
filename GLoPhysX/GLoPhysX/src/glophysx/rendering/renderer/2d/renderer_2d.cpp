@@ -33,10 +33,10 @@ namespace GLOPHYSX {
 			s_data->quad_VA = VertexArray::Create();
 
 			std::vector<float> sq_vertices = {
-				   -0.5f, -0.5f, 0.0f,	0.0f, 0.0f,
-					0.5f, -0.5f, 0.0f,	1.0f, 0.0f,
-					0.5f,  0.5f, 0.0f,	1.0f, 1.0f,
-				   -0.5f,  0.5f, 0.0f,	0.0f, 1.0f
+				     0.f,  0.f,  0.0f,	0.0f, 0.0f,
+					 1.f,  0.f,  0.0f,	1.0f, 0.0f,
+					 1.f,  1.f,  0.0f,	1.0f, 1.0f,
+				     0.f,  1.f,  0.0f,	0.0f, 1.0f
 			};
 			std::vector<unsigned int> sq_indices = { 0, 1, 2, 2, 3, 0 };
 			BufferLayout sq_layout = {

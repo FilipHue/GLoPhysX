@@ -9,6 +9,7 @@ namespace GLOPHYSX {
 
 		class Camera {
 		public:
+			Camera() = default;
 			virtual ~Camera() = default;
 
 			GLOP_API const glm::mat4& GetProjectionMatrix() const { return m_projection_matrix; }

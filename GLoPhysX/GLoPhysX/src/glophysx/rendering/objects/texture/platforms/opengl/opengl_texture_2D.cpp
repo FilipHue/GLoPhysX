@@ -20,13 +20,11 @@ namespace GLOPHYSX {
 			{ 0, GL_R32F, GL_RG32F, GL_RGB32F, GL_RGBA32F }
 		};
 
-		OpenglTexture2D::OpenglTexture2D(const std::string& path, uint32_t x_offset, uint32_t y_offset)
+		OpenglTexture2D::OpenglTexture2D(const std::string& path, int flip, uint32_t x_offset, uint32_t y_offset)
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			m_path = path;
-
-			stbi_set_flip_vertically_on_load(1);
+			stbi_set_flip_vertically_on_load(flip);
 
 			int width, height, channels;
 			stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);

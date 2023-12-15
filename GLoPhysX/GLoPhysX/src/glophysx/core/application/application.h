@@ -49,14 +49,14 @@ namespace GLOPHYSX {
 	{
 	public:
 		GLOP_API Application();
-		GLOP_API ~Application();
+		GLOP_API virtual ~Application();
 
 		// Method that handles the events received
 		GLOP_API void OnEvent(Event& e);
 		// Method for pushing layers on the layer stack
-		GLOP_API void PushLayer(Layer* layer);
+		GLOP_API void PushLayer(Shared<Layer> layer);
 		//Method for pushing overlays on the layer stack
-		GLOP_API void PushOverlay(Layer* overlay);
+		GLOP_API void PushOverlay(Shared<Layer> overlay);
 
 		// Method to get the application class's instance
 		GLOP_API static Application& GetInstance();
@@ -75,10 +75,10 @@ namespace GLOPHYSX {
 		Unique<Window> m_window;
 
 		LayersContainer m_layers_container;
-		GUILayer* m_gui_layer;
+		Shared<GUILayer> m_gui_layer;
 
 		DeltaTime m_dt;
-		float m_previous_time;
+		float m_previous_time = 0.f;
 
 	private:
 		static Application* s_instance;

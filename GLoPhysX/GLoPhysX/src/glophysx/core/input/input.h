@@ -34,7 +34,8 @@ namespace GLOPHYSX {
 	*/
 	class Input {
 	public:
-		GLOP_API inline static bool IsKeyPressed(int keycode) { return s_instance->PIsKeyPressed(keycode); }
+		GLOP_API static bool IsKeyPressed(int keycode) { return s_instance->PIsKeyPressed(keycode); }
+		GLOP_API static bool IsKeyRepeated(int keycode) { return s_instance->PIsKeyRepeated(keycode); }
 
 		GLOP_API inline static bool IsMouseButtonPressed(int button) { return s_instance->PIsMouseButtonPressed(button); }
 		GLOP_API inline static double GetMouseX() { return s_instance->PGetMouseX(); }
@@ -43,6 +44,8 @@ namespace GLOPHYSX {
 	protected:
 		// The implementation of IsKeyPressed that is platform dependent
 		virtual bool PIsKeyPressed(int keycode) = 0;
+		// The implementation of IsKeyRepeated that is platform dependent
+		virtual bool PIsKeyRepeated(int keycode) = 0;
 
 		// The implementation of IsMouseButtonPressed that is platform dependent
 		virtual bool PIsMouseButtonPressed(int button) = 0;
@@ -52,6 +55,6 @@ namespace GLOPHYSX {
 		virtual double PGetMouseY() = 0;
 
 	private:
-		static Input* s_instance;
+		static Unique<Input> s_instance;
 	};
 }

@@ -5,16 +5,24 @@
 
 namespace GLOPHYSX {
 
-	Input* Input::s_instance = new WindowsInput();
-
 	bool WindowsInput::PIsKeyPressed(int keycode)
 	{
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::GetInstance().GetWindow().GetNativeWindow());
 
 		auto state = glfwGetKey(window, keycode);
 
-		return state == GLFW_PRESS || state == GLFW_REPEAT;
+		return state == GLFW_PRESS;
 	}
+
+	bool WindowsInput::PIsKeyRepeated(int keycode)
+	{
+		GLFWwindow* window = static_cast<GLFWwindow*>(Application::GetInstance().GetWindow().GetNativeWindow());
+
+		auto state = glfwGetKey(window, keycode);
+
+		return state == GLFW_REPEAT;
+	}
+
 	bool WindowsInput::PIsMouseButtonPressed(int button)
 	{
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::GetInstance().GetWindow().GetNativeWindow());
@@ -23,6 +31,7 @@ namespace GLOPHYSX {
 
 		return state == GLFW_PRESS;
 	}
+
 	double WindowsInput::PGetMouseX()
 	{
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::GetInstance().GetWindow().GetNativeWindow());
@@ -33,6 +42,7 @@ namespace GLOPHYSX {
 
 		return x_pos;
 	}
+
 	double WindowsInput::PGetMouseY()
 	{
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::GetInstance().GetWindow().GetNativeWindow());

@@ -14,11 +14,11 @@ int main(int argc, char **argv) {
 	auto app = GLOPHYSX::CreateApplication();
 	GLOP_PROFILER_END_SESSION();
 
-	GLOP_PROFILER_BEGIN_SESSION("Startup", "GLoPhysX-RuntimeProfile.json");
+	//GLOP_PROFILER_BEGIN_SESSION("Startup", "GLoPhysX-RuntimeProfile.json");
 	app->Run();
-	GLOP_PROFILER_END_SESSION();
+	//GLOP_PROFILER_END_SESSION();
 
-	GLOP_PROFILER_BEGIN_SESSION("Startup", "GLoPhysX-ShutdownProfile.json");
+	GLOP_PROFILER_BEGIN_SESSION("Shutdown", "GLoPhysX-ShutdownProfile.json");
 	delete app;
 	GLOP_PROFILER_END_SESSION();
 }

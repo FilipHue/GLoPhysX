@@ -46,25 +46,25 @@ namespace GLOPHYSX {
 	{
 	public:
 		GLOP_API LayersContainer() = default;
-		GLOP_API ~LayersContainer();
+		GLOP_API virtual ~LayersContainer();
 
-		GLOP_API void PushLayer(Layer* layer);
-		GLOP_API void PushOverlay(Layer* overlay);
-		GLOP_API void PopLayer(Layer* layer);
-		GLOP_API void PopOverlay(Layer* overlay);
+		GLOP_API void PushLayer(Shared<Layer> layer);
+		GLOP_API void PushOverlay(Shared<Layer> overlay);
+		GLOP_API void PopLayer(Shared<Layer> layer);
+		GLOP_API void PopOverlay(Shared<Layer> overlay);
 
-		GLOP_API std::vector<Layer*>::iterator begin() { return m_layers.begin(); }
-		GLOP_API std::vector<Layer*>::iterator end() { return m_layers.end(); }
-		GLOP_API std::vector<Layer*>::reverse_iterator rbegin() { return m_layers.rbegin(); }
-		GLOP_API std::vector<Layer*>::reverse_iterator rend() { return m_layers.rend(); }
+		GLOP_API std::vector<Shared<Layer>>::iterator begin() { return m_layers.begin(); }
+		GLOP_API std::vector<Shared<Layer>>::iterator end() { return m_layers.end(); }
+		GLOP_API std::vector<Shared<Layer>>::reverse_iterator rbegin() { return m_layers.rbegin(); }
+		GLOP_API std::vector<Shared<Layer>>::reverse_iterator rend() { return m_layers.rend(); }
 
-		GLOP_API std::vector<Layer*>::const_iterator begin() const { return m_layers.begin(); }
-		GLOP_API std::vector<Layer*>::const_iterator end()	const { return m_layers.end(); }
-		GLOP_API std::vector<Layer*>::const_reverse_iterator rbegin() const { return m_layers.rbegin(); }
-		GLOP_API std::vector<Layer*>::const_reverse_iterator rend() const { return m_layers.rend(); }
+		GLOP_API std::vector<Shared<Layer>>::const_iterator begin() const { return m_layers.begin(); }
+		GLOP_API std::vector<Shared<Layer>>::const_iterator end()	const { return m_layers.end(); }
+		GLOP_API std::vector<Shared<Layer>>::const_reverse_iterator rbegin() const { return m_layers.rbegin(); }
+		GLOP_API std::vector<Shared<Layer>>::const_reverse_iterator rend() const { return m_layers.rend(); }
 
 	private:
-		std::vector<Layer*> m_layers;
+		std::vector<Shared<Layer>> m_layers;
 		unsigned int m_layer_insert_index = 0;
 	};
 }

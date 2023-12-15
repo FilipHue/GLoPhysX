@@ -9,7 +9,7 @@ namespace GLOPHYSX {
 
 	namespace RENDERING {
 
-		Shared<Texture2D> Texture2D::Create(const std::string& path, uint32_t x_offset, uint32_t y_offset)
+		Shared<Texture2D> Texture2D::Create(const std::string& path, int flip, uint32_t x_offset, uint32_t y_offset)
 		{
 			switch (RendererAPI::GetApi())
 			{
@@ -17,7 +17,7 @@ namespace GLOPHYSX {
 				GLOP_CORE_CRITICAL("Please specify a rendering API");
 				return nullptr;
 			case API::OPENGL:
-				return MakeShared<OpenglTexture2D>(path, x_offset, y_offset);
+				return MakeShared<OpenglTexture2D>(path, flip, x_offset, y_offset);
 			default:
 				break;
 			}

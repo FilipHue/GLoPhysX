@@ -8,6 +8,7 @@ namespace GLOPHYSX {
 	{
 	protected:
 		bool PIsKeyPressed(int keycode) override;
+		bool PIsKeyRepeated(int keycode) override;
 
 		bool PIsMouseButtonPressed(int button) override;
 		double PGetMouseX() override;

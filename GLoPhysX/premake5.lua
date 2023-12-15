@@ -90,6 +90,7 @@ project "GLoPhysX"
 
 		defines
 		{
+			"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING", -- For MSVC stdext::checked_array_iterator<T*> error (will be removed in the future)
 			"GLOP_PLATFORM_WINDOWS"
 		}
 
@@ -171,6 +172,7 @@ project "Sandbox"
 
 		defines
 		{
+			"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING", -- For MSVC stdext::checked_array_iterator<T*> (will be removed in the future)
 			"GLOP_PLATFORM_WINDOWS"
 		}
 

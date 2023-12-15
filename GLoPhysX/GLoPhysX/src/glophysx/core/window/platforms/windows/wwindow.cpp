@@ -70,6 +70,10 @@ namespace GLOPHYSX {
 
 		GLOP_CORE_INFO("Window succesfully created");
 
+		m_vsync = 1;
+		glfwSwapInterval(m_vsync);
+		GLOP_CORE_INFO("Vsync: {0}", IsVsyncSet());
+
 		glfwSetWindowUserPointer(m_window, &m_window_data);
 		
 		GLOP_CORE_INFO("Setting window callbacks");
@@ -102,6 +106,12 @@ namespace GLOPHYSX {
 	void WWindow::SetEventCallback(const EventCallbackFn& callback)
 	{
 		m_window_data.event_callback = callback;
+	}
+
+	GLOP_API void WWindow::ToggleVsync()
+	{
+		m_vsync = ~m_vsync;
+		glfwSwapInterval(m_vsync);
 	}
 
 	void* WWindow::GetNativeWindow() const

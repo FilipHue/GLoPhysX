@@ -18,7 +18,7 @@ namespace GLOPHYSX {
 			GLOP_API void SetRotation(const float& rotation) { m_rotation = rotation; RecalculateVPMatrix(); }
 
 			GLOP_API const glm::vec3& GetPosition() const { return m_position; }
-			GLOP_API const float& GetRotation() const { return m_rotation; }
+			GLOP_API float GetRotation() const { return m_rotation; }
 
 		private:
 			void RecalculateVPMatrix();

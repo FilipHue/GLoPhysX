@@ -9,7 +9,7 @@ namespace GLOPHYSX {
 		class OpenglTexture2D : public Texture2D
 		{
 		public:
-			OpenglTexture2D(const std::string& path, uint32_t x_offset = 0, uint32_t y_offset = 0);
+			OpenglTexture2D(const std::string& path, int flip = 0, uint32_t x_offset = 0, uint32_t y_offset = 0);
 			OpenglTexture2D(uint32_t width, uint32_t height);
 			virtual ~OpenglTexture2D();
 

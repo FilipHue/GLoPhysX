@@ -33,7 +33,7 @@ namespace GLOPHYSX {
 			RendererCommands::SetViewport(0, 0, width, height);
 		}
 
-		void Renderer::BeginScene(const Shared<Camera> camera)
+		void Renderer::BeginScene(const Shared<Camera>& camera)
 		{
 			GLOP_PROFILE_FUNCTION();
 
@@ -45,7 +45,7 @@ namespace GLOPHYSX {
 			GLOP_PROFILE_FUNCTION();
 		}
 
-		void Renderer::Submit(const Shared<Shader> shader, const Shared<VertexArray>& vertex_array, const glm::mat4 model_matrix, uint32_t index_count)
+		void Renderer::Submit(const Shared<Shader>& shader, const Shared<VertexArray>& vertex_array, const glm::mat4& model_matrix, uint32_t index_count)
 		{
 			GLOP_PROFILE_FUNCTION();
 
@@ -57,7 +57,7 @@ namespace GLOPHYSX {
 			RendererCommands::DrawIndexed(vertex_array, index_count);
 		}
 
-		void Renderer::Submit(const Shared<Shader> shader, const Unique<Mesh>& mesh, const glm::mat4 model_matrix)
+		void Renderer::Submit(const Shared<Shader>& shader, const Unique<Mesh>& mesh, const glm::mat4& model_matrix)
 		{
 			GLOP_PROFILE_FUNCTION();
 

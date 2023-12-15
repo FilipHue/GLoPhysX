@@ -45,11 +45,11 @@ namespace GLOPHYSX {
 
 			GLOP_API static void OnWindowResize(uint32_t width, uint32_t height);
 
-			GLOP_API static void BeginScene(const Shared<Camera> camera);
+			GLOP_API static void BeginScene(const Shared<Camera>& camera);
 			GLOP_API static void EndScene();
 
-			GLOP_API static void Submit(const Shared<Shader> shader, const Unique<Mesh>& mesh, const glm::mat4 model_matrix);
-			GLOP_API static void Submit(const Shared<Shader> shader, const Shared<VertexArray>& vertex_array, const glm::mat4 model_matrix, uint32_t index_count = 0);
+			GLOP_API static void Submit(const Shared<Shader>& shader, const Unique<Mesh>& mesh, const glm::mat4& model_matrix);
+			GLOP_API static void Submit(const Shared<Shader>& shader, const Shared<VertexArray>& vertex_array, const glm::mat4& model_matrix, uint32_t index_count = 0);
 
 			GLOP_API static API GetApi() { return RendererAPI::GetApi(); }
 

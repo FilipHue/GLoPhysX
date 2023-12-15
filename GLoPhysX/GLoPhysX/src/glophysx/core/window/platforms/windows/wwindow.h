@@ -113,6 +113,8 @@ namespace GLOPHYSX {
 
 		GLOP_API void SetEventCallback(const EventCallbackFn& callback) override;
 
+		GLOP_API void ToggleVsync() override;
+
 		GLOP_API void* GetNativeWindow() const override;
 
 	private:

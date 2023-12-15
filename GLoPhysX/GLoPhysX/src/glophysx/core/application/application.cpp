@@ -24,7 +24,7 @@ namespace GLOPHYSX {
 		s_instance = this;
 
 		#ifdef GLOP_PLATFORM_WINDOWS
-			m_window = Window::Create<WWindow>(new WindowProperties());
+		m_window = Window::Create<WWindow>(new WindowProperties("Flappy Bird", 576, 1024));
 			m_window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 			m_running = true;
 			GLOP_CORE_TRACE("===========================================================================")
@@ -34,7 +34,7 @@ namespace GLOPHYSX {
 
 		Renderer::Init();
 
-		m_gui_layer = new GUILayer();
+		m_gui_layer = MakeShared<GUILayer>();
 		PushOverlay(m_gui_layer);
 	}
 
@@ -58,7 +58,7 @@ namespace GLOPHYSX {
 		}
 	}
 
-	void Application::PushLayer(Layer* layer)
+	void Application::PushLayer(Shared<Layer> layer)
 	{
 		GLOP_PROFILE_FUNCTION()
 
@@ -66,7 +66,7 @@ namespace GLOPHYSX {
 		layer->OnAttach();
 	}
 
-	void Application::PushOverlay(Layer* overlay)
+	void Application::PushOverlay(Shared<Layer> overlay)
 	{
 		GLOP_PROFILE_FUNCTION()
 
@@ -87,7 +87,7 @@ namespace GLOPHYSX {
 			{
 				GLOP_PROFILE_SCOPE("Layer stack: On Update")
 
-				for (Layer* layer : m_layers_container) {
+				for (Shared<Layer>& layer : m_layers_container) {
 					layer->OnUpdate(m_dt);
 				}
 			}
@@ -96,7 +96,7 @@ namespace GLOPHYSX {
 			{
 				GLOP_PROFILE_SCOPE("Layer stack: On GUI Update")
 
-				for (Layer* layer : m_layers_container) {
+				for (Shared<Layer>& layer : m_layers_container) {
 					layer->OnGUIRender();
 				}
 			}

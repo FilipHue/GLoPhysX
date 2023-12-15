@@ -22,7 +22,7 @@ namespace GLOPHYSX {
 		class Texture2D : public Texture
 		{
 		public:
-			GLOP_API static Shared<Texture2D> Create(const std::string& path, uint32_t x_offset = 0, uint32_t y_offset = 0);
+			GLOP_API static Shared<Texture2D> Create(const std::string& path, int flip = 0, uint32_t x_offset = 0, uint32_t y_offset = 0);
 			GLOP_API static Shared<Texture2D> Create(uint32_t width, uint32_t height);
 		};
 	}

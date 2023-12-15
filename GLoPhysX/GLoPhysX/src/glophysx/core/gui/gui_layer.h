@@ -19,7 +19,7 @@ namespace GLOPHYSX {
 	{
 	public:
 		GUILayer();
-		~GUILayer();
+		virtual ~GUILayer();
 
 		void OnAttach() override;
 		void OnDetach() override;

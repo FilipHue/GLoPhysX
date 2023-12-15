@@ -56,10 +56,13 @@ namespace GLOPHYSX {
         // Sets the event callback function for all window events.
         virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 
+        virtual void ToggleVsync() = 0;
+        bool IsVsyncSet() const { return m_vsync == 1; }
+
         virtual void* GetNativeWindow() const = 0;
 
-        int GetWidth() { return properties->width; }
-        int GetHeight() { return properties->height; }
+        int GetWidth() const { return properties->width; }
+        int GetHeight() const { return properties->height; }
 
         /**
          * @brief Factory method for creating windows of a specific type.
@@ -93,5 +96,6 @@ namespace GLOPHYSX {
 
     protected:
         WindowProperties* properties;
+        int m_vsync = 0;
     };
 }
