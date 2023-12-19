@@ -26,9 +26,12 @@ namespace GLOPHYSX {
 			GLOP_API virtual void Bind() const = 0;
 			GLOP_API virtual void Unbind() const = 0;
 
+			GLOP_API virtual void SetData(const void* data, uint32_t size) = 0;
+
 			GLOP_API virtual void SetLayout(const BufferLayout& layout) = 0;
 			GLOP_API virtual const BufferLayout& GetLayout() const = 0;
 
+			GLOP_API static std::shared_ptr<VertexBuffer> Create(uint32_t size);
 			GLOP_API static std::shared_ptr<VertexBuffer> Create(float* vertices, uint32_t size);
 		};
 

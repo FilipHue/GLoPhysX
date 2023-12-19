@@ -87,6 +87,8 @@ namespace GLOPHYSX {
 			GLOP_API virtual void SetIVec3(const std::string& name, const glm::ivec3& value) const = 0;
 			GLOP_API virtual void SetIVec4(const std::string& name, const glm::ivec4& value) const = 0;
 
+			GLOP_API virtual void SetIntValues(const std::string& name, int* values, uint32_t count) const = 0;
+
 			GLOP_API virtual void SetFloat(const std::string& name, float value) const = 0;
 			GLOP_API virtual void SetVec2(const std::string&  name, const glm::vec2& value) const = 0;
 			GLOP_API virtual void SetVec3(const std::string&  name, const glm::vec3& value) const = 0;

@@ -4,7 +4,6 @@
 #include "glophysx/core/entry_point.h"
 
 #include "2DExample.h"
-#include "examples/FlappyBird/game_layer.h"
 
 using namespace GLOPHYSX;
 using namespace RENDERING;
@@ -145,7 +144,7 @@ using namespace COMPONENTS;
 class Sandbox : public Application {
 public:
 	Sandbox() {
-		PushLayer(MakeShared<GameLayer>());
+		PushLayer(MakeShared<Example2D>());
 	}
 
 	~Sandbox() {

@@ -24,7 +24,7 @@ namespace GLOPHYSX {
 		s_instance = this;
 
 		#ifdef GLOP_PLATFORM_WINDOWS
-		m_window = Window::Create<WWindow>(new WindowProperties("Flappy Bird", 576, 1024));
+		m_window = Window::Create<WWindow>(new WindowProperties());
 			m_window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 			m_running = true;
 			GLOP_CORE_TRACE("===========================================================================")

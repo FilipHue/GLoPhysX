@@ -25,5 +25,5 @@ private:
 	Shared<Texture2D> m_checkerboard;
 	Unique<ShaderLibrary> m_shader_library;
 
-	glm::vec4 m_square_color = glm::vec4(0.f);
+	glm::vec4 m_square_color = glm::vec4(0.f, 0.f, 0.f, 1.f);
 };

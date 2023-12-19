@@ -20,6 +20,8 @@ namespace GLOPHYSX {
 
 			virtual void Bind(uint32_t slot = 0) const override;
 
+			bool operator==(const Texture2D& other) override { return m_id == ((OpenglTexture2D&)other).m_id; }
+
 		private:
 			std::string m_path;
 

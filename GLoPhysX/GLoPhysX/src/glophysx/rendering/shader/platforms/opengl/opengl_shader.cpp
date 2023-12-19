@@ -24,6 +24,7 @@ namespace GLOPHYSX {
 			m_name = file_path.substr(last_separator, name_size);
 
 			std::string source = ReadShaderSource(file_path);
+
 			std::unordered_map<ShaderType, std::string> shader_sources = ProcessShaderSource(source);
 
 			Compile(shader_sources);
@@ -95,6 +96,14 @@ namespace GLOPHYSX {
 
 			SendUniformIVec4(name, value);
 		}
+
+		void OpenglShader::SetIntValues(const std::string& name, int* values, uint32_t count) const
+		{
+			GLOP_PROFILE_FUNCTION();
+
+			SendUniformIntValues(name, values, count);
+		}
+
 		void OpenglShader::SetFloat(const std::string& name, float value) const
 		{
 			GLOP_PROFILE_FUNCTION();
@@ -164,6 +173,13 @@ namespace GLOPHYSX {
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniform4i(location, value.x, value.y, value.z, value.w);
 		}
+
+		void OpenglShader::SendUniformIntValues(const std::string& name, int* values, uint32_t count) const
+		{
+			GLint location = glGetUniformLocation(m_id, name.c_str());
+			glUniform1iv(location, count, values);
+		}
+
 		void OpenglShader::SendUniformFloat(const std::string& name, float value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());

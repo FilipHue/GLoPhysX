@@ -55,6 +55,8 @@ namespace GLOPHYSX {
 			virtual void SetIVec3(const std::string& name, const glm::ivec3& value) const override;
 			virtual void SetIVec4(const std::string& name, const glm::ivec4& value) const override;
 
+			void SetIntValues(const std::string& name, int* values, uint32_t count) const override;
+
 			virtual void SetFloat(const std::string& name, float value) const override;
 			virtual void SetVec2(const std::string& name, const glm::vec2& value) const override;
 			virtual void SetVec3(const std::string& name, const glm::vec3& value) const override;
@@ -70,6 +72,8 @@ namespace GLOPHYSX {
 			void SendUniformIVec2(const std::string& name, const glm::ivec2& value) const;
 			void SendUniformIVec3(const std::string& name, const glm::ivec3& value) const;
 			void SendUniformIVec4(const std::string& name, const glm::ivec4& value) const;
+
+			void SendUniformIntValues(const std::string& name, int* values, uint32_t count) const;
 
 			void SendUniformFloat(const std::string& name, float value) const;
 			void SendUniformVec2(const std::string& name, const glm::vec2& value) const;

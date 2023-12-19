@@ -28,6 +28,8 @@ void Example2D::OnUpdate(DeltaTime dt)
 		m_camera_controller->OnUpdate(dt);
 	}
 
+	Renderer2D::ResetStats();
+
 	{
 		GLOP_PROFILE_SCOPE("Renderer commands");
 
@@ -38,13 +40,27 @@ void Example2D::OnUpdate(DeltaTime dt)
 	{
 		GLOP_PROFILE_SCOPE("Render draw");
 
+		static float rotation = 0.f;
+
+		rotation += dt * 20.f;
+
 		Renderer2D::BeginScene(m_camera_controller->GetCamera());
 
-		Renderer2D::DrawRotatedQuad({ -1.f, 0.5f }, { 0.7f, 0.3f }, glm::radians(45.f), m_square_color);
+		Renderer2D::DrawRotatedQuad({ -1.f, 0.5f }, { 0.7f, 0.3f }, rotation, m_square_color);
 		Renderer2D::DrawQuad({ 0.f, 0.f }, { 0.5f, 0.5f }, m_square_color);
-		Renderer2D::DrawRotatedQuad({ 1.f, 0.5f }, { 0.7f, 0.3f }, glm::radians(-45.f), m_square_color);
+		Renderer2D::DrawRotatedQuad({ 1.f, 0.5f }, { 0.7f, 0.3f }, -rotation, m_square_color);
 
-		Renderer2D::DrawQuad({ 0.f, 0.0f, -0.1f }, { 10.f, 10.f }, m_checkerboard);
+		glm::vec4 color;
+		float size = 5.f;
+
+		for (float x = -size; x < size; x += 0.5f) {
+			for (float y = -size; y < size; y += 0.5f) {
+				color = { (x + size) / (2 * size), (y + size) / (2 * size), 0.f, 0.7f };
+				Renderer2D::DrawQuad({ x, y, -0.05f }, { 0.45f, 0.45f }, color);
+			}
+		}
+
+		Renderer2D::DrawQuad({ 0.f, 0.f, -0.1f }, { 30.f, 30.f }, m_checkerboard, 10.f);
 
 		Renderer2D::EndScene();
 	}
@@ -53,6 +69,15 @@ void Example2D::OnUpdate(DeltaTime dt)
 void Example2D::OnGUIRender()
 {
 	GLOP_PROFILE_FUNCTION();
+
+	auto stats = Renderer2D::GetStats();
+
+	ImGui::Begin("Renderer Stats");
+	ImGui::Text("Draw calls: %d", stats.draw_calls);
+	ImGui::Text("Quads: %d", stats.quad_count);
+	ImGui::Text("Vertices: %d", stats.GetVertexCount());
+	ImGui::Text("Indices: %d", stats.GetIndexCount());
+	ImGui::End();
 
 	ImGui::Begin("Settings");
 	ImGui::ColorEdit3("Square Color", glm::value_ptr(m_square_color));
