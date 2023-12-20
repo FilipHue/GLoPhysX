@@ -54,6 +54,14 @@ namespace GLOPHYSX {
 			EventDispatcher::Dispatch<MouseScrollEvent>(e, std::bind(&OrthographicCameraController::OnMouseScroll, this, std::placeholders::_1));
 			EventDispatcher::Dispatch<WindowResizeEvent>(e, std::bind(&OrthographicCameraController::OnWindowResize, this, std::placeholders::_1));
 		}
+
+		void OrthographicCameraController::OnViewportResize(uint32_t width, uint32_t height)
+		{
+			m_aspect_ration = static_cast<float>(width) / height;
+
+			m_camera.SetProjection(-m_aspect_ration * m_zoom, m_aspect_ration * m_zoom, -m_zoom, m_zoom);
+		}
+
 		bool OrthographicCameraController::OnMouseScroll(MouseScrollEvent& e)
 		{
 			m_zoom -= (int)e.GetYOffset() * m_zoom_smoothstep;

@@ -6,10 +6,10 @@ using namespace GLOPHYSX;
 using namespace RENDERING;
 using namespace COMPONENTS;
 
-class Example2D : public Layer {
+class EditorLayer : public Layer {
 public:
-	Example2D();
-	virtual ~Example2D() = default;
+	EditorLayer();
+	virtual ~EditorLayer() = default;
 
 	void OnAttach() override;
 	void OnDetach() override;
@@ -26,4 +26,11 @@ private:
 	Unique<ShaderLibrary> m_shader_library;
 
 	glm::vec4 m_square_color = glm::vec4(0.f, 0.f, 0.f, 1.f);
+
+	Shared<Framebuffer> m_framebuffer;
+
+	// Editor
+	glm::vec2 m_viewport_size;
+	bool m_viewport_focused = true;
+	bool m_viewport_hovered = true;
 };

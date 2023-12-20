@@ -36,6 +36,8 @@
 *.vcxproj
 *.filters
 *.user
+*.json
+*.ini
 
 .vs/
 bin/

@@ -58,10 +58,12 @@ namespace GLOPHYSX {
 
 	void GUILayer::OnEvent(Event& e)
 	{
-		ImGuiIO& io = ImGui::GetIO();
+		if (m_consume_events) {
+			ImGuiIO& io = ImGui::GetIO();
 
-		e.m_handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
-		e.m_handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+			e.m_handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+			e.m_handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+		}
 	}
 	void GUILayer::OnGUIRender()
 	{

@@ -20,6 +20,8 @@ namespace GLOPHYSX {
 			void OnUpdate(DeltaTime dt);
 			void OnEvent(Event& e);
 
+			void OnViewportResize(uint32_t width, uint32_t height);
+
 			void SetZoom(float zoom) { m_zoom = zoom; }
 			float GetZoom() const { return m_zoom; }
 

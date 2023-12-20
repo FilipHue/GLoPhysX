@@ -1,5 +1,6 @@
 workspace "GLoPhysX"
 	architecture "x64"
+	startproject "GLoPhysX-Editor"
 
 	configurations
 	{
@@ -125,6 +126,76 @@ project "GLoPhysX"
 
 project "Sandbox"
 	location "Sandbox"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
+
+	targetdir ("%{wks.location}/bin/" .. output_dir .. "/%{prj.name}")
+	objdir ("%{wks.location}/bin-int/" .. output_dir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"GLoPhysX/src",
+		"GLoPhysX/dependencies/SPDLOG",
+		"GLoPhysX/dependencies/GLFW/include",
+		"GLoPhysX/dependencies/GLAD/include",
+		"GLoPhysX/dependencies/IMGUI",
+		"GLoPhysX/dependencies/GLM",
+		"GLoPhysX/dependencies/STB"
+	}
+
+	-- UNCOMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
+
+	linkoptions
+	{ 
+		"/NODEFAULTLIB:MSVCRT.lib"
+	}
+
+	--------------------------------------------------------------------
+
+	links
+	{
+		"GLoPhysX"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+		-- USE ONLY GLOP_PLATFORM_WINDOWS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
+		-- USE GLOP_PLATFORM_WINDOWS AND GLOP_DYNAMIC_LIB IF YOU WANT TO LINK AGAINST THE DYNAMIC LIBRARY --
+
+		defines
+		{
+			"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING", -- For MSVC stdext::checked_array_iterator<T*> (will be removed in the future)
+			"GLOP_PLATFORM_WINDOWS"
+		}
+
+		-- defines
+		-- {
+		-- 	"GLOP_PLATFORM_WINDOWS",
+		-- 	"GLOP_DYNAMIC_LIB"
+		-- }
+
+		-----------------------------------------------------------------------------------
+
+	filter "configurations:Debug"
+		runtime "Debug"
+		defines "GLOP_DEBUG"
+		symbols "On"
+
+	filter "configurations:Release"
+		defines "GLOP_RELEASE"
+		optimize "On"
+
+project "GLoPhysX-Editor"
+	location "GLoPhysX-Editor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"

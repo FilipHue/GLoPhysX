@@ -30,5 +30,10 @@ namespace GLOPHYSX {
 
 		void Begin();
 		void End();
+
+		void SetConsumeEvents(bool consume) { m_consume_events = consume; }
+
+	private:
+		bool m_consume_events = true;
 	};
 }
