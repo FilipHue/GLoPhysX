@@ -28,6 +28,8 @@
 
 #include "glophysx/rendering/objects/texture/texture.h"
 
+#include "glophysx/rendering/objects/framebuffer/framebuffer.h"
+
 #include "glophysx/rendering/components/mesh/mesh.h"
 
 #ifdef GLOP_DEBUG
