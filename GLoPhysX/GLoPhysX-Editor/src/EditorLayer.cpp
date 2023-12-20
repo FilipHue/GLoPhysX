@@ -4,7 +4,8 @@
 
 EditorLayer::EditorLayer() : Layer("EditorLayer")
 {
-	m_camera_controller = MakeShared<OrthographicCameraController>(1600.f / 900.f);
+    m_viewport_size = glm::vec2(1600.f, 900.f);
+	m_camera_controller = MakeShared<OrthographicCameraController>(m_viewport_size.x / m_viewport_size.y);
 	m_shader_library = MakeUnique<ShaderLibrary>();
 	m_checkerboard = Texture2D::Create("assets/textures/checkerboard.png");
 }
@@ -14,8 +15,8 @@ void EditorLayer::OnAttach()
 	GLOP_PROFILE_FUNCTION();
 
     FramebufferSpecs fb_specs;
-    fb_specs.width = 1600;
-    fb_specs.height = 900;
+    fb_specs.width = (uint32_t)m_viewport_size.x;
+    fb_specs.height = (uint32_t)m_viewport_size.y;
 
     m_framebuffer = Framebuffer::Create(fb_specs);
 }
