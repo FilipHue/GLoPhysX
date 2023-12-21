@@ -4,6 +4,7 @@
 #include "glm.hpp"
 
 #include "glophysx/ecs/entity.h"
+#include "glophysx/ecs/scriptable_entity.h"
 
 #include "glophysx/rendering/renderer/2d/renderer_2d.h"
 
@@ -34,20 +35,30 @@ namespace GLOPHYSX {
 		}
 		void Scene::OnUpdate(DeltaTime dt)
 		{
+			{
+				m_registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+					{
+						if (!nsc.m_instance)
+						{
+							nsc.m_instance = nsc.InstantiateScript();
+							nsc.m_instance->m_entity = Entity{ entity, this };
+							nsc.m_instance->OnCreate();
+						}
+
+						nsc.m_instance->OnUpdate(dt);
+					});
+			}
+
 			SceneCamera* main_camera = nullptr;
 			glm::mat4 camera_transform = glm::mat4(1.f);
-			{
-				auto group = m_registry.view<TransformComponent, CameraComponent>();
-				for (auto entity : group) {
-					auto& [transform, camera] = group.get<TransformComponent, CameraComponent>(entity);
-
+			m_registry.view<TransformComponent, CameraComponent>().each([&main_camera, &camera_transform](auto entity, auto& transform, auto& camera)
+				{
 					if (camera.is_primary == 1) {
 						main_camera = &camera.m_camera;
 						camera_transform = transform.m_transform;
-						break;
+						return;
 					}
-				}
-			}
+				});
 			
 			if (main_camera != nullptr)
 			{
@@ -56,7 +67,7 @@ namespace GLOPHYSX {
 				auto group = m_registry.group<TransformComponent>(entt::get<SpriteComponent>);
 
 				for (auto entity : group) {
-					auto& [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
+					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
 
 					Renderer2D::DrawQuad(transform.m_transform, sprite.m_color);
 				}

@@ -35,6 +35,45 @@ void EditorLayer::OnAttach()
     m_second_camera_entity.GetComponent<CameraComponent>().is_primary = false;
 
     m_scene_hierarchy.SetContext(m_current_scene);
+
+    class CameraController : public ScriptableEntity
+    {
+    public:
+        void OnCreate() override
+        {
+        }
+
+        void OnUpdate(DeltaTime dt) override
+        {
+            auto& transform = GetComponent<TransformComponent>().m_transform;
+
+            if (Input::IsKeyPressed(GLOP_KEY_A)) {
+                transform[3][0] -= m_move_speed * dt;
+            }
+
+            if (Input::IsKeyPressed(GLOP_KEY_D)) {
+                transform[3][0] += m_move_speed * dt;
+            }
+
+            if (Input::IsKeyPressed(GLOP_KEY_S)) {
+                transform[3][1] -= m_move_speed * dt;
+            }
+
+            if (Input::IsKeyPressed(GLOP_KEY_W)) {
+                transform[3][1] += m_move_speed * dt;
+            }
+
+        }
+
+        void OnDestroy() override
+        {
+        }
+
+    private:
+        float m_move_speed = 10.f;
+    };
+
+    m_second_camera_entity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 }
 
 void EditorLayer::OnDetach()

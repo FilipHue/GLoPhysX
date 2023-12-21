@@ -28,6 +28,7 @@
 
 // ECS
 #include "glophysx/ecs/components.h"
+#include "glophysx/ecs/scriptable_entity.h"
 #include "glophysx/ecs/entity.h"
 
 // Components
