@@ -1,10 +1,12 @@
 #pragma once
 
 #include "glophysx.h"
+#include "panels/scene_hierarchy.h"
 
 using namespace GLOPHYSX;
 using namespace RENDERING;
 using namespace COMPONENTS;
+using namespace EDITOR;
 
 class EditorLayer : public Layer {
 public:
@@ -33,4 +35,13 @@ private:
 	glm::vec2 m_viewport_size;
 	bool m_viewport_focused = true;
 	bool m_viewport_hovered = true;
+
+	// Scene
+	Shared<Scene> m_current_scene;
+	Entity m_square_entity;
+	Entity m_main_camera_entity;
+	Entity m_second_camera_entity;
+
+	// Panels
+	SceneHierarchy m_scene_hierarchy;
 };

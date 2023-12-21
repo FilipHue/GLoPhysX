@@ -87,12 +87,27 @@ namespace GLOPHYSX {
 			}
 		}
 
-		void Renderer2D::BeginScene(const OrthographicCamera& camera)
+		void Renderer2D::BeginScene(const Camera& camera)
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			s_data->shader->Bind();
 			s_data->shader->SetMat4("u_view_projection", camera.GetVPMatrix());
+
+			s_data->quad_data->index_count = 0;
+			s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
+
+			s_data->texture_slot_index = 1;
+		}
+
+		void Renderer2D::BeginScene(const SimpleCamera& camera, const glm::mat4& transform)
+		{
+			GLOP_PROFILE_FUNCTION();
+
+			glm::mat4 view_projection_matrix = camera.GetProjectionMatrix() * glm::inverse(transform);
+
+			s_data->shader->Bind();
+			s_data->shader->SetMat4("u_view_projection", view_projection_matrix);
 
 			s_data->quad_data->index_count = 0;
 			s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
@@ -123,6 +138,76 @@ namespace GLOPHYSX {
 			s_stats->draw_calls++;
 		}
 
+		void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+		{
+			GLOP_PROFILE_FUNCTION();
+
+			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
+				EndScene();
+
+				s_data->quad_data->index_count = 0;
+				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
+
+				s_data->texture_slot_index = 1;
+			}
+
+			for (int i = 0; i < 4; i++) {
+				s_data->quad_data->VB_ptr->position = transform * s_data->quad_data->vertex_positions[i];
+				s_data->quad_data->VB_ptr->color = color;
+				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords[i];
+				s_data->quad_data->VB_ptr->texture_index = 0;
+				s_data->quad_data->VB_ptr->tiling_factor = 1.f;
+				s_data->quad_data->VB_ptr++;
+			}
+
+			s_data->quad_data->index_count += 6;
+
+			s_stats->quad_count++;
+		}
+
+		void Renderer2D::DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, float tiling_factor)
+		{
+			GLOP_PROFILE_FUNCTION();
+
+			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
+				EndScene();
+
+				s_data->quad_data->index_count = 0;
+				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
+
+				s_data->texture_slot_index = 1;
+			}
+
+			constexpr glm::vec4 color = glm::vec4(1.f);
+
+			float texture_index = 0.f;
+			for (uint32_t i = 1; i < s_data->texture_slot_index; i++) {
+				if (*s_data->texture_slots[i].get() == *texture.get()) {
+					texture_index = (float)i;
+					break;
+				}
+			}
+
+			if (texture_index == 0.f) {
+				texture_index = (float)s_data->texture_slot_index;
+				s_data->texture_slots[s_data->texture_slot_index] = texture;
+				s_data->texture_slot_index++;
+			}
+
+			for (int i = 0; i < 4; i++) {
+				s_data->quad_data->VB_ptr->position = transform * s_data->quad_data->vertex_positions[i];
+				s_data->quad_data->VB_ptr->color = color;
+				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords[i];
+				s_data->quad_data->VB_ptr->texture_index = texture_index;
+				s_data->quad_data->VB_ptr->tiling_factor = tiling_factor;
+				s_data->quad_data->VB_ptr++;
+			}
+
+			s_data->quad_data->index_count += 6;
+
+			s_stats->quad_count++;
+		}
+
 		void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 		{
 			GLOP_PROFILE_FUNCTION();
@@ -134,32 +219,12 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
-				EndScene();
-				
-				s_data->quad_data->index_count = 0;
-				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-				s_data->texture_slot_index = 1;
-			}
-
 			glm::mat4 model_matrix = glm::mat4(1.f);
 
 			model_matrix = glm::translate(model_matrix, position);
 			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
 
-			for (int i = 0; i < 4; i++) {
-				s_data->quad_data->VB_ptr->position = model_matrix * s_data->quad_data->vertex_positions[i];
-				s_data->quad_data->VB_ptr->color = color;
-				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords[i];
-				s_data->quad_data->VB_ptr->texture_index = 0;
-				s_data->quad_data->VB_ptr->tiling_factor = 1.f;
-				s_data->quad_data->VB_ptr++;
-			}
-
-			s_data->quad_data->index_count += 6;
-
-			s_stats->quad_count++;
+			DrawQuad(model_matrix, color);
 		}
 
 		void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Shared<Texture2D>& texture, float tiling_factor)
@@ -173,48 +238,12 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
-				EndScene();
-
-				s_data->quad_data->index_count = 0;
-				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-				s_data->texture_slot_index = 1;
-			}
-
-			constexpr glm::vec4 color = glm::vec4(1.f);
-
-			float texture_index = 0.f;
-			for (uint32_t i = 1; i < s_data->texture_slot_index; i++) {
-				if (*s_data->texture_slots[i].get() == *texture.get()) {
-					texture_index = (float)i;
-					break;
-				}
-			}
-
-			if (texture_index == 0.f) {
-				texture_index = (float)s_data->texture_slot_index;
-				s_data->texture_slots[s_data->texture_slot_index] = texture;
-				s_data->texture_slot_index++;
-			}
-
 			glm::mat4 model_matrix = glm::mat4(1.f);
 
 			model_matrix = glm::translate(model_matrix, position);
 			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
 
-			for (int i = 0; i < 4; i++) {
-				s_data->quad_data->VB_ptr->position = model_matrix * s_data->quad_data->vertex_positions[i];
-				s_data->quad_data->VB_ptr->color = color;
-				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords[i];
-				s_data->quad_data->VB_ptr->texture_index = texture_index;
-				s_data->quad_data->VB_ptr->tiling_factor = tiling_factor;
-				s_data->quad_data->VB_ptr++;
-			}
-
-			s_data->quad_data->index_count += 6;
-
-			s_stats->quad_count++;
+			DrawQuad(model_matrix, texture, tiling_factor);
 		}
 
 		void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
@@ -228,33 +257,13 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
-				EndScene();
-
-				s_data->quad_data->index_count = 0;
-				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-				s_data->texture_slot_index = 1;
-			}
-
 			glm::mat4 model_matrix = glm::mat4(1.f);
 
 			model_matrix = glm::translate(model_matrix, position);
 			model_matrix = glm::rotate(model_matrix, rotation, { 0.f, 0.f, 1.f });
 			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
 
-			for (int i = 0; i < 4; i++) {
-				s_data->quad_data->VB_ptr->position = model_matrix * s_data->quad_data->vertex_positions[i];
-				s_data->quad_data->VB_ptr->color = color;
-				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords[i];
-				s_data->quad_data->VB_ptr->texture_index = 0;
-				s_data->quad_data->VB_ptr->tiling_factor = 1.f;
-				s_data->quad_data->VB_ptr++;
-			}
-
-			s_data->quad_data->index_count += 6;
-
-			s_stats->quad_count++;
+			DrawQuad(model_matrix, color);
 		}
 
 		void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture, float tiling_factor)
@@ -268,49 +277,13 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
-				EndScene();
-
-				s_data->quad_data->index_count = 0;
-				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-				s_data->texture_slot_index = 1;
-			}
-
-			constexpr glm::vec4 color = glm::vec4(1.f);
-
-			float texture_index = 0.f;
-			for (uint32_t i = 1; i < s_data->texture_slot_index; i++) {
-				if (*s_data->texture_slots[i].get() == *texture.get()) {
-					texture_index = (float)i;
-					break;
-				}
-			}
-
-			if (texture_index == 0.f) {
-				texture_index = (float)s_data->texture_slot_index;
-				s_data->texture_slots[s_data->texture_slot_index] = texture;
-				s_data->texture_slot_index++;
-			}
-
 			glm::mat4 model_matrix = glm::mat4(1.f);
 
 			model_matrix = glm::translate(model_matrix, position);
-			model_matrix = glm::rotate(model_matrix, glm::radians(rotation), {0.f, 0.f, 1.f});
+			model_matrix = glm::rotate(model_matrix, glm::radians(rotation), { 0.f, 0.f, 1.f });
 			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
 
-			for (int i = 0; i < 4; i++) {
-				s_data->quad_data->VB_ptr->position = model_matrix * s_data->quad_data->vertex_positions[i];
-				s_data->quad_data->VB_ptr->color = color;
-				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords[i];
-				s_data->quad_data->VB_ptr->texture_index = texture_index;
-				s_data->quad_data->VB_ptr->tiling_factor = tiling_factor;
-				s_data->quad_data->VB_ptr++;
-			}
-
-			s_data->quad_data->index_count += 6;
-
-			s_stats->quad_count++;
+			DrawQuad(model_matrix, texture, tiling_factor);
 		}
 
 		void Renderer2D::ResetStats()

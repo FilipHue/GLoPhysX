@@ -47,7 +47,9 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/GLM/**.inl",
 
 		"%{prj.name}/dependencies/STB/**.h",
-		"%{prj.name}/dependencies/STB/**.cpp"
+		"%{prj.name}/dependencies/STB/**.cpp",
+
+		"%{prj.name}/dependencies/ENTT/entt/**.h"
 	}
 
 	includedirs
@@ -58,7 +60,8 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/GLAD/include",
 		"%{prj.name}/dependencies/IMGUI",
 		"%{prj.name}/dependencies/GLM",
-		"%{prj.name}/dependencies/STB"
+		"%{prj.name}/dependencies/STB",
+		"%{prj.name}/dependencies/ENTT"
 	}
 
 	libdirs
@@ -148,7 +151,8 @@ project "Sandbox"
 		"GLoPhysX/dependencies/GLAD/include",
 		"GLoPhysX/dependencies/IMGUI",
 		"GLoPhysX/dependencies/GLM",
-		"GLoPhysX/dependencies/STB"
+		"GLoPhysX/dependencies/STB",
+		"GLoPhysX/dependencies/ENTT"
 	}
 
 	-- UNCOMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
@@ -218,7 +222,8 @@ project "GLoPhysX-Editor"
 		"GLoPhysX/dependencies/GLAD/include",
 		"GLoPhysX/dependencies/IMGUI",
 		"GLoPhysX/dependencies/GLM",
-		"GLoPhysX/dependencies/STB"
+		"GLoPhysX/dependencies/STB",
+		"GLoPhysX/dependencies/ENTT"
 	}
 
 	-- UNCOMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --

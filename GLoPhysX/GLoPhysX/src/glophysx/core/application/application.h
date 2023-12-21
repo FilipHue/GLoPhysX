@@ -64,7 +64,7 @@ namespace GLOPHYSX {
 		// Method to get the active window
 		GLOP_API Window& GetWindow();
 
-		GLOP_API Shared<GUILayer> GetGUILayer() { return m_gui_layer; }
+		GLOP_API Shared<GUILayer> GetGUILayer() const { return m_gui_layer; }
 
 	private:
 		GLOP_API void Run();

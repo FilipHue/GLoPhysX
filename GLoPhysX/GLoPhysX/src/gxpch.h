@@ -24,4 +24,8 @@
 
 #if defined(GLOP_PLATFORM_WINDOWS)
 	#include <Windows.h>
+	
+	// For ENTT
+	#undef min
+	#undef max
 #endif

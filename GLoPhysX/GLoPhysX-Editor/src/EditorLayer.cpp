@@ -17,8 +17,24 @@ void EditorLayer::OnAttach()
     FramebufferSpecs fb_specs;
     fb_specs.width = (uint32_t)m_viewport_size.x;
     fb_specs.height = (uint32_t)m_viewport_size.y;
-
     m_framebuffer = Framebuffer::Create(fb_specs);
+
+    m_current_scene = MakeShared<Scene>();
+
+    auto square = m_current_scene->CreateEntity("Square");
+    square.AddComponent<SpriteComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    m_square_entity = square;
+
+    m_main_camera_entity = m_current_scene->CreateEntity("Main Camera");
+    m_main_camera_entity.AddComponent<CameraComponent>();
+    //m_main_camera_entity.GetComponent<TransformComponent>().m_transform = glm::translate(glm::mat4(1.f), glm::vec3(-0.5f, 0.f, 0.f));
+
+    m_second_camera_entity = m_current_scene->CreateEntity("Second Camera");
+    m_second_camera_entity.AddComponent<CameraComponent>();
+    //m_second_camera_entity.GetComponent<TransformComponent>().m_transform = glm::translate(glm::mat4(1.f), glm::vec3(0.5f, 0.f, 0.f));
+    m_second_camera_entity.GetComponent<CameraComponent>().is_primary = false;
+
+    m_scene_hierarchy.SetContext(m_current_scene);
 }
 
 void EditorLayer::OnDetach()
@@ -29,6 +45,13 @@ void EditorLayer::OnDetach()
 void EditorLayer::OnUpdate(DeltaTime dt)
 {
 	GLOP_PROFILE_FUNCTION();
+
+
+    FramebufferSpecs spec = m_framebuffer->GetSpecs();
+    if (m_viewport_size.x > 0.f && m_viewport_size.y > 0.0f && (m_viewport_size.x != spec.width || m_viewport_size.y != spec.height)) {
+        m_framebuffer->Resize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
+        m_current_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
+    }
 
 	{
 		GLOP_PROFILE_SCOPE("Camera update");
@@ -50,29 +73,7 @@ void EditorLayer::OnUpdate(DeltaTime dt)
 	{
 		GLOP_PROFILE_SCOPE("Render draw");
 
-		static float rotation = 0.f;
-
-		rotation += dt * 20.f;
-
-		Renderer2D::BeginScene(m_camera_controller->GetCamera());
-
-		Renderer2D::DrawRotatedQuad({ -1.f, 0.5f }, { 0.7f, 0.3f }, rotation, m_square_color);
-		Renderer2D::DrawQuad({ 0.f, 0.f }, { 0.5f, 0.5f }, m_square_color);
-		Renderer2D::DrawRotatedQuad({ 1.f, 0.5f }, { 0.7f, 0.3f }, -rotation, m_square_color);
-
-		glm::vec4 color;
-		float size = 5.f;
-
-		for (float x = -size; x < size; x += 0.5f) {
-			for (float y = -size; y < size; y += 0.5f) {
-				color = { (x + size) / (2 * size), (y + size) / (2 * size), 0.f, 0.7f };
-				Renderer2D::DrawQuad({ x, y, -0.05f }, { 0.45f, 0.45f }, color);
-			}
-		}
-
-		Renderer2D::DrawQuad({ 0.f, 0.f, -0.1f }, { 30.f, 30.f }, m_checkerboard, 10.f);
-
-		Renderer2D::EndScene();
+        m_current_scene->OnUpdate(dt);
 
         m_framebuffer->Unbind();
 	}
@@ -82,51 +83,29 @@ void EditorLayer::OnGUIRender()
 {
 	GLOP_PROFILE_FUNCTION();
 
-    static bool p_open = true;
-    static bool opt_fullscreen = true;
-    static bool opt_padding = false;
-    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+    Application::GetInstance().GetGUILayer()->BeginDocking();
 
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-    if (opt_fullscreen)
-    {
-        const ImGuiViewport* viewport = ImGui::GetMainViewport();
-        ImGui::SetNextWindowPos(viewport->WorkPos);
-        ImGui::SetNextWindowSize(viewport->WorkSize);
-        ImGui::SetNextWindowViewport(viewport->ID);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-        window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-        window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-    }
-    else
-    {
-        dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-    }
-
-    if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-        window_flags |= ImGuiWindowFlags_NoBackground;
-
-    if (!opt_padding)
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui::Begin("DockSpace Demo", &p_open, window_flags);
-    if (!opt_padding)
-        ImGui::PopStyleVar();
-
-    if (opt_fullscreen)
-        ImGui::PopStyleVar(2);
-
-    ImGuiIO& io = ImGui::GetIO();
-    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
-    {
-        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-    }
-
-    ImGui::End();
+    m_scene_hierarchy.OnGUIRender();
 
     ImGui::Begin("Settings");
     ImGui::ColorEdit3("Square Color", glm::value_ptr(m_square_color));
+    m_square_entity.GetComponent<SpriteComponent>().m_color = m_square_color;
+
+    static bool switch_cameras = true;
+    if (ImGui::Checkbox("Main Camera", &switch_cameras))
+    {
+        m_main_camera_entity.GetComponent<CameraComponent>().is_primary = switch_cameras;
+        m_second_camera_entity.GetComponent<CameraComponent>().is_primary = !switch_cameras;
+    }
+
+    {
+        auto& camera = m_second_camera_entity.GetComponent<CameraComponent>().m_camera;
+        float ortho_size = camera.GetOrthographicProjectionSize();
+        bool changed_size = ImGui::DragFloat("Second Camera Size", &ortho_size);
+        if (changed_size) {
+            camera.SetOrthographicProjectionSize(ortho_size);
+        }
+    }
     ImGui::End();
 
     auto& stats = Renderer2D::GetStats();
@@ -148,13 +127,12 @@ void EditorLayer::OnGUIRender()
     if (m_viewport_size != *((glm::vec2*)&viewport_panel_size)) {
         m_viewport_size.x = viewport_panel_size.x;
         m_viewport_size.y = viewport_panel_size.y;
-        m_framebuffer->Resize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
-
-        m_camera_controller->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
     }
     ImGui::Image((void*)texture_id, ImVec2{m_viewport_size.x, m_viewport_size.y}, ImVec2{0, 1}, ImVec2{1, 0});
     ImGui::End();
     ImGui::PopStyleVar();
+
+    Application::GetInstance().GetGUILayer()->EndDocking();
 }
 
 void EditorLayer::OnEvent(Event& e)

@@ -24,18 +24,18 @@
 #include "glophysx/rendering/shader/shader.h"
 #include "glophysx/rendering/camera/camera.h"
 
-#include "glophysx/rendering/components/mesh/mesh.h"
+#include "glophysx/components/mesh/mesh.h"
 
 namespace GLOPHYSX {
 
-	namespace RENDERING {
+	// Forward declaration of the Mesh class
+	// Namespace COMPONENTS is created after the Renderer class and it cannot be seen until after the mesh file is compiled
+	namespace COMPONENTS {
+		class Mesh;
+	}
+	using namespace COMPONENTS;
 
-		// Forward declaration of the Mesh class
-		// Namespace COMPOSITION is created after the Renderer class and it cannot be seen until after the mesh file is compiled
-		namespace COMPONENTS {
-			class Mesh;
-		}
-		using namespace COMPONENTS;
+	namespace RENDERING {
 
 		class Renderer
 		{

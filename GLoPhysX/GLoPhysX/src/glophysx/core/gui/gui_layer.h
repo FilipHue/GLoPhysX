@@ -31,6 +31,9 @@ namespace GLOPHYSX {
 		void Begin();
 		void End();
 
+		void BeginDocking();
+		void EndDocking();
+
 		void SetConsumeEvents(bool consume) { m_consume_events = consume; }
 
 	private:
