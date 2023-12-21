@@ -51,7 +51,10 @@ namespace GLOPHYSX {
 				return m_scene->m_registry.all_of<T>(m_entity_handle);
 			}
 
+			bool operator==(const Entity& other) const { return m_entity_handle == other.m_entity_handle && m_scene == other.m_scene; }
+			bool operator!=(const Entity& other) const { return !(*this == other); }
 			operator bool() const { return m_entity_handle != entt::null; }
+			operator uint32_t() const { return (uint32_t)m_entity_handle; }
 
 		private:
 			entt::entity m_entity_handle{ entt::null };

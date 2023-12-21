@@ -16,10 +16,13 @@ namespace GLOPHYSX {
 
 			void SetContext(const Shared<Scene>& scene);
 
+			void DrawEntityNode(Entity entity);
+
 			void OnGUIRender();
 
 		private:
-			Shared<Scene> m_contex;
+			Shared<Scene> m_context;
+			Entity m_selected_context ;
 		};
 	}
 }
