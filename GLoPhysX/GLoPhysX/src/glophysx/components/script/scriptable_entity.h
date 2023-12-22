@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entity.h"
+#include "glophysx/ecs/entity.h"
 
 namespace GLOPHYSX {
 

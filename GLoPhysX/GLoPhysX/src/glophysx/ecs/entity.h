@@ -22,11 +22,15 @@ namespace GLOPHYSX {
 					GLOP_CORE_CRITICAL("Entity already has the component.");
 					exit(-1);
 				}
-				return m_scene->m_registry.emplace<T>(m_entity_handle, std::forward<Args>(args)...);
+
+				T& component = m_scene->m_registry.emplace<T>(m_entity_handle, std::forward<Args>(args)...);
+				m_scene->OnComponentAdded<T>(*this, component);
+
+				return component;
 			}
 
 			template<typename T>
-			T& RemoveComponent()
+			uint32_t RemoveComponent()
 			{
 				if (!HasComponent<T>()) {
 					GLOP_CORE_CRITICAL("Entity doesn'y have the component.");
@@ -55,6 +59,8 @@ namespace GLOPHYSX {
 			bool operator!=(const Entity& other) const { return !(*this == other); }
 			operator bool() const { return m_entity_handle != entt::null; }
 			operator uint32_t() const { return (uint32_t)m_entity_handle; }
+
+			operator entt::entity() const { return m_entity_handle; }
 
 		private:
 			entt::entity m_entity_handle{ entt::null };

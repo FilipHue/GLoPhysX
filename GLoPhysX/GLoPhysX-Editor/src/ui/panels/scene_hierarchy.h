@@ -12,17 +12,18 @@ namespace GLOPHYSX {
 		{
 		public:
 			SceneHierarchy() = default;
-			SceneHierarchy(const Shared<Scene>& scene);
+			SceneHierarchy(const Shared<Scene>& scene) { SetContext(scene); }
 
-			void SetContext(const Shared<Scene>& scene);
+			void SetContext(const Shared<Scene>& scene) { m_context = scene; }
+			Entity GetSelectedContext() const { return m_selected_context; }
 
 			void DrawEntityNode(Entity entity);
 
-			void OnGUIRender();
+			void Render();
 
 		private:
 			Shared<Scene> m_context;
-			Entity m_selected_context ;
+			Entity m_selected_context;
 		};
 	}
 }

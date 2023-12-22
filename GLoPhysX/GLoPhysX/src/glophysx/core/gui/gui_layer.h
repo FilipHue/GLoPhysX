@@ -37,6 +37,9 @@ namespace GLOPHYSX {
 		void SetConsumeEvents(bool consume) { m_consume_events = consume; }
 
 	private:
+		void SetDarkTheme();
+
+	private:
 		bool m_consume_events = true;
 	};
 }

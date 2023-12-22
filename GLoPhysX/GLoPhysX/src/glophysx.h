@@ -28,12 +28,12 @@
 
 // ECS
 #include "glophysx/ecs/components.h"
-#include "glophysx/ecs/scriptable_entity.h"
 #include "glophysx/ecs/entity.h"
 
 // Components
 #include "glophysx/components/scene/scene.h"
 #include "glophysx/components/mesh/mesh.h"
+#include "glophysx/components/script/scriptable_entity.h"
 
 #ifdef GLOP_DEBUG
 	#include "glophysx/debug/debug.h"

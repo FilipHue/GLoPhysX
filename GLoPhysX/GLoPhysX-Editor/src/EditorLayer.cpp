@@ -21,20 +21,17 @@ void EditorLayer::OnAttach()
 
     m_current_scene = MakeShared<Scene>();
 
-    auto square = m_current_scene->CreateEntity("Square");
-    square.AddComponent<SpriteComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-    m_square_entity = square;
+    m_square_entity = m_current_scene->CreateEntity("Square");
+    m_square_entity.AddComponent<SpriteComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
     m_main_camera_entity = m_current_scene->CreateEntity("Main Camera");
     m_main_camera_entity.AddComponent<CameraComponent>();
-    //m_main_camera_entity.GetComponent<TransformComponent>().m_transform = glm::translate(glm::mat4(1.f), glm::vec3(-0.5f, 0.f, 0.f));
 
     m_second_camera_entity = m_current_scene->CreateEntity("Second Camera");
     m_second_camera_entity.AddComponent<CameraComponent>();
-    //m_second_camera_entity.GetComponent<TransformComponent>().m_transform = glm::translate(glm::mat4(1.f), glm::vec3(0.5f, 0.f, 0.f));
     m_second_camera_entity.GetComponent<CameraComponent>().is_primary = false;
 
-    m_scene_hierarchy.SetContext(m_current_scene);
+    m_editor_ui.Initialize(m_current_scene);
 
     class CameraController : public ScriptableEntity
     {
@@ -45,24 +42,25 @@ void EditorLayer::OnAttach()
 
         void OnUpdate(DeltaTime dt) override
         {
-            auto& transform = GetComponent<TransformComponent>().m_transform;
+            if (GetComponent<CameraComponent>().is_primary) {
+                auto& translation = GetComponent<TransformComponent>().m_translation;
 
-            if (Input::IsKeyPressed(GLOP_KEY_A)) {
-                transform[3][0] -= m_move_speed * dt;
+                if (Input::IsKeyPressed(GLOP_KEY_A)) {
+                    translation.x -= m_move_speed * dt;
+                }
+
+                if (Input::IsKeyPressed(GLOP_KEY_D)) {
+                    translation.x += m_move_speed * dt;
+                }
+
+                if (Input::IsKeyPressed(GLOP_KEY_S)) {
+                    translation.y -= m_move_speed * dt;
+                }
+
+                if (Input::IsKeyPressed(GLOP_KEY_W)) {
+                    translation.y += m_move_speed * dt;
+                }
             }
-
-            if (Input::IsKeyPressed(GLOP_KEY_D)) {
-                transform[3][0] += m_move_speed * dt;
-            }
-
-            if (Input::IsKeyPressed(GLOP_KEY_S)) {
-                transform[3][1] -= m_move_speed * dt;
-            }
-
-            if (Input::IsKeyPressed(GLOP_KEY_W)) {
-                transform[3][1] += m_move_speed * dt;
-            }
-
         }
 
         void OnDestroy() override
@@ -73,6 +71,7 @@ void EditorLayer::OnAttach()
         float m_move_speed = 10.f;
     };
 
+    m_main_camera_entity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
     m_second_camera_entity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 }
 
@@ -91,13 +90,6 @@ void EditorLayer::OnUpdate(DeltaTime dt)
         m_framebuffer->Resize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
         m_current_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
     }
-
-	{
-		GLOP_PROFILE_SCOPE("Camera update");
-        if (m_viewport_focused && m_viewport_hovered) {
-		    m_camera_controller->OnUpdate(dt);
-        }
-	}
 
 	Renderer2D::ResetStats();
 
@@ -124,28 +116,7 @@ void EditorLayer::OnGUIRender()
 
     Application::GetInstance().GetGUILayer()->BeginDocking();
 
-    m_scene_hierarchy.OnGUIRender();
-
-    ImGui::Begin("Settings");
-    ImGui::ColorEdit3("Square Color", glm::value_ptr(m_square_color));
-    m_square_entity.GetComponent<SpriteComponent>().m_color = m_square_color;
-
-    static bool switch_cameras = true;
-    if (ImGui::Checkbox("Main Camera", &switch_cameras))
-    {
-        m_main_camera_entity.GetComponent<CameraComponent>().is_primary = switch_cameras;
-        m_second_camera_entity.GetComponent<CameraComponent>().is_primary = !switch_cameras;
-    }
-
-    {
-        auto& camera = m_second_camera_entity.GetComponent<CameraComponent>().m_camera;
-        float ortho_size = camera.GetOrthographicProjectionSize();
-        bool changed_size = ImGui::DragFloat("Second Camera Size", &ortho_size);
-        if (changed_size) {
-            camera.SetOrthographicProjectionSize(ortho_size);
-        }
-    }
-    ImGui::End();
+    m_editor_ui.OnGUIRender();
 
     auto& stats = Renderer2D::GetStats();
 
@@ -167,7 +138,7 @@ void EditorLayer::OnGUIRender()
         m_viewport_size.x = viewport_panel_size.x;
         m_viewport_size.y = viewport_panel_size.y;
     }
-    ImGui::Image((void*)texture_id, ImVec2{m_viewport_size.x, m_viewport_size.y}, ImVec2{0, 1}, ImVec2{1, 0});
+    ImGui::Image((void*)(UINT_PTR)texture_id, ImVec2{m_viewport_size.x, m_viewport_size.y}, ImVec2{0, 1}, ImVec2{1, 0});
     ImGui::End();
     ImGui::PopStyleVar();
 
@@ -176,5 +147,4 @@ void EditorLayer::OnGUIRender()
 
 void EditorLayer::OnEvent(Event& e)
 {
-	m_camera_controller->OnEvent(e);
 }

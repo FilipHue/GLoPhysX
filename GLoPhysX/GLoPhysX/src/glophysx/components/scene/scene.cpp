@@ -4,7 +4,7 @@
 #include "glm.hpp"
 
 #include "glophysx/ecs/entity.h"
-#include "glophysx/ecs/scriptable_entity.h"
+#include "glophysx/components/script/scriptable_entity.h"
 
 #include "glophysx/rendering/renderer/2d/renderer_2d.h"
 
@@ -33,6 +33,12 @@ namespace GLOPHYSX {
 
 			return entity;
 		}
+
+		void Scene::DestroyEntity(Entity& entity)
+		{
+			m_registry.destroy(entity);
+		}
+
 		void Scene::OnUpdate(DeltaTime dt)
 		{
 			{
@@ -50,12 +56,12 @@ namespace GLOPHYSX {
 			}
 
 			SceneCamera* main_camera = nullptr;
-			glm::mat4 camera_transform = glm::mat4(1.f);
+			glm::mat4 camera_transform;
 			m_registry.view<TransformComponent, CameraComponent>().each([&main_camera, &camera_transform](auto entity, auto& transform, auto& camera)
 				{
 					if (camera.is_primary == 1) {
 						main_camera = &camera.m_camera;
-						camera_transform = transform.m_transform;
+						camera_transform = transform.GetTransform();
 						return;
 					}
 				});
@@ -69,7 +75,7 @@ namespace GLOPHYSX {
 				for (auto entity : group) {
 					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
 
-					Renderer2D::DrawQuad(transform.m_transform, sprite.m_color);
+					Renderer2D::DrawQuad(transform.GetTransform(), sprite.m_color);
 				}
 
 				Renderer2D::EndScene();
@@ -88,6 +94,38 @@ namespace GLOPHYSX {
 					camera_component.m_camera.SetViewportSize(width, height);
 				}
 			}
+		}
+
+		template<typename T>
+		void Scene::OnComponentAdded(Entity entity, T& component)
+		{
+			static_assert(false);
+		}
+
+		template<>
+		void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component)
+		{
+		}
+
+		template<>
+		void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
+		{
+		}
+
+		template<>
+		void Scene::OnComponentAdded<SpriteComponent>(Entity entity, SpriteComponent& component)
+		{
+		}
+
+		template<>
+		void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
+		{
+			component.m_camera.SetViewportSize(m_viewport_width, m_viewport_height);
+		}
+
+		template<>
+		void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
+		{
 		}
 	}
 }

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "glophysx.h"
-#include "panels/scene_hierarchy.h"
+#include "ui/editor_ui.h"
+#include "ui/panels/scene_hierarchy.h"
 
 using namespace GLOPHYSX;
 using namespace RENDERING;
@@ -36,12 +37,13 @@ private:
 	bool m_viewport_focused = true;
 	bool m_viewport_hovered = true;
 
+	// Editor UI
+	EditorUI m_editor_ui;
+
 	// Scene
 	Shared<Scene> m_current_scene;
 	Entity m_square_entity;
 	Entity m_main_camera_entity;
 	Entity m_second_camera_entity;
 
-	// Panels
-	SceneHierarchy m_scene_hierarchy;
 };
