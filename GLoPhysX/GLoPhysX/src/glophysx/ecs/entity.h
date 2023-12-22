@@ -30,7 +30,7 @@ namespace GLOPHYSX {
 			}
 
 			template<typename T>
-			uint32_t RemoveComponent()
+			size_t RemoveComponent()
 			{
 				if (!HasComponent<T>()) {
 					GLOP_CORE_CRITICAL("Entity doesn'y have the component.");
