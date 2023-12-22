@@ -124,18 +124,21 @@ namespace GLOPHYSX {
 
 		void Renderer2D::Flush()
 		{
-			s_data->shader->Bind();
-
-			for (uint32_t i = 0; i < s_data->texture_slot_index; i++) {
-				s_data->texture_slots[i]->Bind(i);
-			}
-
 			uint32_t data_size = (uint32_t)((uint8_t*)s_data->quad_data->VB_ptr - (uint8_t*)s_data->quad_data->VB_base);
-			s_data->quad_data->VB->SetData(s_data->quad_data->VB_base, data_size);
+			if (data_size)
+			{
+				s_data->shader->Bind();
 
-			RendererCommands::DrawIndexed(s_data->quad_data->VA, s_data->quad_data->index_count);
+				for (uint32_t i = 0; i < s_data->texture_slot_index; i++) {
+					s_data->texture_slots[i]->Bind(i);
+				}
 
-			s_stats->draw_calls++;
+				s_data->quad_data->VB->SetData(s_data->quad_data->VB_base, data_size);
+
+				RendererCommands::DrawIndexed(s_data->quad_data->VA, s_data->quad_data->index_count);
+
+				s_stats->draw_calls++;
+			}
 		}
 
 		void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
