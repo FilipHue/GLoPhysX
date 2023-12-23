@@ -49,10 +49,14 @@ namespace GLOPHYSX {
 			ImGui::Begin("Scene Hierarchy");
 
 			auto entities = m_context->m_registry.storage<entt::entity>().each();
-			for (const auto& [entity_id] : entities)
+			if (entities.begin() != entities.end())
 			{
-				Entity entity{ entity_id, m_context.get() };
-				DrawEntityNode(entity);
+				for (const auto& [entity_id] : entities)
+				{
+					Entity entity{ entity_id, m_context.get() };
+					DrawEntityNode(entity);
+				}
+
 			}
 
 			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())

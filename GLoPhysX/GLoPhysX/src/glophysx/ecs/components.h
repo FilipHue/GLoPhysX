@@ -3,6 +3,9 @@
 #include "glophysx/core/core.h"
 #include "glophysx/components/scene/scene_camera.h"
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include "gtx/quaternion.hpp"
+
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
 
@@ -33,12 +36,10 @@ namespace GLOPHYSX {
 
 			glm::mat4 GetTransform() const
 			{
-				glm::mat4 rotation =
-					glm::rotate(glm::mat4(1.f), m_rotation.x, { 1, 0, 0 }) *
-					glm::rotate(glm::mat4(1.f), m_rotation.y, { 0, 1, 0 }) *
-					glm::rotate(glm::mat4(1.f), m_rotation.z, { 0, 0, 1 });
-
-				return glm::translate(glm::mat4(1.f), m_translation) * rotation * glm::scale(glm::mat4(1.0f), m_scale);
+				return 
+					glm::translate(glm::mat4(1.f), m_translation) *
+					glm::toMat4(glm::quat(m_rotation)) *
+					glm::scale(glm::mat4(1.0f), m_scale);
 			}
 		};
 

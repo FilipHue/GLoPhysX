@@ -22,6 +22,13 @@ public:
 	void OnEvent(Event& e) override;
 
 private:
+	void NewScene();
+	void LoadScene();
+	void SaveAsScene();
+
+	bool OnKeyPress(KeyPressEvent& e);
+
+private:
 	Shared<OrthographicCameraController> m_camera_controller;
 
 	Unique<Mesh> m_square;
@@ -39,6 +46,7 @@ private:
 
 	// Editor UI
 	EditorUI m_editor_ui;
+	int m_gizmo_type = 0;
 
 	// Scene
 	Shared<Scene> m_current_scene;

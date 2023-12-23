@@ -5,6 +5,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include "ImGuizmo.h"
+
 #include "glophysx/core/application/application.h"
 
 namespace GLOPHYSX {
@@ -85,6 +87,7 @@ namespace GLOPHYSX {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		ImGuizmo::BeginFrame();
 	}
 
 	void GUILayer::End()
@@ -151,11 +154,11 @@ namespace GLOPHYSX {
 
 		style.WindowMinSize.x = 32.f;
 
-		ImGui::End();
 	}
 
 	void GUILayer::EndDocking()
 	{
+		ImGui::End();
 	}
 
 	void GUILayer::SetDarkTheme()

@@ -49,7 +49,13 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/STB/**.h",
 		"%{prj.name}/dependencies/STB/**.cpp",
 
-		"%{prj.name}/dependencies/ENTT/entt/**.h"
+		"%{prj.name}/dependencies/ENTT/entt/**.h",
+
+		"%{prj.name}/dependencies/YAML/yaml/**.h",
+		"%{prj.name}/dependencies/YAML/yaml/**.cpp",
+
+		"%{prj.name}/dependencies/IMGUIZMO/imguizmo/**.h",
+		"%{prj.name}/dependencies/IMGUIZMO/imguizmo/**.cpp"
 	}
 
 	includedirs
@@ -61,7 +67,9 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/IMGUI",
 		"%{prj.name}/dependencies/GLM",
 		"%{prj.name}/dependencies/STB",
-		"%{prj.name}/dependencies/ENTT"
+		"%{prj.name}/dependencies/ENTT",
+		"%{prj.name}/dependencies/YAML/yaml/include",
+		"%{prj.name}/dependencies/IMGUIZMO/imguizmo"
 	}
 
 	libdirs
@@ -86,6 +94,12 @@ project "GLoPhysX"
 	filter  "files:GLoPhysX/dependencies/IMGUI/**.cpp"
 		flags { "NoPCH" }
 
+	filter "files:GLoPhysX/dependencies/YAML/yaml/**.cpp"
+		flags { "NoPCH" }
+
+	filter "files:GLoPhysX/dependencies/IMGUIZMO/imguizmo/**.cpp"
+		flags { "NoPCH" }
+
 	filter "system:windows"
 		systemversion "latest"
 
@@ -95,6 +109,8 @@ project "GLoPhysX"
 		defines
 		{
 			"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING", -- For MSVC stdext::checked_array_iterator<T*> error (will be removed in the future)
+			"YAML_CPP_STATIC_DEFINE", -- For YAML static library
+			"IMGUI_DEFINE_MATH_OPERATORS", -- For IMGUI
 			"GLOP_PLATFORM_WINDOWS"
 		}
 
@@ -152,7 +168,9 @@ project "Sandbox"
 		"GLoPhysX/dependencies/IMGUI",
 		"GLoPhysX/dependencies/GLM",
 		"GLoPhysX/dependencies/STB",
-		"GLoPhysX/dependencies/ENTT"
+		"GLoPhysX/dependencies/ENTT",
+		"GLoPhysX/dependencies/YAML/yaml/include",
+		"GLoPhysX/dependencies/IMGUIZMO/imguizmo"
 	}
 
 	-- UNCOMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
@@ -178,6 +196,8 @@ project "Sandbox"
 		defines
 		{
 			"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING", -- For MSVC stdext::checked_array_iterator<T*> (will be removed in the future)
+			"YAML_CPP_STATIC_DEFINE", -- For YAML static library
+			"IMGUI_DEFINE_MATH_OPERATORS", -- For IMGUI
 			"GLOP_PLATFORM_WINDOWS"
 		}
 
@@ -223,7 +243,9 @@ project "GLoPhysX-Editor"
 		"GLoPhysX/dependencies/IMGUI",
 		"GLoPhysX/dependencies/GLM",
 		"GLoPhysX/dependencies/STB",
-		"GLoPhysX/dependencies/ENTT"
+		"GLoPhysX/dependencies/ENTT",
+		"GLoPhysX/dependencies/YAML/yaml/include",
+		"GLoPhysX/dependencies/IMGUIZMO/imguizmo"
 	}
 
 	-- UNCOMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
@@ -249,6 +271,8 @@ project "GLoPhysX-Editor"
 		defines
 		{
 			"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING", -- For MSVC stdext::checked_array_iterator<T*> (will be removed in the future)
+			"YAML_CPP_STATIC_DEFINE", -- For YAML static library
+			"IMGUI_DEFINE_MATH_OPERATORS", -- For IMGUI
 			"GLOP_PLATFORM_WINDOWS"
 		}
 

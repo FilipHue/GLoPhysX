@@ -23,6 +23,8 @@ namespace GLOPHYSX {
 			m_perspective_far = far_z;
 
 			m_projection_type = ProjectionType::PERSPECTIVE;
+
+			RecalculateProjection();
 		}
 
 		void SceneCamera::SetOrthographicProjection(float size, float near_z, float far_z)
@@ -32,6 +34,8 @@ namespace GLOPHYSX {
 			m_ortho_far = far_z;
 
 			m_projection_type = ProjectionType::ORTHOGRAPHIC;
+
+			RecalculateProjection();
 		}
 		void SceneCamera::SetViewportSize(uint32_t width, uint32_t height)
 		{

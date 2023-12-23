@@ -14,7 +14,7 @@ namespace GLOPHYSX {
 			SceneHierarchy() = default;
 			SceneHierarchy(const Shared<Scene>& scene) { SetContext(scene); }
 
-			void SetContext(const Shared<Scene>& scene) { m_context = scene; }
+			void SetContext(const Shared<Scene>& scene) { m_context = scene; m_selected_context = {}; }
 			Entity GetSelectedContext() const { return m_selected_context; }
 
 			void DrawEntityNode(Entity entity);

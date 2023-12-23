@@ -4,6 +4,8 @@
 #include "panels/scene_hierarchy.h"
 #include "panels/entity_inspector.h"
 
+class EditorLayer;
+
 namespace GLOPHYSX {
 
 	namespace EDITOR {
@@ -19,6 +21,8 @@ namespace GLOPHYSX {
 		private:
 			static SceneHierarchy* m_ui_scene_hierarchy;
 			static EntityInspector* m_ui_entity_inspector;
+
+			friend class EditorLayer;
 		};
 	}
 }
