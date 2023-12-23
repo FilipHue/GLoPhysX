@@ -3,6 +3,7 @@
 #include "window.h"
 
 namespace GLOPHYSX {
+
     void Window::SetCallbacks()
     {
         SetWindowCallbacks();

@@ -41,18 +41,18 @@ namespace GLOPHYSX {
 			};*/
 
 			// (0, 0) IN THE CENTER
-			glm::vec4 vertex_positions[4] = {
-				{-0.5f, -0.5f, 0.f, 1.f},
-				{ 0.5f, -0.5f, 0.f, 1.f},
-				{ 0.5f,  0.5f, 0.f, 1.f},
-				{-0.5f,  0.5f, 0.f, 1.f}
+			glm::vec4 vertex_positions_default[4] = {
+				{-0.5f, -0.5f, 0.0f, 1.0f},
+				{ 0.5f, -0.5f, 0.0f, 1.0f},
+				{ 0.5f,  0.5f, 0.0f, 1.0f},
+				{-0.5f,  0.5f, 0.0f, 1.0f}
 			};
 
-			glm::vec2 vertex_tex_coords[4] = {
-				{0.f, 0.f},
-				{1.f, 0.f},
-				{1.f, 1.f},
-				{0.f, 1.f}
+			glm::vec2 vertex_tex_coords_default[4] = {
+				{0.0f, 0.0f},
+				{1.0f, 0.0f},
+				{1.0f, 1.0f},
+				{0.0f, 1.0f}
 			};
 		};
 

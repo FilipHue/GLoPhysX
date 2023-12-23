@@ -85,8 +85,7 @@ namespace GLOPHYSX {
 	* facilitating access to custom GLoPhysX engine data and callbacks from within the GLFW callback
 	* functions.
 	*/
-	typedef struct window_data WindowData;
-	struct window_data {
+	struct WindowData {
 		unsigned int x_pos, y_pos;
 
 		WindowProperties* wp;

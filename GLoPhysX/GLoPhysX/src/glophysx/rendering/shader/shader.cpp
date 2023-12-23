@@ -24,6 +24,7 @@ namespace GLOPHYSX {
 			GLOP_CORE_CRITICAL("Unknown rendering API")
 				return nullptr;
 		}
+
 		Shared<Shader> Shader::Create(const std::string& name, std::string& source_vs, std::string& source_fs)
 		{
 			switch (RendererAPI::GetApi())
@@ -40,6 +41,7 @@ namespace GLOPHYSX {
 			GLOP_CORE_CRITICAL("Unknown rendering API")
 				return nullptr;
 		}
+
 		std::string Shader::ReadShaderSource(const std::string& file_path)
 		{
 			std::string source;
@@ -59,6 +61,7 @@ namespace GLOPHYSX {
 
 			return source;
 		}
+
 		std::unordered_map<ShaderType, std::string> Shader::ProcessShaderSource(const std::string& source)
 		{
 			std::unordered_map<ShaderType, std::string> shader_sources;

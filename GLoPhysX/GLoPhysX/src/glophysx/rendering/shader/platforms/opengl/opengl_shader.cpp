@@ -72,24 +72,28 @@ namespace GLOPHYSX {
 
 			SendUniformBool(name, value);
 		}
+
 		void OpenglShader::SetInt(const std::string& name, int value) const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			SendUniformInt(name, value);
 		}
+
 		void OpenglShader::SetIVec2(const std::string& name, const glm::ivec2& value) const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			SendUniformIVec2(name, value);
 		}
+
 		void OpenglShader::SetIVec3(const std::string& name, const glm::ivec3& value) const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			SendUniformIVec3(name, value);
 		}
+
 		void OpenglShader::SetIVec4(const std::string& name, const glm::ivec4& value) const
 		{
 			GLOP_PROFILE_FUNCTION();
@@ -110,36 +114,42 @@ namespace GLOPHYSX {
 
 			SendUniformFloat(name, value);
 		}
+
 		void OpenglShader::SetVec2(const std::string& name, const glm::vec2& value) const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			SendUniformVec2(name, value);
 		}
+
 		void OpenglShader::SetVec3(const std::string& name, const glm::vec3& value) const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			SendUniformVec3(name, value);
 		}
+
 		void OpenglShader::SetVec4(const std::string& name, const glm::vec4& value) const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			SendUniformVec4(name, value);
 		}
+
 		void OpenglShader::SetMat2(const std::string& name, const glm::mat2& value) const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			SendUniformMat2(name, value);
 		}
+
 		void OpenglShader::SetMat3(const std::string& name, const glm::mat3& value) const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			SendUniformMat3(name, value);
 		}
+
 		void OpenglShader::SetMat4(const std::string& name, const glm::mat4& value) const
 		{
 			GLOP_PROFILE_FUNCTION();
@@ -153,21 +163,25 @@ namespace GLOPHYSX {
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniform1i(location, (int)value);
 		}
+
 		void OpenglShader::SendUniformInt(const std::string& name, int value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniform1i(location, value);
 		}
+
 		void OpenglShader::SendUniformIVec2(const std::string& name, const glm::ivec2& value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniform2i(location, value.x, value.y);
 		}
+
 		void OpenglShader::SendUniformIVec3(const std::string& name, const glm::ivec3& value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniform3i(location, value.x, value.y, value.z);
 		}
+
 		void OpenglShader::SendUniformIVec4(const std::string& name, const glm::ivec4& value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
@@ -185,31 +199,37 @@ namespace GLOPHYSX {
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniform1f(location, value);
 		}
+
 		void OpenglShader::SendUniformVec2(const std::string& name, const glm::vec2& value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniform2f(location, value.x, value.y);
 		}
+
 		void OpenglShader::SendUniformVec3(const std::string& name, const glm::vec3& value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniform3f(location, value.x, value.y, value.z);
 		}
+
 		void OpenglShader::SendUniformVec4(const std::string& name, const glm::vec4& value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniform4f(location, value.x, value.y, value.z, value.w);
 		}
+
 		void OpenglShader::SendUniformMat2(const std::string& name, const glm::mat2& value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniformMatrix2fv(location, 1, GL_FALSE, glm::value_ptr(value));
 		}
+
 		void OpenglShader::SendUniformMat3(const std::string& name, const glm::mat3& value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());
 			glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(value));
 		}
+
 		void OpenglShader::SendUniformMat4(const std::string& name, const glm::mat4& value) const
 		{
 			GLint location = glGetUniformLocation(m_id, name.c_str());

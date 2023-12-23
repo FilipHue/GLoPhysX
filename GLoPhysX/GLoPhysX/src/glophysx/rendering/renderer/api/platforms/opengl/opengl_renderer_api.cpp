@@ -20,24 +20,28 @@ namespace GLOPHYSX {
 
 			glEnable(GL_DEPTH_TEST);
 		}
+
 		void OpenglRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glViewport(x, y, width, height);
 		}
+
 		void OpenglRendererAPI::SetClearColor(const glm::vec4& color)
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glClearColor(color.r, color.g, color.b, color.a);
 		}
+
 		void OpenglRendererAPI::Clear()
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
+
 		void OpenglRendererAPI::DrawIndexed(const Shared<VertexArray>& vertex_array, uint32_t index_count)
 		{
 			GLOP_PROFILE_FUNCTION();

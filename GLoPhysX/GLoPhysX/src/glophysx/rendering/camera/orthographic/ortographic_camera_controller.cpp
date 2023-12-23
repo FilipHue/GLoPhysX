@@ -49,6 +49,7 @@ namespace GLOPHYSX {
 			m_camera.SetPosition(m_camera_position);
 			m_camera.SetRotation(m_camera_rotation);
 		}
+
 		void OrthographicCameraController::OnEvent(Event& e)
 		{
 			EventDispatcher::Dispatch<MouseScrollEvent>(e, std::bind(&OrthographicCameraController::OnMouseScroll, this, std::placeholders::_1));
@@ -73,6 +74,7 @@ namespace GLOPHYSX {
 
 			return false;
 		}
+
 		bool OrthographicCameraController::OnWindowResize(WindowResizeEvent& e)
 		{
 			m_aspect_ration = (float)e.GetWidth() / (float)e.GetHeight();

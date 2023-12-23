@@ -21,6 +21,8 @@ int main(int argc, char **argv) {
 	GLOP_PROFILER_BEGIN_SESSION("Shutdown", "GLoPhysX-ShutdownProfile.json");
 	delete app;
 	GLOP_PROFILER_END_SESSION();
+
+	GLOPHYSX::Logger::Shutdown();
 }
 
 #endif

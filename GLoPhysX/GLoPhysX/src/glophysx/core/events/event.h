@@ -74,7 +74,7 @@ namespace GLOPHYSX {
 		virtual int GetCategoryFlags() const = 0;
 
 		// Return if the event is in a category or group of categories
-		bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
+		bool IsInCategory(EventCategory category) const { return GetCategoryFlags() & category; }
 
 		// Provides a text representation of the event data for logging and debuging
 		virtual std::string ToString() const { return GetName(); }

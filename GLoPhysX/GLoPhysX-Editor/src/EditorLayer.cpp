@@ -4,7 +4,7 @@
 
 EditorLayer::EditorLayer() : Layer("EditorLayer")
 {
-    m_viewport_size = glm::vec2(1600.f, 900.f);
+    m_viewport_size = glm::vec2(1600.0f, 900.0f);
 	m_camera_controller = MakeShared<OrthographicCameraController>(m_viewport_size.x / m_viewport_size.y);
 	m_shader_library = MakeUnique<ShaderLibrary>();
 	m_checkerboard = Texture2D::Create("assets/textures/checkerboard.png");

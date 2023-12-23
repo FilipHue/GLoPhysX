@@ -118,6 +118,7 @@ namespace GLOPHYSX {
 	{
 		return m_window;
 	}
+
 	void WWindow::SetWindowCallbacks()
 	{
 		glfwSetWindowCloseCallback(m_window, [](GLFWwindow* window_handle) {
@@ -165,6 +166,7 @@ namespace GLOPHYSX {
 			window_data.event_callback(event);
 			});
 	}
+
 	void WWindow::SetMouseCallbacks()
 	{
 		glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window_handle, int button, int action, int mods) {
@@ -205,6 +207,7 @@ namespace GLOPHYSX {
 			window_data.event_callback(event);
 			});
 	}
+
 	void WWindow::SetKeyCallbacks()
 	{
 		glfwSetKeyCallback(m_window, [](GLFWwindow* window_handle, int key, int scancode, int action, int mods) {

@@ -33,7 +33,7 @@ namespace GLOPHYSX {
 			size_t RemoveComponent()
 			{
 				if (!HasComponent<T>()) {
-					GLOP_CORE_CRITICAL("Entity doesn'y have the component.");
+					GLOP_CORE_CRITICAL("Entity doesn't have the component.");
 					exit(-1);
 				}
 				return m_scene->m_registry.remove<T>(m_entity_handle);
@@ -43,7 +43,7 @@ namespace GLOPHYSX {
 			T& GetComponent()
 			{
 				if (!HasComponent<T>()) {
-					GLOP_CORE_CRITICAL("Entity doesn'y have the component.");
+					GLOP_CORE_CRITICAL("Entity doesn't have the component.");
 					exit(-1);
 				}
 				return m_scene->m_registry.get<T>(m_entity_handle);

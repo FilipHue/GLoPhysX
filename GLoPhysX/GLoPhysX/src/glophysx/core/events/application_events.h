@@ -80,8 +80,8 @@ namespace GLOPHYSX {
             return ss.str();
         }
 
-        inline int GetWidth() { return m_width; }
-        inline int GetHeight() { return m_height; }
+        inline int GetWidth() const { return m_width; }
+        inline int GetHeight() const { return m_height; }
 
     private:
         int m_width;   // The new width of the window

@@ -46,7 +46,7 @@ namespace GLOPHYSX {
             return ss.str();
         }
 
-        inline int GetMouseButton() { return m_button; }
+        inline int GetMouseButton() const { return m_button; }
 
     private:
         int m_button;  // Identifier for the mouse button that was pressed.
@@ -78,7 +78,7 @@ namespace GLOPHYSX {
             return ss.str();
         }
 
-        inline int GetMouseButton() { return m_button; }
+        inline int GetMouseButton() const { return m_button; }
 
     private:
         int m_button;  // Identifier for the mouse button that was released.
@@ -110,8 +110,8 @@ namespace GLOPHYSX {
             return ss.str();
         }
 
-        inline double GetXPos() { return m_x_pos; }
-        inline double GetYPos() { return m_y_pos; }
+        inline double GetXPos() const { return m_x_pos; }
+        inline double GetYPos() const { return m_y_pos; }
 
     private:
         double m_x_pos; // The new X position of the mouse cursor.
@@ -143,8 +143,8 @@ namespace GLOPHYSX {
             return ss.str();
         }
 
-        inline double GetXOffset() { return m_x_offset; }
-        inline double GetYOffset() { return m_y_offset; }
+        inline double GetXOffset() const { return m_x_offset; }
+        inline double GetYOffset() const { return m_y_offset; }
 
     private:
         double m_x_offset; // The scroll offset along the X-axis.

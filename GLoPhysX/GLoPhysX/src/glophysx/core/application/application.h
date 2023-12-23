@@ -59,10 +59,10 @@ namespace GLOPHYSX {
 		GLOP_API void PushOverlay(Shared<Layer> overlay);
 
 		// Method to get the application class's instance
-		GLOP_API static Application& GetInstance();
+		GLOP_API static Application& GetInstance() { return *s_instance; }
 
 		// Method to get the active window
-		GLOP_API Window& GetWindow();
+		GLOP_API Window& GetWindow() { return *m_window; }
 
 		GLOP_API Shared<GUILayer> GetGUILayer() const { return m_gui_layer; }
 

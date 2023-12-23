@@ -10,7 +10,6 @@ namespace GLOPHYSX {
 	constexpr auto CORE_LOGGER_NAME = "CORE";
 	constexpr auto CLIENT_LOGGER_NAME = "CLIENT";
 
-
 	/**
 	* @class Logger
 	* @brief Centralized and globally accessible logging utility.

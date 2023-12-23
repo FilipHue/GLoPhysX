@@ -64,7 +64,7 @@ namespace GLOPHYSX {
 			uint32_t white_texture_data = 0xffffffff;
 			s_data->white_texture->SetData(&white_texture_data, sizeof(uint32_t));
 
-			int32_t samplers[s_data->maximum_texture_slots];
+			int32_t samplers[s_data->maximum_texture_slots]{};
 			for (uint32_t i = 0; i < s_data->maximum_texture_slots; i++) {
 				samplers[i] = i;
 			}
@@ -155,11 +155,11 @@ namespace GLOPHYSX {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				s_data->quad_data->VB_ptr->position = transform * s_data->quad_data->vertex_positions[i];
+				s_data->quad_data->VB_ptr->position = transform * s_data->quad_data->vertex_positions_default[i];
 				s_data->quad_data->VB_ptr->color = color;
-				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords[i];
+				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords_default[i];
 				s_data->quad_data->VB_ptr->texture_index = 0;
-				s_data->quad_data->VB_ptr->tiling_factor = 1.f;
+				s_data->quad_data->VB_ptr->tiling_factor = 1.0f;
 				s_data->quad_data->VB_ptr++;
 			}
 
@@ -181,7 +181,7 @@ namespace GLOPHYSX {
 				s_data->texture_slot_index = 1;
 			}
 
-			constexpr glm::vec4 color = glm::vec4(1.f);
+			constexpr glm::vec4 color = glm::vec4(1.0f);
 
 			float texture_index = 0.f;
 			for (uint32_t i = 1; i < s_data->texture_slot_index; i++) {
@@ -198,9 +198,9 @@ namespace GLOPHYSX {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				s_data->quad_data->VB_ptr->position = transform * s_data->quad_data->vertex_positions[i];
+				s_data->quad_data->VB_ptr->position = transform * s_data->quad_data->vertex_positions_default[i];
 				s_data->quad_data->VB_ptr->color = color;
-				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords[i];
+				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords_default[i];
 				s_data->quad_data->VB_ptr->texture_index = texture_index;
 				s_data->quad_data->VB_ptr->tiling_factor = tiling_factor;
 				s_data->quad_data->VB_ptr++;
@@ -215,14 +215,14 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			DrawQuad({ position.x, position.y, 0.f }, size, color);
+			DrawQuad({ position.x, position.y, 0.0f }, size, color);
 		}
 
 		void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			glm::mat4 model_matrix = glm::mat4(1.f);
+			glm::mat4 model_matrix = glm::mat4(1.0f);
 
 			model_matrix = glm::translate(model_matrix, position);
 			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
@@ -234,14 +234,14 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			DrawQuad({ position.x, position.y, 0.f }, size, texture);
+			DrawQuad({ position.x, position.y, 0.0f }, size, texture);
 		}
 
 		void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Shared<Texture2D>& texture, float tiling_factor)
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			glm::mat4 model_matrix = glm::mat4(1.f);
+			glm::mat4 model_matrix = glm::mat4(1.0f);
 
 			model_matrix = glm::translate(model_matrix, position);
 			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
@@ -260,11 +260,11 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			glm::mat4 model_matrix = glm::mat4(1.f);
+			glm::mat4 model_matrix = glm::mat4(1.0f);
 
 			model_matrix = glm::translate(model_matrix, position);
-			model_matrix = glm::rotate(model_matrix, rotation, { 0.f, 0.f, 1.f });
-			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
+			model_matrix = glm::rotate(model_matrix, rotation, { 0.0f, 0.0f, 1.0f });
+			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.0f });
 
 			DrawQuad(model_matrix, color);
 		}
@@ -273,18 +273,18 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			DrawRotatedQuad({ position.x, position.y, 0.f }, size, rotation, texture, tiling_factor);
+			DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, tiling_factor);
 		}
 
 		void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture, float tiling_factor)
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			glm::mat4 model_matrix = glm::mat4(1.f);
+			glm::mat4 model_matrix = glm::mat4(1.0f);
 
 			model_matrix = glm::translate(model_matrix, position);
-			model_matrix = glm::rotate(model_matrix, glm::radians(rotation), { 0.f, 0.f, 1.f });
-			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
+			model_matrix = glm::rotate(model_matrix, glm::radians(rotation), { 0.0f, 0.0f, 1.0f });
+			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.0f });
 
 			DrawQuad(model_matrix, texture, tiling_factor);
 		}

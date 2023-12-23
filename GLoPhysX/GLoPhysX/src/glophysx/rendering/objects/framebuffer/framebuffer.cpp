@@ -7,6 +7,7 @@
 namespace GLOPHYSX {
 
 	namespace RENDERING {
+
 		Shared<Framebuffer> Framebuffer::Create(const FramebufferSpecs& specs)
 		{
 			switch (RendererAPI::GetApi())

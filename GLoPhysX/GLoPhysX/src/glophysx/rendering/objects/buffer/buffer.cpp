@@ -24,6 +24,7 @@ namespace GLOPHYSX {
 			GLOP_CORE_CRITICAL("Unknown rendering API");
 			return nullptr;
 		}
+
 		std::shared_ptr<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
 		{
 			switch (RendererAPI::GetApi())
@@ -40,6 +41,7 @@ namespace GLOPHYSX {
 			GLOP_CORE_CRITICAL("Unknown rendering API");
 			return nullptr;
 		}
+
 		std::shared_ptr<IndexBuffer> IndexBuffer::Create(uint32_t* vertices, uint32_t size)
 		{
 			switch (RendererAPI::GetApi())

@@ -19,24 +19,28 @@ namespace GLOPHYSX {
 			m_index = 0;
 			glCreateVertexArrays(1, &m_id);
 		}
+
 		OpenglVertexArray::~OpenglVertexArray()
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glDeleteVertexArrays(1, &m_id);
 		}
+
 		void OpenglVertexArray::Bind()
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glBindVertexArray(m_id);
 		}
+
 		void OpenglVertexArray::Unbind()
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glBindVertexArray(0);
 		}
+
 		void OpenglVertexArray::AddVertexBuffer(const Shared<VertexBuffer>& vertex_buffer)
 		{	
 			GLOP_PROFILE_FUNCTION();
@@ -67,6 +71,7 @@ namespace GLOPHYSX {
 
 			m_vertex_buffers.push_back(vertex_buffer);
 		}
+
 		void OpenglVertexArray::AddIndexBuffer(const Shared<IndexBuffer>& index_buffer)
 		{
 			GLOP_PROFILE_FUNCTION();

@@ -105,16 +105,14 @@ namespace GLOPHYSX {
 			m_window->Update();
 		}
 	}
-	Application& Application::GetInstance()
-	{
-		return *s_instance;
-	}
+
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
 		m_running = false;
 
 		return true;
 	}
+
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
 		GLOP_PROFILE_FUNCTION()
@@ -122,9 +120,5 @@ namespace GLOPHYSX {
 		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
 		return false;
-	}
-	Window& Application::GetWindow()
-	{
-		return *m_window;
 	}
 }

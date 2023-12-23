@@ -25,7 +25,7 @@ namespace GLOPHYSX {
 		{
 			glm::vec3 m_translation = { 0.0f, 0.0f, 0.0f };
 			glm::vec3 m_rotation = { 0.0f, 0.0f, 0.0f };
-			glm::vec3 m_scale = { 1.f, 1.f, 1.f };
+			glm::vec3 m_scale = { 1.0f, 1.0f, 1.0f };
 
 			TransformComponent() = default;
 			TransformComponent(const TransformComponent&) = default;
@@ -38,13 +38,13 @@ namespace GLOPHYSX {
 					glm::rotate(glm::mat4(1.f), m_rotation.y, { 0, 1, 0 }) *
 					glm::rotate(glm::mat4(1.f), m_rotation.z, { 0, 0, 1 });
 
-				return glm::translate(glm::mat4(1.f), m_translation) * rotation * glm::scale(glm::mat4(1.f), m_scale);
+				return glm::translate(glm::mat4(1.f), m_translation) * rotation * glm::scale(glm::mat4(1.0f), m_scale);
 			}
 		};
 
 		struct SpriteComponent
 		{
-			glm::vec4 m_color = glm::vec4(1.f);
+			glm::vec4 m_color = glm::vec4(1.0f);
 
 			SpriteComponent() = default;
 			SpriteComponent(const SpriteComponent&) = default;

@@ -32,18 +32,21 @@ namespace GLOPHYSX {
 
 			glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 		}
+
 		OpenglVertexBuffer::~OpenglVertexBuffer()
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glDeleteBuffers(1, &m_buffer_id);
 		}
+
 		void OpenglVertexBuffer::Bind() const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glBindBuffer(GL_ARRAY_BUFFER, m_buffer_id);
 		}
+
 		void OpenglVertexBuffer::Unbind() const
 		{
 			GLOP_PROFILE_FUNCTION();
@@ -68,18 +71,21 @@ namespace GLOPHYSX {
 
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, size * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 		}
+
 		OpenglIndexBuffer::~OpenglIndexBuffer()
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glDeleteBuffers(1, &m_buffer_id);
 		}
+
 		void OpenglIndexBuffer::Bind() const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer_id);
 		}
+
 		void OpenglIndexBuffer::Unbind() const
 		{
 			GLOP_PROFILE_FUNCTION();

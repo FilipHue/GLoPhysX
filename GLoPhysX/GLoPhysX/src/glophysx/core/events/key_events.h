@@ -60,7 +60,7 @@ namespace GLOPHYSX {
             return ss.str();
         }
 
-        inline int GetKeycode() { return m_keycode; }
+        inline int GetKeycode() const { return m_keycode; }
 
     private:
         int m_keycode; // The key code of the pressed key.
@@ -92,7 +92,7 @@ namespace GLOPHYSX {
             return ss.str();
         }
 
-        inline int GetKeycode() { return m_keycode; }
+        inline int GetKeycode() const { return m_keycode; }
 
     private:
         int m_keycode; // The key code of the released key.
@@ -125,7 +125,7 @@ namespace GLOPHYSX {
             return ss.str();
         }
 
-        inline int GetUnicodeKey() { return m_unicode_key; }
+        inline int GetUnicodeKey() const { return m_unicode_key; }
 
     private:
         int m_unicode_key; // The Unicode key code of the typed character.
