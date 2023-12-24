@@ -36,7 +36,8 @@ namespace GLOPHYSX {
 				{ShaderDataType::Float4, "a_color"},
 				{ShaderDataType::Float2, "a_texture_coord"},
 				{ShaderDataType::Float, "a_texture_index"},
-				{ShaderDataType::Float, "a_tiling_factor"}
+				{ShaderDataType::Float, "a_tiling_factor"},
+				{ShaderDataType::Int, "a_entity_id"}
 			});
 			s_data->quad_data->VA->AddVertexBuffer(s_data->quad_data->VB);
 			s_data->quad_data->VB_base = new QuadVertexData[s_data->maximum_vertices];
@@ -175,6 +176,35 @@ namespace GLOPHYSX {
 				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords_default[i];
 				s_data->quad_data->VB_ptr->texture_index = 0;
 				s_data->quad_data->VB_ptr->tiling_factor = 1.0f;
+				s_data->quad_data->VB_ptr->entity_id = -1;
+				s_data->quad_data->VB_ptr++;
+			}
+
+			s_data->quad_data->index_count += 6;
+
+			s_stats->quad_count++;
+		}
+
+		void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, uint32_t entity_id)
+		{
+			GLOP_PROFILE_FUNCTION();
+
+			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
+				EndScene();
+
+				s_data->quad_data->index_count = 0;
+				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
+
+				s_data->texture_slot_index = 1;
+			}
+
+			for (int i = 0; i < 4; i++) {
+				s_data->quad_data->VB_ptr->position = transform * s_data->quad_data->vertex_positions_default[i];
+				s_data->quad_data->VB_ptr->color = color;
+				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords_default[i];
+				s_data->quad_data->VB_ptr->texture_index = 0;
+				s_data->quad_data->VB_ptr->tiling_factor = 1.0f;
+				s_data->quad_data->VB_ptr->entity_id = entity_id;
 				s_data->quad_data->VB_ptr++;
 			}
 
@@ -218,6 +248,7 @@ namespace GLOPHYSX {
 				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords_default[i];
 				s_data->quad_data->VB_ptr->texture_index = texture_index;
 				s_data->quad_data->VB_ptr->tiling_factor = tiling_factor;
+				s_data->quad_data->VB_ptr->entity_id = -1;
 				s_data->quad_data->VB_ptr++;
 			}
 
@@ -225,6 +256,50 @@ namespace GLOPHYSX {
 
 			s_stats->quad_count++;
 		}
+
+		/*void Renderer2D::DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, float tiling_factor, uint32_t entity_id)
+		{
+			GLOP_PROFILE_FUNCTION();
+
+			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
+				EndScene();
+
+				s_data->quad_data->index_count = 0;
+				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
+
+				s_data->texture_slot_index = 1;
+			}
+
+			constexpr glm::vec4 color = glm::vec4(1.0f);
+
+			float texture_index = 0.f;
+			for (uint32_t i = 1; i < s_data->texture_slot_index; i++) {
+				if (*s_data->texture_slots[i].get() == *texture.get()) {
+					texture_index = (float)i;
+					break;
+				}
+			}
+
+			if (texture_index == 0.f) {
+				texture_index = (float)s_data->texture_slot_index;
+				s_data->texture_slots[s_data->texture_slot_index] = texture;
+				s_data->texture_slot_index++;
+			}
+
+			for (int i = 0; i < 4; i++) {
+				s_data->quad_data->VB_ptr->position = transform * s_data->quad_data->vertex_positions_default[i];
+				s_data->quad_data->VB_ptr->color = color;
+				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords_default[i];
+				s_data->quad_data->VB_ptr->texture_index = texture_index;
+				s_data->quad_data->VB_ptr->tiling_factor = tiling_factor;
+				s_data->quad_data->VB_ptr->entity_id = entity_id;
+				s_data->quad_data->VB_ptr++;
+			}
+
+			s_data->quad_data->index_count += 6;
+
+			s_stats->quad_count++;
+		}*/
 
 		void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 		{
@@ -302,6 +377,11 @@ namespace GLOPHYSX {
 			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.0f });
 
 			DrawQuad(model_matrix, texture, tiling_factor);
+		}
+
+		void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteComponent& sprite, uint32_t entity_id)
+		{
+			DrawQuad(transform, sprite.m_color, -1);
 		}
 
 		void Renderer2D::ResetStats()

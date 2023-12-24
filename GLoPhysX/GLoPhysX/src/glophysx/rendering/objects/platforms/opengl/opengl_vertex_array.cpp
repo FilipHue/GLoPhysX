@@ -56,17 +56,36 @@ namespace GLOPHYSX {
 			const auto& layout = vertex_buffer->GetLayout();
 			for (const auto& element : layout) {
 
-				glEnableVertexAttribArray(m_index);
-				glVertexAttribPointer(
-					m_index,
-					element.GetComponentCount(),
-					GL_FLOAT,
-					GL_FALSE,
-					layout.GetStride(),
-					(const void*)(UINT_PTR)element.offset
-				);
+				switch (element.type)
+				{
+				case ShaderDataType::Int:
+				{
+					glEnableVertexAttribArray(m_index);
+					glVertexAttribIPointer(
+						m_index,
+						element.GetComponentCount(),
+						GL_INT,
+						layout.GetStride(),
+						(const void*)(UINT_PTR)element.offset
+					);
+					m_index++;
+					break;
+				}
 
-				m_index++;
+				default:
+					glEnableVertexAttribArray(m_index);
+					glVertexAttribPointer(
+						m_index,
+						element.GetComponentCount(),
+						GL_FLOAT,
+						GL_FALSE,
+						layout.GetStride(),
+						(const void*)(UINT_PTR)element.offset
+					);
+					m_index++;
+					break;
+				}
+
 			}
 
 			m_vertex_buffers.push_back(vertex_buffer);

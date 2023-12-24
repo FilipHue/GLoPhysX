@@ -26,11 +26,13 @@ private:
 	void FileHandler();
 	void NewScene();
 	void LoadScene();
+	void Save();
 	void SaveAsScene();
 
 	void ShowGizmos();
 
 	bool OnKeyPress(KeyPressEvent& e);
+	bool OnMouseButtonPress(MouseButtonPressEvent& e);
 
 private:
 	Shared<Framebuffer> m_framebuffer;
@@ -43,6 +45,8 @@ private:
 	glm::vec2 m_viewport_size;
 	bool m_viewport_focused = true;
 	bool m_viewport_hovered = true;
+
+	int m_selected_entity;
 
 	// Editor UI
 	EditorUI m_editor_ui;

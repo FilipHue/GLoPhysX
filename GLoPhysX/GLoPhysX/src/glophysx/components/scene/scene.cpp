@@ -48,7 +48,7 @@ namespace GLOPHYSX {
 			for (auto entity : group) {
 				auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
 
-				Renderer2D::DrawQuad(transform.GetTransform(), sprite.m_color);
+				Renderer2D::DrawQuad(transform.GetTransform(), sprite.m_color, (int)entity);
 			}
 
 			Renderer2D::EndScene();
@@ -80,6 +80,21 @@ namespace GLOPHYSX {
 						return;
 					}
 				});
+
+			if (main_camera)
+			{
+				Renderer2D::BeginScene(*main_camera, camera_transform);
+
+				auto group = m_registry.group<TransformComponent>(entt::get<SpriteComponent>);
+
+				for (auto entity : group) {
+					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
+
+					Renderer2D::DrawQuad(transform.GetTransform(), sprite.m_color, (int)entity);
+				}
+
+				Renderer2D::EndScene();
+			}
 		}
 
 		void Scene::OnViewportResize(uint32_t width, uint32_t height)

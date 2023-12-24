@@ -20,6 +20,9 @@ namespace GLOPHYSX {
 			glm::vec2 texture_coord;
 			float texture_index;
 			float tiling_factor;
+
+			// Editor data
+			uint32_t entity_id;
 		};
 
 		struct QuadData

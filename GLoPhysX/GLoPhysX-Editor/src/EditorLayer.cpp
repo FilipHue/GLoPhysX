@@ -80,8 +80,7 @@ void EditorLayer::OnUpdate(DeltaTime dt)
 
         if (mouse_x >= 0 && mouse_y >= 0 && mouse_x < (int)viewport_width && mouse_y < (int)viewport_height)
         {
-            int pixel_data = m_framebuffer->ReadPixel(1, mouse_x, mouse_y);
-            GLOP_CORE_TRACE("Pixel data: {0}", pixel_data);
+            m_selected_entity = m_framebuffer->ReadPixel(1, mouse_x, mouse_y);
         }
 
         m_framebuffer->Unbind();
@@ -107,7 +106,6 @@ void EditorLayer::OnGUIRender()
     // Scene Viewport
     m_editor_ui.BeginViewport();
 
-    auto viweport_offset = ImGui::GetCursorPos();
 
     m_viewport_focused = ImGui::IsWindowFocused();
     m_viewport_hovered = ImGui::IsWindowHovered();
@@ -122,15 +120,12 @@ void EditorLayer::OnGUIRender()
     uint32_t texture_id = m_framebuffer->GetColorAttachmentId(0);
     ImGui::Image((void*)(UINT_PTR)texture_id, ImVec2{m_viewport_size.x, m_viewport_size.y}, ImVec2{0, 1}, ImVec2{1, 0});
 
-    auto window_size = ImGui::GetWindowSize();
-    ImVec2 min_bound = ImGui::GetWindowPos();
+    auto viweport_offset = ImGui::GetWindowPos();
+    auto viewport_min_region = ImGui::GetWindowContentRegionMin();
+    auto viewport_max_region = ImGui::GetWindowContentRegionMax();\
 
-    /*min_bound.x += viweport_offset.x;
-    min_bound.y += viweport_offset.y;*/
-
-    ImVec2 max_bound = { min_bound.x + window_size.x, min_bound.y + window_size.y };
-    m_viewport_bounds[0] = { min_bound.x, min_bound.y };
-    m_viewport_bounds[1] = { max_bound.x, max_bound.y };
+    m_viewport_bounds[0] = { viewport_min_region.x + viweport_offset.x, viewport_min_region.y + viweport_offset.y };
+    m_viewport_bounds[1] = { viewport_max_region.x + viweport_offset.x, viewport_max_region.y + viweport_offset.y };
 
     // Gizmos
     ShowGizmos();
@@ -142,8 +137,12 @@ void EditorLayer::OnGUIRender()
 
 void EditorLayer::OnEvent(Event& e)
 {
-    m_editor_camera.OnEvent(e);
+    if (!ImGuizmo::IsUsing())
+    {
+        m_editor_camera.OnEvent(e);
+    }
     EventDispatcher::Dispatch<KeyPressEvent>(e, std::bind(&EditorLayer::OnKeyPress, this, std::placeholders::_1));
+    EventDispatcher::Dispatch<MouseButtonPressEvent>(e, std::bind(&EditorLayer::OnMouseButtonPress, this, std::placeholders::_1));
 }
 
 void EditorLayer::FileHandler()
@@ -194,6 +193,10 @@ void EditorLayer::LoadScene()
     }
 }
 
+void EditorLayer::Save()
+{
+}
+
 void EditorLayer::SaveAsScene()
 {
     std::string file_path = PLATFORM::FileDialogs::SaveFile("GLOP Scene (*.glop)\0*.glop\0");
@@ -207,8 +210,8 @@ void EditorLayer::SaveAsScene()
 
 void EditorLayer::ShowGizmos()
 {
-    Entity selected_entity = m_editor_ui.m_ui_scene_hierarchy->GetSelectedContext();
-    if (selected_entity && m_gizmo_type != -1)
+    Entity m_selected_entity = m_editor_ui.m_ui_scene_hierarchy->GetSelectedContext();
+    if (m_selected_entity && m_gizmo_type != -1)
     {
         ImGuizmo::SetOrthographic(false);
         ImGuizmo::SetDrawlist();
@@ -221,7 +224,7 @@ void EditorLayer::ShowGizmos()
         const glm::mat4& camera_projection = m_editor_camera.GetProjectionMatrix();
         glm::mat4 camera_view = m_editor_camera.GetViewMatrix();
 
-        auto& tc = selected_entity.GetComponent<TransformComponent>();
+        auto& tc = m_selected_entity.GetComponent<TransformComponent>();
         glm::mat4 transform = tc.GetTransform();
 
         bool snaping = Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL);
@@ -239,7 +242,7 @@ void EditorLayer::ShowGizmos()
             nullptr, snaping ? snap_values : nullptr);
 
 
-        if (ImGuizmo::IsUsing())
+        if (ImGuizmo::IsUsing() && !Input::IsKeyPressed(GLOP_KEY_LEFT_ALT))
         {
             glm::vec3 translate, scale;
             glm::quat rotation;
@@ -291,5 +294,17 @@ bool EditorLayer::OnKeyPress(KeyPressEvent& e)
         m_gizmo_type = ImGuizmo::OPERATION::SCALE;
     }
 
-    return true;
+    return false;
+}
+
+bool EditorLayer::OnMouseButtonPress(MouseButtonPressEvent& e)
+{
+    if (e.GetMouseButton() == GLOP_MOUSE_BUTTON_1)
+    {
+        if (m_selected_entity != -1 && !ImGuizmo::IsOver() && !Input::IsKeyPressed(GLOP_KEY_LEFT_ALT)) {
+            m_editor_ui.m_ui_scene_hierarchy->SetSelectedContext(Entity{ (entt::entity)m_selected_entity, m_current_scene.get() });
+        }
+    }
+
+    return false;
 }
