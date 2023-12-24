@@ -20,7 +20,7 @@ namespace GLOPHYSX {
 			FramebufferSpecs& GetSpecs() override { return m_specs; }
 			const FramebufferSpecs& GetSpecs() const override { return m_specs; }
 
-			uint32_t GetColorAttachmentId() const { return m_color_attachment; }
+			uint32_t GetColorAttachmentId(uint32_t index = 0) const { return m_color_attachments[index]; }
 
 			void Bind() override;
 			void Unbind() override;
@@ -28,10 +28,13 @@ namespace GLOPHYSX {
 		private:
 			uint32_t m_id = 0;
 
-			uint32_t m_color_attachment = 0;
+			std::vector<uint32_t> m_color_attachments;
 			uint32_t m_depth_attachment = 0;
 
 			FramebufferSpecs m_specs;
+
+			std::vector<FramebufferTextureSpec> m_color_attachment_specs;
+			FramebufferTextureSpec m_depth_attachment_spec = FramebufferTextureFormat::None;
 		};
 	}
 }

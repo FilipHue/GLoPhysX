@@ -28,7 +28,8 @@ void main()
 #type FRAGMENT
 #version 460 core
 
-layout(location = 0) out vec4 color;
+layout(location = 0) out vec4 color1;
+layout(location = 1) out vec4 color2;
 
 uniform float u_tiling_factor;
 uniform sampler2D u_textures[32];
@@ -40,5 +41,7 @@ in float v_tiling_factor;
 
 void main()
 {
-	color = texture(u_textures[int(v_texture_index)], v_texture_coord * v_tiling_factor) * v_color;
+	color1 = texture(u_textures[int(v_texture_index)], v_texture_coord * v_tiling_factor) * v_color;
+
+	color2 = vec4(0.9f, 0.2f, 0.3f, 1.0f);
 }

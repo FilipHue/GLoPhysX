@@ -20,66 +20,13 @@ void EditorLayer::OnAttach()
     FramebufferSpecs fb_specs;
     fb_specs.width = (uint32_t)m_viewport_size.x;
     fb_specs.height = (uint32_t)m_viewport_size.y;
+    fb_specs.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
     m_framebuffer = Framebuffer::Create(fb_specs);
 
     m_current_scene = MakeShared<Scene>();
     m_editor_ui.Initialize(m_current_scene);
 
     m_editor_camera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
-
-#if 0
-    m_square_entity = m_current_scene->CreateEntity("Square");
-    m_square_entity.AddComponent<SpriteComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-
-    m_main_camera_entity = m_current_scene->CreateEntity("Main Camera");
-    m_main_camera_entity.AddComponent<CameraComponent>();
-
-    m_second_camera_entity = m_current_scene->CreateEntity("Second Camera");
-    m_second_camera_entity.AddComponent<CameraComponent>();
-    m_second_camera_entity.GetComponent<CameraComponent>().is_primary = false;
-
-    class CameraController : public ScriptableEntity
-    {
-    public:
-        void OnCreate() override
-        {
-        }
-
-        void OnUpdate(DeltaTime dt) override
-        {
-            if (GetComponent<CameraComponent>().is_primary) {
-                auto& translation = GetComponent<TransformComponent>().m_translation;
-
-                if (Input::IsKeyPressed(GLOP_KEY_A)) {
-                    translation.x -= m_move_speed * dt;
-                }
-
-                if (Input::IsKeyPressed(GLOP_KEY_D)) {
-                    translation.x += m_move_speed * dt;
-                }
-
-                if (Input::IsKeyPressed(GLOP_KEY_S)) {
-                    translation.y -= m_move_speed * dt;
-                }
-
-                if (Input::IsKeyPressed(GLOP_KEY_W)) {
-                    translation.y += m_move_speed * dt;
-                }
-            }
-        }
-
-        void OnDestroy() override
-        {
-        }
-
-    private:
-        float m_move_speed = 10.f;
-    };
-
-    m_main_camera_entity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-    m_second_camera_entity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-#endif
-
 }
 
 void EditorLayer::OnDetach()
@@ -110,7 +57,7 @@ void EditorLayer::OnUpdate(DeltaTime dt)
 		GLOP_PROFILE_SCOPE("Renderer commands");
         m_framebuffer->Bind();
 
-		RendererCommands::SetClearColor();
+		RendererCommands::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
 		RendererCommands::Clear();
 	}
 
@@ -152,7 +99,7 @@ void EditorLayer::OnGUIRender()
         m_viewport_size.y = viewport_panel_size.y;
     }
 
-    uint32_t texture_id = m_framebuffer->GetColorAttachmentId();
+    uint32_t texture_id = m_framebuffer->GetColorAttachmentId(0);
     ImGui::Image((void*)(UINT_PTR)texture_id, ImVec2{m_viewport_size.x, m_viewport_size.y}, ImVec2{0, 1}, ImVec2{1, 0});
 
     // Gizmos

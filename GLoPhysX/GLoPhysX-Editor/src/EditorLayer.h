@@ -48,8 +48,4 @@ private:
 
 	// Scene
 	Shared<Scene> m_current_scene;
-	Entity m_square_entity;
-	Entity m_main_camera_entity;
-	Entity m_second_camera_entity;
-
 };
