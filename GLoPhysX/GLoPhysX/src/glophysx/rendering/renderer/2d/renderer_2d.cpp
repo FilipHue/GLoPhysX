@@ -95,10 +95,7 @@ namespace GLOPHYSX {
 			s_data->shader->Bind();
 			s_data->shader->SetMat4("u_view_projection", camera.GetVPMatrix());
 
-			s_data->quad_data->index_count = 0;
-			s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-			s_data->texture_slot_index = 1;
+			StartBatch();
 		}
 
 		void Renderer2D::BeginScene(const SimpleCamera& camera, const glm::mat4& transform)
@@ -110,10 +107,7 @@ namespace GLOPHYSX {
 			s_data->shader->Bind();
 			s_data->shader->SetMat4("u_view_projection", view_projection_matrix);
 
-			s_data->quad_data->index_count = 0;
-			s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-			s_data->texture_slot_index = 1;
+			StartBatch();
 		}
 
 		void Renderer2D::BeginScene(const EditorCamera& camera)
@@ -125,10 +119,7 @@ namespace GLOPHYSX {
 			s_data->shader->Bind();
 			s_data->shader->SetMat4("u_view_projection", view_projection_matrix);
 
-			s_data->quad_data->index_count = 0;
-			s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-			s_data->texture_slot_index = 1;
+			StartBatch();
 		}
 
 		void Renderer2D::EndScene()
@@ -138,8 +129,27 @@ namespace GLOPHYSX {
 			Flush();
 		}
 
+		void Renderer2D::StartBatch()
+		{
+			GLOP_PROFILE_FUNCTION();
+
+			s_data->quad_data->index_count = 0;
+			s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
+
+			s_data->texture_slot_index = 1;
+		}
+
+		void Renderer2D::EndBatch()
+		{
+			GLOP_PROFILE_FUNCTION();
+
+			EndScene();
+		}
+
 		void Renderer2D::Flush()
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			uint32_t data_size = (uint32_t)((uint8_t*)s_data->quad_data->VB_ptr - (uint8_t*)s_data->quad_data->VB_base);
 			if (data_size)
 			{
@@ -162,12 +172,8 @@ namespace GLOPHYSX {
 			GLOP_PROFILE_FUNCTION();
 
 			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
-				EndScene();
-
-				s_data->quad_data->index_count = 0;
-				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-				s_data->texture_slot_index = 1;
+				EndBatch();
+				StartBatch();
 			}
 
 			for (int i = 0; i < 4; i++) {
@@ -190,12 +196,8 @@ namespace GLOPHYSX {
 			GLOP_PROFILE_FUNCTION();
 
 			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
-				EndScene();
-
-				s_data->quad_data->index_count = 0;
-				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-				s_data->texture_slot_index = 1;
+				EndBatch();
+				StartBatch();
 			}
 
 			for (int i = 0; i < 4; i++) {
@@ -218,12 +220,8 @@ namespace GLOPHYSX {
 			GLOP_PROFILE_FUNCTION();
 
 			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
-				EndScene();
-
-				s_data->quad_data->index_count = 0;
-				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-				s_data->texture_slot_index = 1;
+				EndBatch();
+				StartBatch();
 			}
 
 			constexpr glm::vec4 color = glm::vec4(1.0f);
@@ -257,50 +255,6 @@ namespace GLOPHYSX {
 			s_stats->quad_count++;
 		}
 
-		/*void Renderer2D::DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, float tiling_factor, uint32_t entity_id)
-		{
-			GLOP_PROFILE_FUNCTION();
-
-			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
-				EndScene();
-
-				s_data->quad_data->index_count = 0;
-				s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
-
-				s_data->texture_slot_index = 1;
-			}
-
-			constexpr glm::vec4 color = glm::vec4(1.0f);
-
-			float texture_index = 0.f;
-			for (uint32_t i = 1; i < s_data->texture_slot_index; i++) {
-				if (*s_data->texture_slots[i].get() == *texture.get()) {
-					texture_index = (float)i;
-					break;
-				}
-			}
-
-			if (texture_index == 0.f) {
-				texture_index = (float)s_data->texture_slot_index;
-				s_data->texture_slots[s_data->texture_slot_index] = texture;
-				s_data->texture_slot_index++;
-			}
-
-			for (int i = 0; i < 4; i++) {
-				s_data->quad_data->VB_ptr->position = transform * s_data->quad_data->vertex_positions_default[i];
-				s_data->quad_data->VB_ptr->color = color;
-				s_data->quad_data->VB_ptr->texture_coord = s_data->quad_data->vertex_tex_coords_default[i];
-				s_data->quad_data->VB_ptr->texture_index = texture_index;
-				s_data->quad_data->VB_ptr->tiling_factor = tiling_factor;
-				s_data->quad_data->VB_ptr->entity_id = entity_id;
-				s_data->quad_data->VB_ptr++;
-			}
-
-			s_data->quad_data->index_count += 6;
-
-			s_stats->quad_count++;
-		}*/
-
 		void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 		{
 			GLOP_PROFILE_FUNCTION();
@@ -315,7 +269,7 @@ namespace GLOPHYSX {
 			glm::mat4 model_matrix = glm::mat4(1.0f);
 
 			model_matrix = glm::translate(model_matrix, position);
-			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
+			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.0f });
 
 			DrawQuad(model_matrix, color);
 		}
@@ -334,7 +288,7 @@ namespace GLOPHYSX {
 			glm::mat4 model_matrix = glm::mat4(1.0f);
 
 			model_matrix = glm::translate(model_matrix, position);
-			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.f });
+			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.0f });
 
 			DrawQuad(model_matrix, texture, tiling_factor);
 		}
@@ -381,11 +335,15 @@ namespace GLOPHYSX {
 
 		void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteComponent& sprite, uint32_t entity_id)
 		{
-			DrawQuad(transform, sprite.m_color, -1);
+			GLOP_PROFILE_FUNCTION();
+
+			DrawQuad(transform, sprite.m_color, entity_id);
 		}
 
 		void Renderer2D::ResetStats()
 		{
+			GLOP_PROFILE_FUNCTION();
+
 			Statistics::ResetStats(*s_stats);
 		}
 	}

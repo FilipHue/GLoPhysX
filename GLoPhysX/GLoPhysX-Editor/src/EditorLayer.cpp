@@ -1,11 +1,11 @@
 #include "EditorLayer.h"
 
-#include "gtc/type_ptr.hpp"
 #include "glophysx/components/scene/scene_serializer.h"
 #include "glophysx/core/utils/platform_utils.h"
 
 #include "ImGuizmo.h"
 
+#include "gtc/type_ptr.hpp"
 #include "math/utils.h"
 
 EditorLayer::EditorLayer() : Layer("EditorLayer")
@@ -38,12 +38,11 @@ void EditorLayer::OnUpdate(DeltaTime dt)
 {
 	GLOP_PROFILE_FUNCTION();
 
-
     FramebufferSpecs spec = m_framebuffer->GetSpecs();
     if (m_viewport_size.x > 0.f && m_viewport_size.y > 0.0f && (m_viewport_size.x != spec.width || m_viewport_size.y != spec.height)) {
         m_framebuffer->Resize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
         m_current_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
-        m_editor_camera.SetViewportSize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
+        m_editor_camera.SetViewportSize(m_viewport_size.x, m_viewport_size.y);
     }
 
     if (m_viewport_focused)
@@ -122,7 +121,7 @@ void EditorLayer::OnGUIRender()
 
     auto viweport_offset = ImGui::GetWindowPos();
     auto viewport_min_region = ImGui::GetWindowContentRegionMin();
-    auto viewport_max_region = ImGui::GetWindowContentRegionMax();\
+    auto viewport_max_region = ImGui::GetWindowContentRegionMax();
 
     m_viewport_bounds[0] = { viewport_min_region.x + viweport_offset.x, viewport_min_region.y + viweport_offset.y };
     m_viewport_bounds[1] = { viewport_max_region.x + viweport_offset.x, viewport_max_region.y + viweport_offset.y };
@@ -141,6 +140,7 @@ void EditorLayer::OnEvent(Event& e)
     {
         m_editor_camera.OnEvent(e);
     }
+
     EventDispatcher::Dispatch<KeyPressEvent>(e, std::bind(&EditorLayer::OnKeyPress, this, std::placeholders::_1));
     EventDispatcher::Dispatch<MouseButtonPressEvent>(e, std::bind(&EditorLayer::OnMouseButtonPress, this, std::placeholders::_1));
 }
@@ -159,6 +159,11 @@ void EditorLayer::FileHandler()
             if (ImGui::MenuItem("Open...", "Ctrl+O"))
             {
                 LoadScene();
+            }
+
+            if (ImGui::MenuItem("Save", "Ctrl+S"))
+            {
+                SaveScene();
             }
 
             if (ImGui::MenuItem("Save As...", "Ctr+Shift+S"))
@@ -184,7 +189,9 @@ void EditorLayer::LoadScene()
 
     if (!file_path.empty())
     {
+        std::string scene_name = file_path.substr(file_path.find_last_of("/\\") + 1);
         m_current_scene = MakeShared<Scene>();
+        m_current_scene->SetSceneName(scene_name);
         m_current_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
         m_editor_ui.Initialize(m_current_scene);
 
@@ -193,8 +200,20 @@ void EditorLayer::LoadScene()
     }
 }
 
-void EditorLayer::Save()
+void EditorLayer::SaveScene()
 {
+    if (m_current_scene != nullptr)
+    {
+        if (m_current_scene->GetSceneName() == "Untitled")
+        {
+            SaveAsScene();
+        }
+        else
+        {
+            SceneSerializer serializer(m_current_scene);
+            serializer.Serialize(m_save_path + "/" + m_current_scene->GetSceneName());
+        }
+    }
 }
 
 void EditorLayer::SaveAsScene()
@@ -203,6 +222,8 @@ void EditorLayer::SaveAsScene()
 
     if (!file_path.empty())
     {
+        std::string scene_name = file_path.substr(file_path.find_last_of("/\\") + 1);
+        m_current_scene->SetSceneName(scene_name);
         SceneSerializer serializer(m_current_scene);
         serializer.Serialize(file_path);
     }
@@ -270,6 +291,12 @@ bool EditorLayer::OnKeyPress(KeyPressEvent& e)
         (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
     {
         LoadScene();
+    }
+
+    if (e.GetKeycode() == GLOP_KEY_S &&
+        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
+    {
+        SaveScene();
     }
 
     if (e.GetKeycode() == GLOP_KEY_S &&

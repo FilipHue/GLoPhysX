@@ -1,8 +1,7 @@
 #pragma once
 
-#include "glophysx/components/scene/scene.h"
-
 #include "components.h"
+#include "glophysx/components/scene/scene.h"
 
 namespace GLOPHYSX {
 

@@ -13,7 +13,7 @@
 */
 
 #include "glophysx/core/core.h"
-#include "glophysx/rendering/objects/buffer/buffer_layout.h"
+#include "buffer_layout.h"
 
 namespace GLOPHYSX {
 

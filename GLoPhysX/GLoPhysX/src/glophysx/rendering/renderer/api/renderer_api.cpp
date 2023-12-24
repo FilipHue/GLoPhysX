@@ -1,7 +1,7 @@
 #include "gxpch.h"
 #include "renderer_api.h"
 
-#include "glophysx/rendering/renderer/api/platforms/opengl/opengl_renderer_api.h"
+#include "platforms/opengl/opengl_renderer_api.h"
 
 namespace GLOPHYSX {
 
@@ -13,7 +13,7 @@ namespace GLOPHYSX {
 			switch (s_API)
 			{
 			case API::NONE:
-				GLOP_CORE_CRITICAL("Please specify a rendering API")
+				GLOP_CORE_CRITICAL("Please specify a rendering API");
 				return nullptr;
 			case API::OPENGL:
 				return MakeUnique<OpenglRendererAPI>();
@@ -21,7 +21,7 @@ namespace GLOPHYSX {
 				break;
 			}
 
-			GLOP_CORE_CRITICAL("Unknown rendering API")
+			GLOP_CORE_CRITICAL("Unknown rendering API");
 			return nullptr;
 		}
 	}

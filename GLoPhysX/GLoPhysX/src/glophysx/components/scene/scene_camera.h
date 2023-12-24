@@ -27,8 +27,8 @@ namespace GLOPHYSX {
 			void SetViewportSize(uint32_t width, uint32_t height);
 
 			// PERSPECTIVE
-			void SetPerspectiveProjectionFov(float fov) { m_perspective_fov = fov; RecalculateProjection(); }
-			float GetPerspectiveProjectionFov() const { return m_perspective_fov; }
+			void SetPerspectiveFov(float fov) { m_perspective_fov = fov; RecalculateProjection(); }
+			float GetPerspectiveFov() const { return m_perspective_fov; }
 
 			float GetPerspectiveNearZ() const { return m_perspective_near; };
 			void SetPerspectiveNearZ(float near_z) { m_perspective_near = near_z; RecalculateProjection(); };
@@ -37,8 +37,8 @@ namespace GLOPHYSX {
 			void SetPerspectiveFarZ(float far_z) { m_perspective_far = far_z; RecalculateProjection(); };
 
 			// ORTHOGRAPHIC
-			void SetOrthographicProjectionSize(float size) { m_ortho_size = size; RecalculateProjection(); }
-			float GetOrthographicProjectionSize() const { return m_ortho_size;  }
+			void SetOrthographicSize(float size) { m_ortho_size = size; RecalculateProjection(); }
+			float GetOrthographicSize() const { return m_ortho_size;  }
 
 			float GetOrthographicNearZ() const { return m_ortho_near; };
 			void SetOrthographicNearZ(float near_z) { m_ortho_near = near_z; RecalculateProjection(); };
@@ -46,6 +46,7 @@ namespace GLOPHYSX {
 			float GetOrthographicFarZ() const { return m_ortho_far; };
 			void SetOrthographicFarZ(float far_z) { m_ortho_far = far_z; RecalculateProjection(); };
 
+			// Projection
 			ProjectionType GetProjectionType() const { return m_projection_type; }
 			void SetProjectionType(ProjectionType projection_type) { m_projection_type = projection_type; RecalculateProjection(); }
 
@@ -55,13 +56,13 @@ namespace GLOPHYSX {
 		private:
 			ProjectionType m_projection_type = ProjectionType::ORTHOGRAPHIC;
 
-			float m_perspective_fov = glm::radians(45.f);
-			float m_perspective_near = 0.01f;
-			float m_perspective_far = 1000.f;
+			float m_perspective_fov = glm::radians(30.0f);
+			float m_perspective_near = 0.1f;
+			float m_perspective_far = 1000.0f;
 
 			float m_ortho_size = 10.f;
-			float m_ortho_near = -1.f;
-			float m_ortho_far  = 1.f;
+			float m_ortho_near = -1.0f;
+			float m_ortho_far  = 1.0f;
 
 			float m_aspect_ratio = 0.0f;
 		};

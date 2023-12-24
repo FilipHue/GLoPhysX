@@ -60,7 +60,7 @@ namespace GLOPHYSX {
 
 	void Application::PushLayer(Shared<Layer> layer)
 	{
-		GLOP_PROFILE_FUNCTION()
+		GLOP_PROFILE_FUNCTION();
 
 		m_layers_container.PushLayer(layer);
 		layer->OnAttach();
@@ -68,7 +68,7 @@ namespace GLOPHYSX {
 
 	void Application::PushOverlay(Shared<Layer> overlay)
 	{
-		GLOP_PROFILE_FUNCTION()
+		GLOP_PROFILE_FUNCTION();
 
 		m_layers_container.PushOverlay(overlay);
 		overlay->OnAttach();
@@ -76,7 +76,7 @@ namespace GLOPHYSX {
 
 	void Application::Run()
 	{
-		GLOP_PROFILE_FUNCTION()
+		GLOP_PROFILE_FUNCTION();
 
 		while (m_running)
 		{
@@ -85,7 +85,7 @@ namespace GLOPHYSX {
 			m_previous_time = current_time;
 
 			{
-				GLOP_PROFILE_SCOPE("Layer stack: On Update")
+				GLOP_PROFILE_SCOPE("Layer stack: On Update");
 
 				for (Shared<Layer>& layer : m_layers_container) {
 					layer->OnUpdate(m_dt);
@@ -94,7 +94,7 @@ namespace GLOPHYSX {
 
 			m_gui_layer->Begin();
 			{
-				GLOP_PROFILE_SCOPE("Layer stack: On GUI Update")
+				GLOP_PROFILE_SCOPE("Layer stack: On GUI Update");
 
 				for (Shared<Layer>& layer : m_layers_container) {
 					layer->OnGUIRender();
@@ -115,7 +115,7 @@ namespace GLOPHYSX {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
-		GLOP_PROFILE_FUNCTION()
+		GLOP_PROFILE_FUNCTION();
 
 		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 

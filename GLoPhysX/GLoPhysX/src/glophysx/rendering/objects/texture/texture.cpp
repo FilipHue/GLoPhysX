@@ -1,9 +1,8 @@
 #include "gxpch.h"
 #include "texture.h"
 
+#include "platforms/opengl/opengl_texture_2D.h"
 #include "glophysx/rendering/renderer/api/renderer_api.h"
-
-#include "glophysx/rendering/objects/texture/platforms/opengl/opengl_texture_2D.h"
 
 namespace GLOPHYSX {
 

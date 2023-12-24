@@ -22,8 +22,8 @@ namespace GLOPHYSX {
 		class Scene
 		{
 		public:
-			Scene();
-			virtual ~Scene();
+			Scene() {};
+			virtual ~Scene() {};
 
 			Entity CreateEntity(const std::string& name = std::string());
 			void DestroyEntity(Entity& entity);
@@ -34,6 +34,8 @@ namespace GLOPHYSX {
 			void OnViewportResize(uint32_t width, uint32_t height);
 
 			Entity GetPrimaryCameraEntity();
+			std::string& GetSceneName() { return m_name; };
+			void SetSceneName(std::string& name) { m_name = name; };
 
 		private:
 			template<typename T>
@@ -44,6 +46,8 @@ namespace GLOPHYSX {
 
 			uint32_t m_viewport_width;
 			uint32_t m_viewport_height;
+
+			std::string m_name = "Untitled";
 
 			friend class Entity;
 			friend class SceneSerializer;

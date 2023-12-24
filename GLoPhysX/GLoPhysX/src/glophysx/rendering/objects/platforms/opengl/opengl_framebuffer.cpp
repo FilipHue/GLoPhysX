@@ -211,7 +211,7 @@ namespace GLOPHYSX {
 		int OpenglFramebuffer::ReadPixel(uint32_t index, int x, int y)
 		{
 			if (index > m_color_attachments.size()) {
-				GLOP_CORE_CRITICAL("Too many color attachments. Maximum is {0}, while there are {1} provided", m_color_attachments.size(), index)
+				GLOP_CORE_CRITICAL("Too many color attachments. Maximum is {0}, while there are {1} provided", m_color_attachments.size(), index);
 				exit(-1);
 			}
 			glReadBuffer(GL_COLOR_ATTACHMENT0 + index);
@@ -224,7 +224,7 @@ namespace GLOPHYSX {
 		void OpenglFramebuffer::ClearAttachment(uint32_t index, const void* value)
 		{
 			if (index > m_color_attachments.size()) {
-				GLOP_CORE_CRITICAL("Too many color attachments. Maximum is {0}, while there are {1} provided", m_color_attachments.size(), index)
+				GLOP_CORE_CRITICAL("Too many color attachments. Maximum is {0}, while there are {1} provided", m_color_attachments.size(), index);
 					exit(-1);
 			}
 

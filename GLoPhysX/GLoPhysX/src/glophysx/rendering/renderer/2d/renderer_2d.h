@@ -24,22 +24,17 @@ namespace GLOPHYSX {
 			static void BeginScene(const EditorCamera& camera);
 			static void EndScene();
 
-			static void Flush();
-
 			static void DrawQuad(const glm::mat4& transform, const glm::vec4& color);
 			static void DrawQuad(const glm::mat4& transform, const glm::vec4& color, uint32_t entity_id);
 			static void DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, float tiling_factor = 1.f);
-			//static void DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, float tiling_factor = 1.f, uint32_t entity_id);
 
 			static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
 			static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
-
 			static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Shared<Texture2D>& texture, float tiling_factor = 1.f);
 			static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Shared<Texture2D>& texture, float tiling_factor = 1.f);
 
 			static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color);
 			static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color);
-
 			static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture, float tiling_factor = 1.f);
 			static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture, float tiling_factor = 1.f);
 
@@ -47,6 +42,11 @@ namespace GLOPHYSX {
 
 			static void ResetStats();
 			static const Statistics& GetStats() { return *s_stats; }
+
+		private:
+			static void StartBatch();
+			static void EndBatch();
+			static void Flush();
 
 		private:
 			static Renderer2DData* s_data;

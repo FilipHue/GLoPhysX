@@ -1,7 +1,7 @@
 #pragma once
 
 #include "glophysx/core/core.h"
-#include "glophysx/rendering/shader/shader.h"
+#include "shader.h"
 
 namespace GLOPHYSX {
 

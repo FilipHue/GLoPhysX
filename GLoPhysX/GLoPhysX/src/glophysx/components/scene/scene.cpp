@@ -14,14 +14,6 @@ namespace GLOPHYSX {
 
 	namespace COMPONENTS {
 
-		Scene::Scene()
-		{
-		}
-
-		Scene::~Scene()
-		{
-		}
-
 		Entity Scene::CreateEntity(const std::string& name)
 		{
 			Entity entity = { m_registry.create(), this };

@@ -72,6 +72,20 @@ namespace GLOPHYSX {
 					break;
 				}
 
+				case ShaderDataType::Bool:
+				{
+					glEnableVertexAttribArray(m_index);
+					glVertexAttribIPointer(
+						m_index,
+						element.GetComponentCount(),
+						GL_INT,
+						layout.GetStride(),
+						(const void*)(UINT_PTR)element.offset
+					);
+					m_index++;
+					break;
+				}
+
 				default:
 					glEnableVertexAttribArray(m_index);
 					glVertexAttribPointer(

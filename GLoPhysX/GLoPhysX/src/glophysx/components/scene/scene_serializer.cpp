@@ -1,89 +1,14 @@
 #include "gxpch.h"
 #include "scene_serializer.h"
 
+#include "serializer_yaml_utils.h"
+
 #include "glophysx/ecs/entity.h"
 #include "glophysx/ecs/components.h"
-
-namespace YAML {
-
-	template<>
-	struct convert<glm::vec3>
-	{
-		static Node encode(const glm::vec3& rhs)
-		{
-			Node node;
-			node.push_back(rhs.x);
-			node.push_back(rhs.y);
-			node.push_back(rhs.z);
-
-			return node;
-		}
-
-		static bool decode(const Node& node, glm::vec3& rhs)
-		{
-			if (!node.IsSequence() || node.size() != 3)
-			{
-				return false;
-			}
-
-			rhs.x = node[0].as<float>();
-			rhs.y = node[1].as<float>();
-			rhs.z = node[2].as<float>();
-
-			return true;
-		}
-	};
-
-	template<>
-	struct convert<glm::vec4>
-	{
-		static Node encode(const glm::vec4& rhs)
-		{
-			Node node;
-			node.push_back(rhs.x);
-			node.push_back(rhs.y);
-			node.push_back(rhs.z);
-			node.push_back(rhs.w);
-
-			return node;
-		}
-
-		static bool decode(const Node& node, glm::vec4& rhs)
-		{
-			if (!node.IsSequence() || node.size() != 4)
-			{
-				return false;
-			}
-
-			rhs.x = node[0].as<float>();
-			rhs.y = node[1].as<float>();
-			rhs.z = node[2].as<float>();
-			rhs.w = node[3].as<float>();
-
-			return true;
-		}
-	};
-}
 
 namespace GLOPHYSX {
 
 	namespace COMPONENTS {
-
-		static YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& v)
-		{
-			out << YAML::Flow;
-			out << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
-
-			return out;
-		}
-
-		static YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec4& v)
-		{
-			out << YAML::Flow;
-			out << YAML::BeginSeq << v.x << v.y << v.z << v.w << YAML::EndSeq;
-
-			return out;
-		}
 
 		SceneSerializer::SceneSerializer(const Shared<Scene>& scene)
 		{
@@ -93,7 +18,7 @@ namespace GLOPHYSX {
 		static void SerializeEntity(YAML::Emitter& out, Entity entity)
 		{
 			out << YAML::BeginMap;
-			out << YAML::Key << "Entity" << YAML::Value << "1234";
+			out << YAML::Key << "Entity" << YAML::Value << (int)entity;
 
 			if (entity.HasComponent<TagComponent>())
 			{
@@ -132,11 +57,11 @@ namespace GLOPHYSX {
 				out << YAML::BeginMap;
 				out << YAML::Key << "ProjectionType" << YAML::Value << (int)cc.m_camera.GetProjectionType();
 
-				out << YAML::Key << "PerspectiveFOV" << YAML::Value << cc.m_camera.GetPerspectiveProjectionFov();
+				out << YAML::Key << "PerspectiveFOV" << YAML::Value << cc.m_camera.GetPerspectiveFov();
 				out << YAML::Key << "PerspectiveNear" << YAML::Value << cc.m_camera.GetPerspectiveNearZ();
 				out << YAML::Key << "PerspectiveFar" << YAML::Value << cc.m_camera.GetPerspectiveFarZ();
 
-				out << YAML::Key << "OrthographicSize" << YAML::Value << cc.m_camera.GetOrthographicProjectionSize();
+				out << YAML::Key << "OrthographicSize" << YAML::Value << cc.m_camera.GetOrthographicSize();
 				out << YAML::Key << "OrthographicNear" << YAML::Value << cc.m_camera.GetOrthographicNearZ();
 				out << YAML::Key << "OrthographicFar" << YAML::Value << cc.m_camera.GetOrthographicFarZ();
 				out << YAML::EndMap;
@@ -242,11 +167,11 @@ namespace GLOPHYSX {
 						auto& cameraProps = camera_component["Camera"];
 						cc.m_camera.SetProjectionType((SceneCamera::ProjectionType)cameraProps["ProjectionType"].as<int>());
 
-						cc.m_camera.SetPerspectiveProjectionFov(cameraProps["PerspectiveFOV"].as<float>());
+						cc.m_camera.SetPerspectiveFov(cameraProps["PerspectiveFOV"].as<float>());
 						cc.m_camera.SetPerspectiveNearZ(cameraProps["PerspectiveNear"].as<float>());
 						cc.m_camera.SetPerspectiveFarZ(cameraProps["PerspectiveFar"].as<float>());
 
-						cc.m_camera.SetOrthographicProjectionSize(cameraProps["OrthographicSize"].as<float>());
+						cc.m_camera.SetOrthographicSize(cameraProps["OrthographicSize"].as<float>());
 						cc.m_camera.SetOrthographicNearZ(cameraProps["OrthographicNear"].as<float>());
 						cc.m_camera.SetOrthographicFarZ(cameraProps["OrthographicFar"].as<float>());
 

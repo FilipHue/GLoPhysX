@@ -5,18 +5,15 @@
 
 #include "EditorLayer.h"
 
-using namespace GLOPHYSX;
-using namespace RENDERING;
-using namespace COMPONENTS;
-
-class GLoPhysXEditor : public Application {
+class GLoPhysXEditor : public GLOPHYSX::Application {
 public:
-	GLoPhysXEditor() {
+	GLoPhysXEditor()
+	{
 		PushLayer(MakeShared<EditorLayer>());
 	}
 
-	~GLoPhysXEditor() {
-
+	~GLoPhysXEditor() 
+	{
 	}
 };
 

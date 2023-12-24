@@ -1,8 +1,8 @@
 #include "gxpch.h"
 #include "vertex_array.h"
 
-#include "glophysx/rendering/objects/platforms/opengl/opengl_vertex_array.h"
 #include "glophysx/rendering/renderer/api/renderer_api.h"
+#include "glophysx/rendering/objects/platforms/opengl/opengl_vertex_array.h"
 
 namespace GLOPHYSX {
 

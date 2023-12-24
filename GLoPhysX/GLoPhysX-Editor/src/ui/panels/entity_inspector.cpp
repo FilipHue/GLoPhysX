@@ -94,10 +94,10 @@ namespace GLOPHYSX {
 
 					if (camera.GetProjectionType() == SceneCamera::ProjectionType::PERSPECTIVE)
 					{
-						float persp_fov = glm::degrees(camera.GetPerspectiveProjectionFov());
+						float persp_fov = glm::degrees(camera.GetPerspectiveFov());
 						if (ImGui::DragFloat("FOV", &persp_fov))
 						{
-							camera.SetPerspectiveProjectionFov(glm::radians(persp_fov));
+							camera.SetPerspectiveFov(glm::radians(persp_fov));
 						}
 
 						float persp_near = camera.GetPerspectiveNearZ();
@@ -115,10 +115,10 @@ namespace GLOPHYSX {
 
 					if (camera.GetProjectionType() == SceneCamera::ProjectionType::ORTHOGRAPHIC)
 					{
-						float ortho_size = camera.GetOrthographicProjectionSize();
+						float ortho_size = camera.GetOrthographicSize();
 						if (ImGui::DragFloat("Size", &ortho_size))
 						{
-							camera.SetOrthographicProjectionSize(ortho_size);
+							camera.SetOrthographicSize(ortho_size);
 						}
 
 						float ortho_near = camera.GetOrthographicNearZ();

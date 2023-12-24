@@ -4,7 +4,6 @@
 
 #include "glophysx/rendering/objects/vertex_array.h"
 #include "glophysx/rendering/shader/shader.h"
-
 #include "glophysx/rendering/objects/texture/texture.h"
 
 #include "glm.hpp"

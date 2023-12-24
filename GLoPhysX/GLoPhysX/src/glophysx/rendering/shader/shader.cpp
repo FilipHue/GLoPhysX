@@ -13,7 +13,7 @@ namespace GLOPHYSX {
 			switch (RendererAPI::GetApi())
 			{
 			case API::NONE:
-				GLOP_CORE_CRITICAL("Please specify a rendering API")
+				GLOP_CORE_CRITICAL("Please specify a rendering API");
 					return nullptr;
 			case API::OPENGL:
 				return MakeShared<OpenglShader>(file_path);
@@ -21,7 +21,7 @@ namespace GLOPHYSX {
 				break;
 			}
 
-			GLOP_CORE_CRITICAL("Unknown rendering API")
+			GLOP_CORE_CRITICAL("Unknown rendering API");
 				return nullptr;
 		}
 
@@ -30,7 +30,7 @@ namespace GLOPHYSX {
 			switch (RendererAPI::GetApi())
 			{
 			case API::NONE:
-				GLOP_CORE_CRITICAL("Please specify a rendering API")
+				GLOP_CORE_CRITICAL("Please specify a rendering API");
 				return nullptr;
 			case API::OPENGL:
 				return MakeShared<OpenglShader>(name, source_vs, source_fs);
@@ -38,7 +38,7 @@ namespace GLOPHYSX {
 				break;
 			}
 
-			GLOP_CORE_CRITICAL("Unknown rendering API")
+			GLOP_CORE_CRITICAL("Unknown rendering API");
 				return nullptr;
 		}
 

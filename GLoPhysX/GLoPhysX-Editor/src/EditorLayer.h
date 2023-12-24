@@ -26,7 +26,7 @@ private:
 	void FileHandler();
 	void NewScene();
 	void LoadScene();
-	void Save();
+	void SaveScene();
 	void SaveAsScene();
 
 	void ShowGizmos();
@@ -36,7 +36,6 @@ private:
 
 private:
 	Shared<Framebuffer> m_framebuffer;
-
 	glm::vec2 m_viewport_bounds[2];
 
 	// Editor
@@ -54,4 +53,5 @@ private:
 
 	// Scene
 	Shared<Scene> m_current_scene;
+	std::string m_save_path = std::string("assets/scenes");
 };

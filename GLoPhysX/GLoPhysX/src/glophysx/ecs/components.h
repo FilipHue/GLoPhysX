@@ -3,11 +3,10 @@
 #include "glophysx/core/core.h"
 #include "glophysx/components/scene/scene_camera.h"
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include "gtx/quaternion.hpp"
-
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "gtx/quaternion.hpp"
 
 namespace GLOPHYSX {
 

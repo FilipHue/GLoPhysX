@@ -2,9 +2,6 @@
 
 #include "scene.h"
 
-#include "yaml-cpp/yaml.h"
-#include "glm.hpp"
-
 namespace GLOPHYSX {
 
 	namespace COMPONENTS {

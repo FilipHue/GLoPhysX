@@ -71,8 +71,6 @@ namespace GLOPHYSX {
 			mesh->GetVertexArray()->Bind();
 
 			RendererCommands::DrawIndexed(mesh->GetVertexArray(), mesh->GetIndicesCount());
-
-
 		}
 	}
 }
