@@ -3,6 +3,7 @@
 #include "glophysx.h"
 #include "ui/editor_ui.h"
 #include "ui/panels/scene_hierarchy.h"
+#include "glophysx/rendering/camera/editor/editor_camera.h"
 
 using namespace GLOPHYSX;
 using namespace RENDERING;
@@ -22,24 +23,21 @@ public:
 	void OnEvent(Event& e) override;
 
 private:
+	void FileHandler();
 	void NewScene();
 	void LoadScene();
 	void SaveAsScene();
 
+	void ShowGizmos();
+
 	bool OnKeyPress(KeyPressEvent& e);
 
 private:
-	Shared<OrthographicCameraController> m_camera_controller;
-
-	Unique<Mesh> m_square;
-	Shared<Texture2D> m_checkerboard;
-	Unique<ShaderLibrary> m_shader_library;
-
-	glm::vec4 m_square_color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
 	Shared<Framebuffer> m_framebuffer;
 
 	// Editor
+	EditorCamera m_editor_camera;
+
 	glm::vec2 m_viewport_size;
 	bool m_viewport_focused = true;
 	bool m_viewport_hovered = true;

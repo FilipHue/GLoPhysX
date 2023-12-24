@@ -39,7 +39,22 @@ namespace GLOPHYSX {
 			m_registry.destroy(entity);
 		}
 
-		void Scene::OnUpdate(DeltaTime dt)
+		void Scene::OnUpdateEditor(DeltaTime dt, EditorCamera& camera)
+		{
+			Renderer2D::BeginScene(camera);
+
+			auto group = m_registry.group<TransformComponent>(entt::get<SpriteComponent>);
+
+			for (auto entity : group) {
+				auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
+
+				Renderer2D::DrawQuad(transform.GetTransform(), sprite.m_color);
+			}
+
+			Renderer2D::EndScene();
+		}
+
+		void Scene::OnUpdateRuntime(DeltaTime dt)
 		{
 			{
 				m_registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
@@ -65,21 +80,6 @@ namespace GLOPHYSX {
 						return;
 					}
 				});
-			
-			if (main_camera != nullptr)
-			{
-				Renderer2D::BeginScene(*main_camera, camera_transform);
-
-				auto group = m_registry.group<TransformComponent>(entt::get<SpriteComponent>);
-
-				for (auto entity : group) {
-					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
-
-					Renderer2D::DrawQuad(transform.GetTransform(), sprite.m_color);
-				}
-
-				Renderer2D::EndScene();
-			}
 		}
 
 		void Scene::OnViewportResize(uint32_t width, uint32_t height)

@@ -20,5 +20,27 @@ namespace GLOPHYSX {
 		void EditorUI::Shutdown()
 		{
 		}
+
+		void EditorUI::BeginViewport()
+		{
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+			ImGui::Begin("Viewport");
+		}
+
+		void EditorUI::EndViewport()
+		{
+			ImGui::End();
+			ImGui::PopStyleVar();
+		}
+
+		void EditorUI::ShowStats(Statistics stats)
+		{
+			ImGui::Begin("Renderer Stats");
+			ImGui::Text("Draw calls: %d", stats.draw_calls);
+			ImGui::Text("Quads: %d", stats.quad_count);
+			ImGui::Text("Vertices: %d", stats.GetVertexCount());
+			ImGui::Text("Indices: %d", stats.GetIndexCount());
+			ImGui::End();
+		}
 	}
 }

@@ -39,7 +39,7 @@ namespace GLOPHYSX {
 
 		GLOP_API inline static bool IsMouseButtonPressed(int button) { return s_instance->PIsMouseButtonPressed(button); }
 		GLOP_API inline static double GetMouseX() { return s_instance->PGetMouseX(); }
-		GLOP_API inline static double GetMouseY(int button) { return s_instance->PGetMouseY(); }
+		GLOP_API inline static double GetMouseY() { return s_instance->PGetMouseY(); }
 
 	protected:
 		// The implementation of IsKeyPressed that is platform dependent

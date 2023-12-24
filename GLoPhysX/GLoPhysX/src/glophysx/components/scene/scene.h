@@ -3,6 +3,8 @@
 #include "glophysx/core/core.h"
 #include "glophysx/core/time/time.h"
 
+#include "glophysx/rendering/camera/editor/editor_camera.h"
+
 #include "entt/entt.h"
 
 namespace GLOPHYSX {
@@ -11,6 +13,7 @@ namespace GLOPHYSX {
 		class SceneHierarchy;
 	}
 	using namespace EDITOR;
+	using namespace RENDERING;
 
 	namespace COMPONENTS {
 
@@ -25,7 +28,8 @@ namespace GLOPHYSX {
 			Entity CreateEntity(const std::string& name = std::string());
 			void DestroyEntity(Entity& entity);
 
-			void OnUpdate(DeltaTime dt);
+			void OnUpdateEditor(DeltaTime dt, EditorCamera& camera);
+			void OnUpdateRuntime(DeltaTime dt);
 
 			void OnViewportResize(uint32_t width, uint32_t height);
 

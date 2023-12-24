@@ -115,6 +115,21 @@ namespace GLOPHYSX {
 			s_data->texture_slot_index = 1;
 		}
 
+		void Renderer2D::BeginScene(const EditorCamera& camera)
+		{
+			GLOP_PROFILE_FUNCTION();
+
+			glm::mat4 view_projection_matrix = camera.GetVPMatrix();
+
+			s_data->shader->Bind();
+			s_data->shader->SetMat4("u_view_projection", view_projection_matrix);
+
+			s_data->quad_data->index_count = 0;
+			s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
+
+			s_data->texture_slot_index = 1;
+		}
+
 		void Renderer2D::EndScene()
 		{
 			GLOP_PROFILE_FUNCTION();

@@ -18,6 +18,12 @@ namespace GLOPHYSX {
 			static void Initialize(Shared<Scene>& current_scene);
 			static void Shutdown();
 
+			void BeginViewport();
+			void EndViewport();
+
+		private:
+			void ShowStats(Statistics stats);
+
 		private:
 			static SceneHierarchy* m_ui_scene_hierarchy;
 			static EntityInspector* m_ui_entity_inspector;

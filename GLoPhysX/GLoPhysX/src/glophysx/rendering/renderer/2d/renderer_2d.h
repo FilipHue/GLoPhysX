@@ -2,6 +2,7 @@
 
 #include "glophysx/rendering/camera/camera.h"
 #include "glophysx/rendering/camera/simple_camera.h"
+#include "glophysx/rendering/camera/editor/editor_camera.h"
 #include "renderer_2d_data.h"
 
 namespace GLOPHYSX {
@@ -16,6 +17,7 @@ namespace GLOPHYSX {
 
 			static void BeginScene(const Camera& camera);
 			static void BeginScene(const SimpleCamera& camera, const glm::mat4& transform);
+			static void BeginScene(const EditorCamera& camera);
 			static void EndScene();
 
 			static void Flush();
