@@ -23,11 +23,16 @@ public:
 	void OnEvent(Event& e) override;
 
 private:
+	void MenuBar();
+
 	void FileHandler();
 	void NewScene();
 	void LoadScene();
 	void SaveScene();
 	void SaveAsScene();
+
+	void Options();
+	void EditorCameraOptions();
 
 	void ShowGizmos();
 
@@ -40,6 +45,7 @@ private:
 
 	// Editor
 	EditorCamera m_editor_camera;
+	bool m_show_editor_camera_properties = false;
 
 	glm::vec2 m_viewport_size;
 	bool m_viewport_focused = true;

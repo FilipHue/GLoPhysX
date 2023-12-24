@@ -93,7 +93,7 @@ void EditorLayer::OnGUIRender()
     Application::GetInstance().GetGUILayer()->BeginDocking();
 
     // New, Open, Save As etc.
-    FileHandler();
+    MenuBar();
 
     // Panels
     m_editor_ui.OnGUIRender();
@@ -145,34 +145,41 @@ void EditorLayer::OnEvent(Event& e)
     EventDispatcher::Dispatch<MouseButtonPressEvent>(e, std::bind(&EditorLayer::OnMouseButtonPress, this, std::placeholders::_1));
 }
 
-void EditorLayer::FileHandler()
+void EditorLayer::MenuBar()
 {
     if (ImGui::BeginMenuBar())
     {
-        if (ImGui::BeginMenu("File"))
-        {
-            if (ImGui::MenuItem("New", "Ctrl+N"))
-            {
-                NewScene();
-            }
+        FileHandler();
+        Options();
 
-            if (ImGui::MenuItem("Open...", "Ctrl+O"))
-            {
-                LoadScene();
-            }
-
-            if (ImGui::MenuItem("Save", "Ctrl+S"))
-            {
-                SaveScene();
-            }
-
-            if (ImGui::MenuItem("Save As...", "Ctr+Shift+S"))
-            {
-                SaveAsScene();
-            }
-            ImGui::EndMenu();
-        }
         ImGui::EndMenuBar();
+    }
+}
+
+void EditorLayer::FileHandler()
+{
+    if (ImGui::BeginMenu("File"))
+    {
+        if (ImGui::MenuItem("New", "Ctrl+N"))
+        {
+            NewScene();
+        }
+
+        if (ImGui::MenuItem("Open...", "Ctrl+O"))
+        {
+            LoadScene();
+        }
+
+        if (ImGui::MenuItem("Save", "Ctrl+S"))
+        {
+            SaveScene();
+        }
+
+        if (ImGui::MenuItem("Save As...", "Ctr+Shift+S"))
+        {
+            SaveAsScene();
+        }
+        ImGui::EndMenu();
     }
 }
 
@@ -226,6 +233,36 @@ void EditorLayer::SaveAsScene()
         m_current_scene->SetSceneName(scene_name);
         SceneSerializer serializer(m_current_scene);
         serializer.Serialize(file_path);
+    }
+}
+
+void EditorLayer::Options()
+{
+    if (m_show_editor_camera_properties)
+    {
+        EditorCameraOptions();
+    }
+
+    if (ImGui::BeginMenu("Options"))
+    {
+        if (ImGui::MenuItem("Editor Camera"))
+        {
+            m_show_editor_camera_properties = true;
+        }
+
+        ImGui::EndMenu();
+    }
+}
+
+void EditorLayer::EditorCameraOptions()
+{
+    if (ImGui::Begin("Properties", &m_show_editor_camera_properties))
+    {
+        static bool block_rotation = false;
+        ImGui::Checkbox("Block Rotation XYZ", &block_rotation);
+        m_editor_camera.BlockRotations(block_rotation);
+
+        ImGui::End();
     }
 }
 

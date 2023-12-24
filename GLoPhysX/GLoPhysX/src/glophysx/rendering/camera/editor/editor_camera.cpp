@@ -75,6 +75,11 @@ namespace GLOPHYSX {
 
 		void EditorCamera::UpdateView()
 		{
+			// For 2D perspective
+			if (m_block_xyz)
+			{
+				m_yaw = m_pitch = 0.0f;
+			}
 			m_position = CalculatePosition();
 
 			glm::quat orientation = GetOrientation();

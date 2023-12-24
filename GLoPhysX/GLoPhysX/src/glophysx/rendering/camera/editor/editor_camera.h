@@ -20,6 +20,7 @@ namespace GLOPHYSX {
 			void OnEvent(Event& e);
 
 			void SetViewportSize(float width, float height) { m_viewport_size.x = width, m_viewport_size.y = height; UpdateProjection(); }
+			void BlockRotations(bool block) { m_block_xyz = block; UpdateView(); }
 
 			glm::mat4 GetViewMatrix() const { return m_view_matrix; }
 			glm::mat4 GetVPMatrix() const { return m_projection_matrix * m_view_matrix; }
@@ -72,6 +73,7 @@ namespace GLOPHYSX {
 			glm::vec2 m_mouse_position = glm::vec2(0.0f, 0.0f);
 
 			glm::vec2 m_viewport_size = glm::vec2{ 1600.0f, 900.0f };
+			bool m_block_xyz = false;
 		};
 	}
 }
