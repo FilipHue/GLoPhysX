@@ -18,6 +18,36 @@ namespace GLOPHYSX {
 			return false;
 		}
 
+		static GLenum OpenglTextureFormat(FramebufferTextureFormat format)
+		{
+			switch (format)
+			{
+			case FramebufferTextureFormat::None:
+				break;
+			case FramebufferTextureFormat::RGBA8:
+				return GL_RGBA8;
+			case FramebufferTextureFormat::RED_INTEGER:
+				return GL_RED_INTEGER;
+			}
+
+			return 0;
+		}
+
+		static GLenum OpenglTextureFormatDataType(FramebufferTextureFormat format)
+		{
+			switch (format)
+			{
+			case FramebufferTextureFormat::None:
+				break;
+			case FramebufferTextureFormat::RGBA8:
+				return GL_UNSIGNED_BYTE;
+			case FramebufferTextureFormat::RED_INTEGER:
+				return GL_INT;
+			}
+
+			return 0;
+		}
+
 		static GLenum TextureTarget(bool multisample)
 		{
 			return multisample ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
@@ -191,10 +221,29 @@ namespace GLOPHYSX {
 			return pixel_data;
 		}
 
+		void OpenglFramebuffer::ClearAttachment(uint32_t index, const void* value)
+		{
+			if (index > m_color_attachments.size()) {
+				GLOP_CORE_CRITICAL("Too many color attachments. Maximum is {0}, while there are {1} provided", m_color_attachments.size(), index)
+					exit(-1);
+			}
+
+			auto& spec = m_color_attachment_specs[index];
+
+			glClearTexImage(
+				m_color_attachments[index],
+				0,
+				OpenglTextureFormat(spec.m_format),
+				OpenglTextureFormatDataType(spec.m_format),
+				&value);
+		}
+
 		void OpenglFramebuffer::Bind()
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 			glViewport(0, 0, m_specs.width, m_specs.height);
+
+			ClearAttachment(1, (const void*)(-1));
 		}
 
 		void OpenglFramebuffer::Unbind()

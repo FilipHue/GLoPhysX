@@ -64,6 +64,8 @@ void EditorLayer::OnUpdate(DeltaTime dt)
 	{
 		GLOP_PROFILE_SCOPE("Render draw");
 
+        m_framebuffer->ClearAttachment(1, (const void*)(-1));
+
         m_current_scene->OnUpdateEditor(dt, m_editor_camera);
 
         auto [mx, my] = ImGui::GetMousePos();
@@ -123,8 +125,8 @@ void EditorLayer::OnGUIRender()
     auto window_size = ImGui::GetWindowSize();
     ImVec2 min_bound = ImGui::GetWindowPos();
 
-    min_bound.x += viweport_offset.x;
-    min_bound.y += viweport_offset.y;
+    /*min_bound.x += viweport_offset.x;
+    min_bound.y += viweport_offset.y;*/
 
     ImVec2 max_bound = { min_bound.x + window_size.x, min_bound.y + window_size.y };
     m_viewport_bounds[0] = { min_bound.x, min_bound.y };

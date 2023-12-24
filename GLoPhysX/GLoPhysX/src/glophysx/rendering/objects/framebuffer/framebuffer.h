@@ -60,6 +60,7 @@ namespace GLOPHYSX {
 
 			virtual void Resize(uint32_t width, uint32_t height) = 0;
 			virtual int ReadPixel(uint32_t index, int x, int y) = 0;
+			virtual void ClearAttachment(uint32_t index, const void* value) = 0;
 
 			virtual FramebufferSpecs& GetSpecs() = 0;
 			virtual const FramebufferSpecs& GetSpecs() const = 0;
