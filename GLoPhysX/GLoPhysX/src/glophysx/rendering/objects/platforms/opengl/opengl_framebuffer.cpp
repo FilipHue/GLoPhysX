@@ -33,7 +33,7 @@ namespace GLOPHYSX {
 			glBindTexture(TextureTarget(multisample), id);
 		}
 
-		static void AttachColorTexture(GLuint id, int samples, GLenum format, GLuint width, GLuint height, int index)
+		static void AttachColorTexture(GLuint id, int samples, GLenum internal_format, GLenum format, GLuint width, GLuint height, int index)
 		{
 			bool multisampled = samples > 1;
 			if (multisampled)
@@ -42,7 +42,7 @@ namespace GLOPHYSX {
 			}
 			else
 			{
-				glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+				glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, GL_UNSIGNED_BYTE, nullptr);
 
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -127,7 +127,10 @@ namespace GLOPHYSX {
 					switch (m_color_attachment_specs[i].m_format)
 					{
 					case FramebufferTextureFormat::RGBA8:
-						AttachColorTexture(m_color_attachments[i], m_specs.samples, GL_RGBA8, m_specs.width, m_specs.height, i);
+						AttachColorTexture(m_color_attachments[i], m_specs.samples, GL_RGBA8, GL_RGBA, m_specs.width, m_specs.height, i);
+						break;
+					case FramebufferTextureFormat::RED_INTEGER:
+						AttachColorTexture(m_color_attachments[i], m_specs.samples, GL_R32I, GL_RED_INTEGER, m_specs.width, m_specs.height, i);
 						break;
 					}
 				}
@@ -173,6 +176,19 @@ namespace GLOPHYSX {
 			m_specs.height = height;
 
 			Create();
+		}
+
+		int OpenglFramebuffer::ReadPixel(uint32_t index, int x, int y)
+		{
+			if (index > m_color_attachments.size()) {
+				GLOP_CORE_CRITICAL("Too many color attachments. Maximum is {0}, while there are {1} provided", m_color_attachments.size(), index)
+				exit(-1);
+			}
+			glReadBuffer(GL_COLOR_ATTACHMENT0 + index);
+			int pixel_data;
+			glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixel_data);
+
+			return pixel_data;
 		}
 
 		void OpenglFramebuffer::Bind()

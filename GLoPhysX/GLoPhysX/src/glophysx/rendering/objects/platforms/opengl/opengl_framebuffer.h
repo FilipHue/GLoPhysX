@@ -16,6 +16,7 @@ namespace GLOPHYSX {
 
 			void Create();
 			void Resize(uint32_t width, uint32_t height) override;
+			int ReadPixel(uint32_t index, int x, int y) override;
 
 			FramebufferSpecs& GetSpecs() override { return m_specs; }
 			const FramebufferSpecs& GetSpecs() const override { return m_specs; }

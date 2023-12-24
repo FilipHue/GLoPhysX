@@ -20,7 +20,7 @@ void EditorLayer::OnAttach()
     FramebufferSpecs fb_specs;
     fb_specs.width = (uint32_t)m_viewport_size.x;
     fb_specs.height = (uint32_t)m_viewport_size.y;
-    fb_specs.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
+    fb_specs.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
     m_framebuffer = Framebuffer::Create(fb_specs);
 
     m_current_scene = MakeShared<Scene>();
@@ -66,6 +66,22 @@ void EditorLayer::OnUpdate(DeltaTime dt)
 
         m_current_scene->OnUpdateEditor(dt, m_editor_camera);
 
+        auto [mx, my] = ImGui::GetMousePos();
+        mx -= m_viewport_bounds[0].x;
+        my -= m_viewport_bounds[0].y;
+        auto viewport_width = m_viewport_bounds[1].x - m_viewport_bounds[0].x;
+        auto viewport_height = m_viewport_bounds[1].y - m_viewport_bounds[0].y;
+        my = viewport_height - my;
+
+        int mouse_x = (int)mx;
+        int mouse_y = (int)my;
+
+        if (mouse_x >= 0 && mouse_y >= 0 && mouse_x < (int)viewport_width && mouse_y < (int)viewport_height)
+        {
+            int pixel_data = m_framebuffer->ReadPixel(1, mouse_x, mouse_y);
+            GLOP_CORE_TRACE("Pixel data: {0}", pixel_data);
+        }
+
         m_framebuffer->Unbind();
 	}
 }
@@ -89,6 +105,8 @@ void EditorLayer::OnGUIRender()
     // Scene Viewport
     m_editor_ui.BeginViewport();
 
+    auto viweport_offset = ImGui::GetCursorPos();
+
     m_viewport_focused = ImGui::IsWindowFocused();
     m_viewport_hovered = ImGui::IsWindowHovered();
     Application::GetInstance().GetGUILayer()->SetConsumeEvents(!m_viewport_focused && !m_viewport_hovered);
@@ -101,6 +119,16 @@ void EditorLayer::OnGUIRender()
 
     uint32_t texture_id = m_framebuffer->GetColorAttachmentId(0);
     ImGui::Image((void*)(UINT_PTR)texture_id, ImVec2{m_viewport_size.x, m_viewport_size.y}, ImVec2{0, 1}, ImVec2{1, 0});
+
+    auto window_size = ImGui::GetWindowSize();
+    ImVec2 min_bound = ImGui::GetWindowPos();
+
+    min_bound.x += viweport_offset.x;
+    min_bound.y += viweport_offset.y;
+
+    ImVec2 max_bound = { min_bound.x + window_size.x, min_bound.y + window_size.y };
+    m_viewport_bounds[0] = { min_bound.x, min_bound.y };
+    m_viewport_bounds[1] = { max_bound.x, max_bound.y };
 
     // Gizmos
     ShowGizmos();

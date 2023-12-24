@@ -35,6 +35,8 @@ private:
 private:
 	Shared<Framebuffer> m_framebuffer;
 
+	glm::vec2 m_viewport_bounds[2];
+
 	// Editor
 	EditorCamera m_editor_camera;
 
