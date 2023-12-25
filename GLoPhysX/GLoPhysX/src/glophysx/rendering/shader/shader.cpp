@@ -55,7 +55,7 @@ namespace GLOPHYSX {
 				in.close();
 			}
 			else {
-				GLOP_CORE_WARN("Couldnt open file: {0}", source);
+				GLOP_CORE_WARN("Couldnt open file: {0}", file_path.c_str());
 				exit(-1);
 			}
 

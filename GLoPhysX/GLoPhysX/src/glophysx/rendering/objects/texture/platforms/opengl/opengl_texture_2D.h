@@ -16,6 +16,8 @@ namespace GLOPHYSX {
 			virtual uint32_t GetWidth() const override { return m_width; }
 			virtual uint32_t GetHeight() const override { return m_height; }
 
+			uint32_t GetID() const override { return m_id; }
+
 			virtual void SetData(void* data, uint32_t size) override;
 
 			virtual void Bind(uint32_t slot = 0) const override;

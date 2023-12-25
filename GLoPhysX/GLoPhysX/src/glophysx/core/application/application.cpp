@@ -8,15 +8,24 @@
 	#include "glophysx/debug/debug.h"
 #endif
 
+#include <filesystem>
+
 namespace GLOPHYSX {
 
 	using namespace RENDERING;
 
 	Application* Application::s_instance = nullptr;
 
-	Application::Application()
+	Application::Application(const ApplicationSpecifications& specs)
 	{
 		GLOP_PROFILE_FUNCTION();
+
+		m_specs = specs;
+		if (!m_specs.m_working_directory.empty())
+		{
+			std::filesystem::current_path(m_specs.m_working_directory);
+		}
+		GLOP_CORE_INFO("Application created in\n{0}", m_specs.m_working_directory);
 
 		RendererAPI::SetApi(API::OPENGL);
 		RendererCommands::SetApi();
@@ -24,7 +33,7 @@ namespace GLOPHYSX {
 		s_instance = this;
 
 		#ifdef GLOP_PLATFORM_WINDOWS
-		m_window = Window::Create<WWindow>(new WindowProperties());
+		m_window = Window::Create<WWindow>(new WindowProperties({m_specs.m_name.c_str(), m_specs.m_width, m_specs.m_height}));
 			m_window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 			m_running = true;
 			GLOP_CORE_TRACE("===========================================================================")

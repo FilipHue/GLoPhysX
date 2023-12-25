@@ -3,6 +3,7 @@
 #include "glophysx.h"
 #include "panels/scene_hierarchy.h"
 #include "panels/entity_inspector.h"
+#include "panels/content_browser.h"
 
 class EditorLayer;
 
@@ -13,10 +14,11 @@ namespace GLOPHYSX {
 		class EditorUI
 		{
 		public:
-			static void OnGUIRender();
+			void OnGUIRender();
 
-			static void Initialize(Shared<Scene>& current_scene);
-			static void Shutdown();
+			void Initialize(Shared<Scene>& current_scene);
+			void Shutdown();
+			void SetContext(Shared<Scene>& current_scene);
 
 			void BeginViewport();
 			void EndViewport();
@@ -27,6 +29,7 @@ namespace GLOPHYSX {
 		private:
 			static SceneHierarchy* m_ui_scene_hierarchy;
 			static EntityInspector* m_ui_entity_inspector;
+			static ContentBrowser* m_ui_content_browser;
 
 			friend class EditorLayer;
 		};

@@ -2,7 +2,6 @@
 
 #include "glophysx.h"
 #include "ui/editor_ui.h"
-#include "ui/panels/scene_hierarchy.h"
 #include "glophysx/rendering/camera/editor/editor_camera.h"
 
 using namespace GLOPHYSX;
@@ -28,6 +27,7 @@ private:
 	void FileHandler();
 	void NewScene();
 	void LoadScene();
+	void LoadScene(const std::filesystem::path& path);
 	void SaveScene();
 	void SaveAsScene();
 

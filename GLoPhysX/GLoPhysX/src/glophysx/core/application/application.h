@@ -28,6 +28,8 @@
 #include "glophysx/core/layers/layers_container.h"
 #include "glophysx/core/gui/gui_layer.h"
 
+#include "application_specs.h"
+
 /*
 * @brief Forward declaration of the main function
 * 
@@ -48,7 +50,7 @@ namespace GLOPHYSX {
 	class Application
 	{
 	public:
-		GLOP_API Application();
+		GLOP_API Application(const ApplicationSpecifications& specs);
 		GLOP_API virtual ~Application();
 
 		// Method that handles the events received
@@ -82,6 +84,8 @@ namespace GLOPHYSX {
 		DeltaTime m_dt;
 		float m_previous_time = 0.f;
 
+		ApplicationSpecifications m_specs;
+
 	private:
 		static Application* s_instance;
 		friend int ::main(int argc, char** argv);
@@ -96,5 +100,5 @@ namespace GLOPHYSX {
 	*
 	* @return A pointer to the created application instance.
 	*/
-	Application* CreateApplication();
+	Application* CreateApplication(CommandLineArgs args);
 }

@@ -8,6 +8,14 @@
 #include "gtc/type_ptr.hpp"
 #include "math/utils.h"
 
+namespace GLOPHYSX {
+
+    namespace EDITOR {
+
+        extern const std::filesystem::path g_assets_path;
+    }
+}
+
 EditorLayer::EditorLayer() : Layer("EditorLayer")
 {
     m_viewport_size = glm::vec2(1600.0f, 900.0f);
@@ -119,6 +127,18 @@ void EditorLayer::OnGUIRender()
     uint32_t texture_id = m_framebuffer->GetColorAttachmentId(0);
     ImGui::Image((void*)(UINT_PTR)texture_id, ImVec2{m_viewport_size.x, m_viewport_size.y}, ImVec2{0, 1}, ImVec2{1, 0});
 
+    // Drag and drop from the content browser
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+        {
+            const wchar_t* path = (const wchar_t*)payload->Data;
+            LoadScene(std::filesystem::path(g_assets_path / path));
+        }
+
+        ImGui::EndDragDropTarget();
+    }
+
     auto viweport_offset = ImGui::GetWindowPos();
     auto viewport_min_region = ImGui::GetWindowContentRegionMin();
     auto viewport_max_region = ImGui::GetWindowContentRegionMax();
@@ -187,7 +207,7 @@ void EditorLayer::NewScene()
 {
     m_current_scene = MakeShared<Scene>();
     m_current_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
-    m_editor_ui.Initialize(m_current_scene);
+    m_editor_ui.SetContext(m_current_scene);
 }
 
 void EditorLayer::LoadScene()
@@ -196,15 +216,21 @@ void EditorLayer::LoadScene()
 
     if (!file_path.empty())
     {
-        std::string scene_name = file_path.substr(file_path.find_last_of("/\\") + 1);
-        m_current_scene = MakeShared<Scene>();
-        m_current_scene->SetSceneName(scene_name);
-        m_current_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
-        m_editor_ui.Initialize(m_current_scene);
-
-        SceneSerializer serializer(m_current_scene);
-        serializer.Deserialize(file_path);
+        LoadScene(file_path);
     }
+}
+
+void EditorLayer::LoadScene(const std::filesystem::path& path)
+{
+    std::string path_string = path.string();
+    std::string scene_name = path_string.substr(path_string.find_last_of("/\\") + 1);
+    m_current_scene = MakeShared<Scene>();
+    m_current_scene->SetSceneName(scene_name);
+    m_current_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
+    m_editor_ui.SetContext(m_current_scene);
+
+    SceneSerializer serializer(m_current_scene);
+    serializer.Deserialize(path_string);
 }
 
 void EditorLayer::SaveScene()
