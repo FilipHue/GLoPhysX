@@ -273,9 +273,11 @@ void EditorLayer::FileHandler()
 
 void EditorLayer::NewScene()
 {
-    m_current_scene = MakeShared<Scene>();
-    m_current_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
-    m_editor_ui.SetContext(m_current_scene);
+    m_editor_scene = MakeShared<Scene>();
+    m_editor_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
+    m_editor_ui.SetContext(m_editor_scene);
+
+    m_current_scene = m_editor_scene;
 }
 
 void EditorLayer::LoadScene()
@@ -329,8 +331,8 @@ void EditorLayer::SaveAsScene()
     if (!file_path.empty())
     {
         std::string scene_name = file_path.substr(file_path.find_last_of("/\\") + 1);
-        m_current_scene->SetSceneName(scene_name);
-        SceneSerializer serializer(m_current_scene);
+        m_editor_scene->SetSceneName(scene_name);
+        SceneSerializer serializer(m_editor_scene);
         serializer.Serialize(file_path);
     }
 }

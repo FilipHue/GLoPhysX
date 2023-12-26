@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glophysx/components/scene/scene.h"
+#include "yaml-cpp/yaml.h"
 
 namespace GLOPHYSX {
 
@@ -20,5 +21,6 @@ namespace GLOPHYSX {
 		private:
 			Shared<Scene> m_scene;
 		};
+		static void SerializeEntity(YAML::Emitter& out, Entity entity);
 	}
 }

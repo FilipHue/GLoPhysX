@@ -60,7 +60,7 @@ namespace GLOPHYSX {
 		struct SpriteComponent
 		{
 			glm::vec4 m_color = glm::vec4(1.0f);
-			Shared<Texture2D> m_texture;
+			Shared<Texture2D> m_texture = nullptr;
 			float m_tiling = 1.0f;
 
 			SpriteComponent() = default;

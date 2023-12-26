@@ -87,6 +87,13 @@ namespace GLOPHYSX {
 
 				out << YAML::Key << "Color" << YAML::Value << sc.m_color;
 
+				if (sc.m_texture != nullptr)
+				{
+					out << YAML::Key << "TexturePath" << YAML::Value << sc.m_texture->GetPath();
+				}
+
+				out << YAML::Key << "TilingFactor" << YAML::Value << sc.m_tiling;
+
 				out << YAML::EndMap;
 			}
 
@@ -98,7 +105,7 @@ namespace GLOPHYSX {
 			YAML::Emitter out;
 
 			out << YAML::BeginMap;
-			out << YAML::Key << "Scene" << YAML::Value << "Untitled";
+			out << YAML::Key << "Scene" << YAML::Value << m_scene->GetSceneName();
 			out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 
 			auto entities = m_scene->m_registry.storage<entt::entity>().each();
@@ -190,6 +197,15 @@ namespace GLOPHYSX {
 					{
 						auto& src = deserialized_entity.AddComponent<SpriteComponent>();
 						src.m_color = sprite_component["Color"].as<glm::vec4>();
+
+						if (sprite_component["TexturePath"])
+						{
+							std::string texture_path = sprite_component["TexturePath"].as<std::string>();
+							src.m_texture = Texture2D::Create(texture_path);
+						}
+
+						if (sprite_component["TilingFactor"])
+							src.m_tiling = sprite_component["TilingFactor"].as<float>();
 					}
 				}
 			}

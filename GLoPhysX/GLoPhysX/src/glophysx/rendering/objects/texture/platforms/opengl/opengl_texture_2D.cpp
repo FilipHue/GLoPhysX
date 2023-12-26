@@ -24,6 +24,8 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
+			m_path = path;
+
 			stbi_set_flip_vertically_on_load(flip);
 
 			int width, height, channels;
