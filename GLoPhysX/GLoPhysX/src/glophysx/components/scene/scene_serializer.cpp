@@ -3,8 +3,8 @@
 
 #include "serializer_yaml_utils.h"
 
-#include "glophysx/ecs/entity.h"
-#include "glophysx/ecs/components.h"
+#include "glophysx/components/ecs/entity.h"
+#include "glophysx/components/ecs/components.h"
 
 namespace GLOPHYSX {
 

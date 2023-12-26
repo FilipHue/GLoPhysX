@@ -26,12 +26,10 @@
 #include "glophysx/rendering/objects/texture/texture.h"
 #include "glophysx/rendering/objects/framebuffer/framebuffer.h"
 
-// ECS
-#include "glophysx/ecs/components.h"
-#include "glophysx/ecs/entity.h"
-
 // Components
 #include "glophysx/components/scene/scene.h"
+#include "glophysx/components/ecs/components.h"
+#include "glophysx/components/ecs/entity.h"
 #include "glophysx/components/mesh/mesh.h"
 #include "glophysx/components/script/scriptable_entity.h"
 

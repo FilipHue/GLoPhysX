@@ -3,7 +3,7 @@
 
 #include "glm.hpp"
 
-#include "glophysx/ecs/entity.h"
+#include "glophysx/components/ecs/entity.h"
 #include "glophysx/components/script/scriptable_entity.h"
 
 #include "glophysx/rendering/renderer/2d/renderer_2d.h"

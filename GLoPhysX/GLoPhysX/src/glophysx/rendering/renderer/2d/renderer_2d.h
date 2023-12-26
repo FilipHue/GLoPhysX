@@ -5,7 +5,7 @@
 #include "glophysx/rendering/camera/editor/editor_camera.h"
 #include "renderer_2d_data.h"
 
-#include "glophysx/ecs/components.h"
+#include "glophysx/components/ecs/components.h"
 
 namespace GLOPHYSX {
 
