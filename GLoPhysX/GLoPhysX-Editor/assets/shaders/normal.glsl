@@ -10,7 +10,7 @@ layout(location = 5) in int a_entity_id;
 
 out vec4 v_color;
 out vec2 v_texture_coord;
-out float v_texture_index;
+flat out float v_texture_index;
 out float v_tiling_factor;
 out int v_entity_id;
 
@@ -34,12 +34,11 @@ void main()
 layout(location = 0) out vec4 color1;
 layout(location = 1) out int color2;
 
-uniform float u_tiling_factor;
 uniform sampler2D u_textures[32];
 
 in vec4 v_color;
 in vec2 v_texture_coord;
-in float v_texture_index;
+flat in float v_texture_index;
 in float v_tiling_factor;
 in flat int v_entity_id;
 

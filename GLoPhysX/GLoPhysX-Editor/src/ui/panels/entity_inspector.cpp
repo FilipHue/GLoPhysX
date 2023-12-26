@@ -1,8 +1,11 @@
 #include "entity_inspector.h"
+#include <filesystem>
 
 namespace GLOPHYSX {
 
 	namespace EDITOR {
+
+		extern const std::filesystem::path g_assets_path;
 
 		void EntityInspector::DrawComponents(Entity& entity)
 		{
@@ -137,6 +140,21 @@ namespace GLOPHYSX {
 			DrawComponent<SpriteComponent>("Sprite", entity, [](auto& component)
 				{
 					ImGui::ColorEdit4("Color", glm::value_ptr(component.m_color));
+
+					ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+						{
+							const wchar_t* path = (const wchar_t*)payload->Data;
+							std::filesystem::path texture_path = std::filesystem::path(g_assets_path / path);
+							component.m_texture = Texture2D::Create(texture_path.string());
+						}
+
+						ImGui::EndDragDropTarget();
+					}
+
+					ImGui::DragFloat("Tiling", &component.m_tiling, 0.1f, 0.0f, 100.f, "%.3f");
 				});
 		}
 

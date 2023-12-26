@@ -40,7 +40,7 @@ namespace GLOPHYSX {
 			for (auto entity : group) {
 				auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
 
-				Renderer2D::DrawQuad(transform.GetTransform(), sprite.m_color, (int)entity);
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
 
 			Renderer2D::EndScene();
@@ -82,7 +82,7 @@ namespace GLOPHYSX {
 				for (auto entity : group) {
 					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
 
-					Renderer2D::DrawQuad(transform.GetTransform(), sprite.m_color, (int)entity);
+					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 				}
 
 				Renderer2D::EndScene();

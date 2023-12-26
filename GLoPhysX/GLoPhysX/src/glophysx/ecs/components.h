@@ -2,6 +2,7 @@
 
 #include "glophysx/core/core.h"
 #include "glophysx/components/scene/scene_camera.h"
+#include "glophysx/rendering/objects/texture/texture.h"
 
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
@@ -45,6 +46,8 @@ namespace GLOPHYSX {
 		struct SpriteComponent
 		{
 			glm::vec4 m_color = glm::vec4(1.0f);
+			Shared<Texture2D> m_texture;
+			float m_tiling = 1.0f;
 
 			SpriteComponent() = default;
 			SpriteComponent(const SpriteComponent&) = default;
