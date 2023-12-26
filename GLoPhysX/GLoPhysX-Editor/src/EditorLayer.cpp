@@ -271,6 +271,40 @@ void EditorLayer::FileHandler()
     }
 }
 
+void EditorLayer::FileHandlerInput(KeyPressEvent& e)
+{
+    if (e.GetKeycode() == GLOP_KEY_N &&
+        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
+    {
+        NewScene();
+    }
+
+    if (e.GetKeycode() == GLOP_KEY_O &&
+        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
+    {
+        LoadScene();
+    }
+
+    if (e.GetKeycode() == GLOP_KEY_S &&
+        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
+    {
+        SaveScene();
+    }
+
+    if (e.GetKeycode() == GLOP_KEY_S &&
+        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)) &&
+        (Input::IsKeyPressed(GLOP_KEY_LEFT_SHIFT) || Input::IsKeyPressed(GLOP_KEY_RIGHT_SHIFT)))
+    {
+        SaveAsScene();
+    }
+
+    if (e.GetKeycode() == GLOP_KEY_D &&
+        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
+    {
+        DuplicateEntity();
+    }
+}
+
 void EditorLayer::NewScene()
 {
     m_editor_scene = MakeShared<Scene>();
@@ -377,6 +411,27 @@ void EditorLayer::DuplicateEntity()
     }
 }
 
+void EditorLayer::GizmosInput(KeyPressEvent& e)
+{
+    if (m_viewport_hovered)
+    {
+        if (e.GetKeycode() == GLOP_KEY_Q)
+        {
+            m_gizmo_type = ImGuizmo::OPERATION::TRANSLATE;
+        }
+
+        if (e.GetKeycode() == GLOP_KEY_W)
+        {
+            m_gizmo_type = ImGuizmo::OPERATION::ROTATE;
+        }
+
+        if (e.GetKeycode() == GLOP_KEY_E)
+        {
+            m_gizmo_type = ImGuizmo::OPERATION::SCALE;
+        }
+    }
+}
+
 void EditorLayer::ShowGizmos()
 {
     Entity m_selected_entity = m_editor_ui.m_ui_scene_hierarchy->GetSelectedContext();
@@ -429,55 +484,8 @@ void EditorLayer::ShowGizmos()
 
 bool EditorLayer::OnKeyPress(KeyPressEvent& e)
 {
-    if (e.GetKeycode() == GLOP_KEY_N &&
-        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
-    {
-        NewScene();
-    }
-
-    if (e.GetKeycode() == GLOP_KEY_O &&
-        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
-    {
-        LoadScene();
-    }
-
-    if (e.GetKeycode() == GLOP_KEY_S &&
-        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
-    {
-        SaveScene();
-    }
-
-    if (e.GetKeycode() == GLOP_KEY_S &&
-        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)) &&
-        (Input::IsKeyPressed(GLOP_KEY_LEFT_SHIFT) || Input::IsKeyPressed(GLOP_KEY_RIGHT_SHIFT)))
-    {
-        SaveAsScene();
-    }
-
-    if (e.GetKeycode() == GLOP_KEY_D &&
-        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
-    {
-        DuplicateEntity();
-    }
-
-    if (m_viewport_hovered)
-    {
-        if (e.GetKeycode() == GLOP_KEY_Q)
-        {
-            m_gizmo_type = ImGuizmo::OPERATION::TRANSLATE;
-        }
-
-        if (e.GetKeycode() == GLOP_KEY_W)
-        {
-            m_gizmo_type = ImGuizmo::OPERATION::ROTATE;
-        }
-
-        if (e.GetKeycode() == GLOP_KEY_E)
-        {
-            m_gizmo_type = ImGuizmo::OPERATION::SCALE;
-        }
-    }
-
+    FileHandlerInput(e);
+    GizmosInput(e);
 
     return false;
 }

@@ -25,6 +25,7 @@ private:
 	void MenuBar();
 
 	void FileHandler();
+	void FileHandlerInput(KeyPressEvent& e);
 	void NewScene();
 	void LoadScene();
 	void LoadScene(const std::filesystem::path& path);
@@ -36,6 +37,7 @@ private:
 
 	void DuplicateEntity();
 
+	void GizmosInput(KeyPressEvent& e);
 	void ShowGizmos();
 
 	bool OnKeyPress(KeyPressEvent& e);
