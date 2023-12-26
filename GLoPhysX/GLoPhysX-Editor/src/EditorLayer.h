@@ -34,6 +34,8 @@ private:
 	void Options();
 	void EditorCameraOptions();
 
+	void DuplicateEntity();
+
 	void ShowGizmos();
 
 	bool OnKeyPress(KeyPressEvent& e);
@@ -59,5 +61,10 @@ private:
 
 	// Scene
 	Shared<Scene> m_current_scene;
+	Shared<Scene> m_editor_scene, m_runtime_scene;
 	std::string m_save_path = std::string("assets/scenes");
+
+	// Other
+	Entity m_square;
+	Entity m_camera;
 };

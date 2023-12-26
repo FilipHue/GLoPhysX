@@ -14,16 +14,65 @@ namespace GLOPHYSX {
 
 	namespace COMPONENTS {
 
+		template<typename T>
+		static void CopyComponent(entt::registry& dst, entt::registry& src, std::unordered_map<UUID, entt::entity>& entt_map)
+		{
+			auto view = src.view<T>();
+			for (auto src_entity : view)
+			{
+				UUID uuid = src.get<IDComponent>(src_entity).m_id;
+				if (entt_map.find(uuid) == entt_map.end())
+				{
+					GLOP_CORE_CRITICAL("Entityt isn't in the map.");
+				}
+				entt::entity dst_entt_id = entt_map.at(uuid);
+
+				auto& src_component = src.get<T>(src_entity);
+				dst.emplace_or_replace<T>(dst_entt_id, src_component);
+			}
+		}
+
+		template<typename T>
+		static void CopyComponentIfExists(Entity dst, Entity src)
+		{
+			if (src.HasComponent<T>())
+			{
+				dst.AddOrReplaceComponent<T>(src.GetComponent<T>());
+			}
+		}
+
+		Shared<Scene> Scene::Copy(Shared<Scene> other)
+		{
+			Shared<Scene> new_scene = MakeShared<Scene>();
+
+			new_scene->m_viewport_width = other->m_viewport_width;
+			new_scene->m_viewport_width = other->m_viewport_width;
+
+			auto& src_scene_reg = other->m_registry;
+			auto& dst_scene_reg = new_scene->m_registry;
+			std::unordered_map<UUID, entt::entity> entt_map;
+
+			auto id_view = src_scene_reg.view<IDComponent>();
+			for (auto entity : id_view)
+			{
+				std::cout << "1\n";
+				UUID uuid = src_scene_reg.get<IDComponent>(entity).m_id;
+				const auto& name = src_scene_reg.get<TagComponent>(entity).m_tag;
+				Entity new_entity = new_scene->CreateEntityWithUUID(uuid, name);
+				entt_map[uuid] = (entt::entity)new_entity;
+			}
+
+			CopyComponent<TransformComponent>(dst_scene_reg, src_scene_reg, entt_map);
+			CopyComponent<SpriteComponent>(dst_scene_reg, src_scene_reg, entt_map);
+			CopyComponent<CameraComponent>(dst_scene_reg, src_scene_reg, entt_map);
+			CopyComponent<NativeScriptComponent>(dst_scene_reg, src_scene_reg, entt_map);
+
+			return new_scene;
+		}
+
 		Entity Scene::CreateEntity(const std::string& name)
 		{
-			Entity entity = { m_registry.create(), this };
-
-			entity.AddComponent<IDComponent>();
-			auto& tag = entity.AddComponent<TagComponent>();
-			tag.m_tag = name.empty() ? "Entity" : name;
-			entity.AddComponent<TransformComponent>();
-
-			return entity;
+			return CreateEntityWithUUID(UUID(), name);
 		}
 
 		Entity Scene::CreateEntityWithUUID(UUID id, const std::string& name)
@@ -90,7 +139,6 @@ namespace GLOPHYSX {
 				Renderer2D::BeginScene(*main_camera, camera_transform);
 
 				auto group = m_registry.group<TransformComponent>(entt::get<SpriteComponent>);
-
 				for (auto entity : group) {
 					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
 
@@ -113,6 +161,19 @@ namespace GLOPHYSX {
 					camera_component.m_camera.SetViewportSize(width, height);
 				}
 			}
+		}
+
+		Entity Scene::DuplicateEntity(Entity entity)
+		{
+			std::string name = entity.GetComponent<TagComponent>().m_tag + "(copy)";
+			Entity new_entity = CreateEntity(name);
+
+			CopyComponentIfExists<TransformComponent>(new_entity, entity);
+			CopyComponentIfExists<SpriteComponent>(new_entity, entity);
+			CopyComponentIfExists<CameraComponent>(new_entity, entity);
+			CopyComponentIfExists<NativeScriptComponent>(new_entity, entity);
+
+			return new_entity;
 		}
 
 		Entity Scene::GetPrimaryCameraEntity()

@@ -31,7 +31,55 @@ void EditorLayer::OnAttach()
     fb_specs.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
     m_framebuffer = Framebuffer::Create(fb_specs);
 
-    m_current_scene = MakeShared<Scene>();
+    m_editor_scene = MakeShared<Scene>();
+    
+    m_square = m_editor_scene->CreateEntity("Square");
+    m_square.AddComponent<SpriteComponent>();
+    m_camera = m_editor_scene->CreateEntity("Camera");
+    m_camera.AddComponent<CameraComponent>();
+
+    class MoveSprite : public ScriptableEntity
+    {
+    public:
+        void OnCreate()
+        {
+            m_move_speed = 10.0f;
+        }
+
+        void OnUpdate(DeltaTime dt) 
+        {
+            auto& transform_comp = GetComponent<TransformComponent>();
+            
+            if (Input::IsKeyPressed(GLOP_KEY_A))
+            {
+                transform_comp.m_translation.x += dt * m_move_speed;
+            }
+
+            if (Input::IsKeyPressed(GLOP_KEY_D))
+            {
+                transform_comp.m_translation.x -= dt * m_move_speed;
+            }
+
+            if (Input::IsKeyPressed(GLOP_KEY_S))
+            {
+                transform_comp.m_translation.y += dt * m_move_speed;
+            }
+
+            if (Input::IsKeyPressed(GLOP_KEY_W))
+            {
+                transform_comp.m_translation.y -= dt * m_move_speed;
+            }
+        }
+
+        void OnDestroy() {}
+
+    private:
+        float m_move_speed;
+
+    };
+    m_camera.AddComponent<NativeScriptComponent>().Bind<MoveSprite>();
+
+    m_current_scene = m_editor_scene;
     m_editor_ui.Initialize(m_current_scene);
 
     m_editor_camera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
@@ -75,11 +123,21 @@ void EditorLayer::OnUpdate(DeltaTime dt)
 
         if (m_editor_ui.m_ui_tool_bar->m_scene_state == SceneState::EDIT)
         {
+            m_current_scene = m_editor_scene;
+            m_runtime_scene = nullptr;
+
             m_current_scene->OnUpdateEditor(dt, m_editor_camera);
         }
         else if (m_editor_ui.m_ui_tool_bar->m_scene_state == SceneState::PLAY)
         {
+            if (m_runtime_scene == nullptr)
+            {
+                m_runtime_scene = Scene::Copy(m_current_scene);
+                m_current_scene = m_runtime_scene;
+            }
+
             m_current_scene->OnUpdateRuntime(dt);
+
         }
 
         auto [mx, my] = ImGui::GetMousePos();
@@ -234,27 +292,32 @@ void EditorLayer::LoadScene(const std::filesystem::path& path)
 {
     std::string path_string = path.string();
     std::string scene_name = path_string.substr(path_string.find_last_of("/\\") + 1);
-    m_current_scene = MakeShared<Scene>();
-    m_current_scene->SetSceneName(scene_name);
-    m_current_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
-    m_editor_ui.SetContext(m_current_scene);
 
-    SceneSerializer serializer(m_current_scene);
-    serializer.Deserialize(path_string);
+    Shared<Scene> new_scene = MakeShared<Scene>();
+    SceneSerializer serializer(new_scene);
+    if (serializer.Deserialize(path_string))
+    {
+        m_editor_scene = new_scene;
+        m_editor_scene->SetSceneName(scene_name);
+        m_editor_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
+
+        m_current_scene = m_editor_scene;
+        m_editor_ui.SetContext(m_current_scene);
+    }
 }
 
 void EditorLayer::SaveScene()
 {
-    if (m_current_scene != nullptr)
+    if (m_editor_scene != nullptr)
     {
-        if (m_current_scene->GetSceneName() == "Untitled")
+        if (m_editor_scene->GetSceneName() == "Untitled")
         {
             SaveAsScene();
         }
         else
         {
-            SceneSerializer serializer(m_current_scene);
-            serializer.Serialize(m_save_path + "/" + m_current_scene->GetSceneName());
+            SceneSerializer serializer(m_editor_scene);
+            serializer.Serialize(m_save_path + "/" + m_editor_scene->GetSceneName());
         }
     }
 }
@@ -299,6 +362,16 @@ void EditorLayer::EditorCameraOptions()
         m_editor_camera.BlockRotations(block_rotation);
 
         ImGui::End();
+    }
+}
+
+void EditorLayer::DuplicateEntity()
+{
+    if (m_editor_ui.m_ui_scene_hierarchy->GetSelectedContext() && m_editor_ui.m_ui_tool_bar->m_scene_state == SceneState::EDIT)
+    {
+        Entity selected_entity = m_editor_ui.m_ui_scene_hierarchy->GetSelectedContext();
+        Entity new_selected_context = m_editor_scene->DuplicateEntity(selected_entity);
+        m_editor_ui.m_ui_scene_hierarchy->SetSelectedContext(new_selected_context);
     }
 }
 
@@ -379,20 +452,30 @@ bool EditorLayer::OnKeyPress(KeyPressEvent& e)
         SaveAsScene();
     }
 
-    if (e.GetKeycode() == GLOP_KEY_Q)
+    if (e.GetKeycode() == GLOP_KEY_D &&
+        (Input::IsKeyPressed(GLOP_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GLOP_KEY_RIGHT_CONTROL)))
     {
-        m_gizmo_type = ImGuizmo::OPERATION::TRANSLATE;
+        DuplicateEntity();
     }
 
-    if (e.GetKeycode() == GLOP_KEY_W)
+    if (m_viewport_hovered)
     {
-        m_gizmo_type = ImGuizmo::OPERATION::ROTATE;
+        if (e.GetKeycode() == GLOP_KEY_Q)
+        {
+            m_gizmo_type = ImGuizmo::OPERATION::TRANSLATE;
+        }
+
+        if (e.GetKeycode() == GLOP_KEY_W)
+        {
+            m_gizmo_type = ImGuizmo::OPERATION::ROTATE;
+        }
+
+        if (e.GetKeycode() == GLOP_KEY_E)
+        {
+            m_gizmo_type = ImGuizmo::OPERATION::SCALE;
+        }
     }
 
-    if (e.GetKeycode() == GLOP_KEY_E)
-    {
-        m_gizmo_type = ImGuizmo::OPERATION::SCALE;
-    }
 
     return false;
 }

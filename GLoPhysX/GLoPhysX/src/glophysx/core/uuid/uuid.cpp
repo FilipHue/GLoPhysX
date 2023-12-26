@@ -20,15 +20,3 @@ namespace GLOPHYSX {
 	}
 }
 
-// Custom hash function for UUID class
-namespace std {
-
-	template<>
-	struct hash<GLOPHYSX::UUID>
-	{
-		std::size_t operator()(const GLOPHYSX::UUID& uuid) const
-		{
-			return hash<uint64_t>()(uuid);
-		}
-	};
-}
