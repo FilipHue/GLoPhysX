@@ -1,6 +1,6 @@
 #include "EditorLayer.h"
 
-#include "glophysx/components/scene/scene_serializer.h"
+#include "glophysx/components/scene/serializer/scene_serializer.h"
 #include "glophysx/core/utils/platform_utils.h"
 
 #include "ImGuizmo.h"
