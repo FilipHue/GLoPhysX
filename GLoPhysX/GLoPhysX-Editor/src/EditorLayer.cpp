@@ -53,7 +53,7 @@ void EditorLayer::OnUpdate(DeltaTime dt)
         m_editor_camera.SetViewportSize(m_viewport_size.x, m_viewport_size.y);
     }
 
-    if (m_viewport_focused)
+    if (m_viewport_focused && m_editor_ui.m_ui_tool_bar->m_scene_state == SceneState::EDIT)
     {
         m_editor_camera.OnUpdate(dt);
     }
@@ -73,7 +73,14 @@ void EditorLayer::OnUpdate(DeltaTime dt)
 
         m_framebuffer->ClearAttachment(1, (const void*)(-1));
 
-        m_current_scene->OnUpdateEditor(dt, m_editor_camera);
+        if (m_editor_ui.m_ui_tool_bar->m_scene_state == SceneState::EDIT)
+        {
+            m_current_scene->OnUpdateEditor(dt, m_editor_camera);
+        }
+        else if (m_editor_ui.m_ui_tool_bar->m_scene_state == SceneState::PLAY)
+        {
+            m_current_scene->OnUpdateRuntime(dt);
+        }
 
         auto [mx, my] = ImGui::GetMousePos();
         mx -= m_viewport_bounds[0].x;
@@ -127,27 +134,30 @@ void EditorLayer::OnGUIRender()
     uint32_t texture_id = m_framebuffer->GetColorAttachmentId(0);
     ImGui::Image((void*)(UINT_PTR)texture_id, ImVec2{m_viewport_size.x, m_viewport_size.y}, ImVec2{0, 1}, ImVec2{1, 0});
 
-    // Drag and drop from the content browser
-    if (ImGui::BeginDragDropTarget())
+    if (m_editor_ui.m_ui_tool_bar->m_scene_state == SceneState::EDIT)
     {
-        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+        // Drag and drop from the content browser
+        if (ImGui::BeginDragDropTarget())
         {
-            const wchar_t* path = (const wchar_t*)payload->Data;
-            LoadScene(std::filesystem::path(g_assets_path / path));
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+            {
+                const wchar_t* path = (const wchar_t*)payload->Data;
+                LoadScene(std::filesystem::path(g_assets_path / path));
+            }
+
+            ImGui::EndDragDropTarget();
         }
 
-        ImGui::EndDragDropTarget();
+        auto viweport_offset = ImGui::GetWindowPos();
+        auto viewport_min_region = ImGui::GetWindowContentRegionMin();
+        auto viewport_max_region = ImGui::GetWindowContentRegionMax();
+
+        m_viewport_bounds[0] = { viewport_min_region.x + viweport_offset.x, viewport_min_region.y + viweport_offset.y };
+        m_viewport_bounds[1] = { viewport_max_region.x + viweport_offset.x, viewport_max_region.y + viweport_offset.y };
+
+        // Gizmos
+        ShowGizmos();
     }
-
-    auto viweport_offset = ImGui::GetWindowPos();
-    auto viewport_min_region = ImGui::GetWindowContentRegionMin();
-    auto viewport_max_region = ImGui::GetWindowContentRegionMax();
-
-    m_viewport_bounds[0] = { viewport_min_region.x + viweport_offset.x, viewport_min_region.y + viweport_offset.y };
-    m_viewport_bounds[1] = { viewport_max_region.x + viweport_offset.x, viewport_max_region.y + viweport_offset.y };
-
-    // Gizmos
-    ShowGizmos();
 
     m_editor_ui.EndViewport();
 
@@ -389,7 +399,7 @@ bool EditorLayer::OnKeyPress(KeyPressEvent& e)
 
 bool EditorLayer::OnMouseButtonPress(MouseButtonPressEvent& e)
 {
-    if (e.GetMouseButton() == GLOP_MOUSE_BUTTON_1)
+    if (e.GetMouseButton() == GLOP_MOUSE_BUTTON_1 && m_editor_ui.m_ui_tool_bar->m_scene_state == SceneState::EDIT)
     {
         if (m_selected_entity != -1 && !ImGuizmo::IsOver() && !Input::IsKeyPressed(GLOP_KEY_LEFT_ALT)) {
             m_editor_ui.m_ui_scene_hierarchy->SetSelectedContext(Entity{ (entt::entity)m_selected_entity, m_current_scene.get() });

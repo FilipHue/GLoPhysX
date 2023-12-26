@@ -4,6 +4,7 @@
 #include "panels/scene_hierarchy.h"
 #include "panels/entity_inspector.h"
 #include "panels/content_browser.h"
+#include "toolbar/tool_bar.h"
 
 class EditorLayer;
 
@@ -30,6 +31,7 @@ namespace GLOPHYSX {
 			static SceneHierarchy* m_ui_scene_hierarchy;
 			static EntityInspector* m_ui_entity_inspector;
 			static ContentBrowser* m_ui_content_browser;
+			static ToolBar* m_ui_tool_bar;
 
 			friend class EditorLayer;
 		};

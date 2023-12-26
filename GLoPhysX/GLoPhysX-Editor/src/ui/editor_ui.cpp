@@ -6,18 +6,22 @@ namespace GLOPHYSX {
 
 		SceneHierarchy* EditorUI::m_ui_scene_hierarchy = new SceneHierarchy();
 		ContentBrowser* EditorUI::m_ui_content_browser = nullptr;
+		ToolBar* EditorUI::m_ui_tool_bar = nullptr;
 
 		void EditorUI::OnGUIRender()
 		{
 			m_ui_scene_hierarchy->Render();
 			m_ui_entity_inspector->Render(m_ui_scene_hierarchy->GetSelectedContext());
 			m_ui_content_browser->Render();
+			m_ui_tool_bar->Render();
 		}
 
 		void EditorUI::Initialize(Shared<Scene>& current_scene)
 		{
 			m_ui_scene_hierarchy->SetContext(current_scene);
 			m_ui_content_browser = new ContentBrowser();
+			m_ui_tool_bar = new ToolBar();
+			m_ui_tool_bar->SetContext(current_scene);
 		}
 
 		void EditorUI::Shutdown()
@@ -27,6 +31,7 @@ namespace GLOPHYSX {
 		void EditorUI::SetContext(Shared<Scene>& current_scene)
 		{
 			m_ui_scene_hierarchy->SetContext(current_scene);
+			m_ui_tool_bar->SetContext(current_scene);
 		}
 
 		void EditorUI::BeginViewport()
