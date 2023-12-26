@@ -17,8 +17,14 @@ namespace GLOPHYSX {
 
 		static void SerializeEntity(YAML::Emitter& out, Entity entity)
 		{
+			if (!entity.HasComponent<IDComponent>())
+			{
+				GLOP_CORE_CRITICAL("Entity doesn't have an UUID");
+				exit(-1);
+			}
+
 			out << YAML::BeginMap;
-			out << YAML::Key << "Entity" << YAML::Value << (int)entity;
+			out << YAML::Key << "Entity" << YAML::Value << entity.GetID();
 
 			if (entity.HasComponent<TagComponent>())
 			{
@@ -138,7 +144,7 @@ namespace GLOPHYSX {
 			{
 				for (auto entity : entities)
 				{
-					uint64_t uuid = entity["Entity"].as<uint64_t>();
+					UUID uuid = entity["Entity"].as<uint64_t>();
 
 					std::string name;
 					auto tag_component = entity["TagComponent"];
@@ -147,7 +153,7 @@ namespace GLOPHYSX {
 						name = tag_component["Tag"].as<std::string>();
 					}
 
-					Entity deserialized_entity = m_scene->CreateEntity(name);
+					Entity deserialized_entity = m_scene->CreateEntityWithUUID(uuid, name);
 
 					auto transform_component = entity["TransformComponent"];
 					if (transform_component)

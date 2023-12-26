@@ -18,10 +18,22 @@ namespace GLOPHYSX {
 		{
 			Entity entity = { m_registry.create(), this };
 
-			entity.AddComponent<TransformComponent>();
-
+			entity.AddComponent<IDComponent>();
 			auto& tag = entity.AddComponent<TagComponent>();
 			tag.m_tag = name.empty() ? "Entity" : name;
+			entity.AddComponent<TransformComponent>();
+
+			return entity;
+		}
+
+		Entity Scene::CreateEntityWithUUID(UUID id, const std::string& name)
+		{
+			Entity entity = { m_registry.create(), this };
+
+			entity.AddComponent<IDComponent>(id);
+			auto& tag = entity.AddComponent<TagComponent>();
+			tag.m_tag = name.empty() ? "Entity" : name;
+			entity.AddComponent<TransformComponent>();
 
 			return entity;
 		}
@@ -122,7 +134,11 @@ namespace GLOPHYSX {
 		template<typename T>
 		void Scene::OnComponentAdded(Entity entity, T& component)
 		{
-			static_assert(false);
+		}
+
+		template<>
+		void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
+		{
 		}
 
 		template<>

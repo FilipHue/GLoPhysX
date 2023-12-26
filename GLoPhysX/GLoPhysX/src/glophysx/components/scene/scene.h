@@ -5,6 +5,8 @@
 
 #include "glophysx/rendering/camera/editor/editor_camera.h"
 
+#include "glophysx/core/uuid/uuid.h"
+
 #include "entt/entt.h"
 
 namespace GLOPHYSX {
@@ -26,6 +28,7 @@ namespace GLOPHYSX {
 			virtual ~Scene() {};
 
 			Entity CreateEntity(const std::string& name = std::string());
+			Entity CreateEntityWithUUID(UUID id, const std::string& name = std::string());
 			void DestroyEntity(Entity& entity);
 
 			void OnUpdateEditor(DeltaTime dt, EditorCamera& camera);

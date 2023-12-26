@@ -4,6 +4,8 @@
 #include "glophysx/components/scene/scene_camera.h"
 #include "glophysx/rendering/objects/texture/texture.h"
 
+#include "glophysx/core/uuid/uuid.h"
+
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
 #define GLM_ENABLE_EXPERIMENTAL
@@ -14,6 +16,18 @@ namespace GLOPHYSX {
 	namespace COMPONENTS {
 
 		class ScriptableEntity;
+
+		struct IDComponent
+		{
+			UUID m_id;
+
+			IDComponent() = default;
+			IDComponent(const IDComponent&) = default;
+			IDComponent(UUID uuid)
+			{
+				m_id = uuid;
+			}
+		};
 
 		struct TagComponent
 		{
