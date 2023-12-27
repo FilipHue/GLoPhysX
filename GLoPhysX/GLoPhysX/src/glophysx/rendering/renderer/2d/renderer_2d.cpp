@@ -70,10 +70,10 @@ namespace GLOPHYSX {
 			}
 
 			s_data->shader = Shader::Create("assets/shaders/normal.glsl");
-			s_data->shader->Bind();
-			s_data->shader->SetIntValues("u_textures", samplers, s_data->maximum_texture_slots);
 
 			s_data->texture_slots[0] = s_data->white_texture;
+
+			s_data->camera_uniform_buffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
 		}
 
 		void Renderer2D::Shutdown()
@@ -91,8 +91,8 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			s_data->shader->Bind();
-			s_data->shader->SetMat4("u_view_projection", camera.GetVPMatrix());
+			s_data->camera_buffer.view_projection = camera.GetVPMatrix();
+			s_data->camera_uniform_buffer->SetData(&(s_data->camera_buffer), sizeof(Renderer2DData::CameraData));
 
 			StartBatch();
 		}
@@ -101,10 +101,8 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			glm::mat4 view_projection_matrix = camera.GetProjectionMatrix() * glm::inverse(transform);
-
-			s_data->shader->Bind();
-			s_data->shader->SetMat4("u_view_projection", view_projection_matrix);
+			s_data->camera_buffer.view_projection = camera.GetProjectionMatrix() * glm::inverse(transform);
+			s_data->camera_uniform_buffer->SetData(&(s_data->camera_buffer), sizeof(Renderer2DData::CameraData));
 
 			StartBatch();
 		}
@@ -113,10 +111,8 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			glm::mat4 view_projection_matrix = camera.GetVPMatrix();
-
-			s_data->shader->Bind();
-			s_data->shader->SetMat4("u_view_projection", view_projection_matrix);
+			s_data->camera_buffer.view_projection = camera.GetVPMatrix();
+			s_data->camera_uniform_buffer->SetData(&(s_data->camera_buffer), sizeof(Renderer2DData::CameraData));
 
 			StartBatch();
 		}

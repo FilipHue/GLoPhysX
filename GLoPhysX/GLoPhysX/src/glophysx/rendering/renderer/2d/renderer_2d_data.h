@@ -2,9 +2,10 @@
 
 #include "glophysx/core/core.h"
 
-#include "glophysx/rendering/shader/shader.h"
 #include "glophysx/rendering/objects/vertex_array.h"
 #include "glophysx/rendering/objects/texture/texture.h"
+#include "glophysx/rendering/objects/uniform_buffer/uniform_buffer.h"
+#include "glophysx/rendering/shader/shader.h"
 
 #include "glm.hpp"
 
@@ -71,6 +72,13 @@ namespace GLOPHYSX {
 
 			Shared<Shader> shader;
 			Shared<Texture2D> white_texture;
+
+			struct CameraData
+			{
+				glm::mat4 view_projection;
+			};
+			CameraData camera_buffer;
+			Shared<UniformBuffer> camera_uniform_buffer;
 		};
 
 		struct Statistics

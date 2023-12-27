@@ -1,3 +1,24 @@
+VULKAN_SDK = os.getenv("VULKAN_SDK")
+
+LibraryDirectories = {}
+Library = {}
+
+if VULKAN_SDK then
+	LibraryDirectories["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
+
+	Library["Vulkan"] = "%{LibraryDirectories.VulkanSDK}/vulkan-1.lib"
+	Library["VulkanUtils"] = "%{LibraryDir.VulkanSDK}/VkLayer_utils.lib"
+
+	Library["ShaderC_Debug"] = "%{LibraryDirectories.VulkanSDK}/shaderc_sharedd.lib"
+	Library["SPIRV_Cross_Debug"] = "%{LibraryDirectories.VulkanSDK}/spirv-cross-cored.lib"
+	Library["SPIRV_Cross_GLSL_Debug"] = "%{LibraryDirectories.VulkanSDK}/spirv-cross-glsld.lib"
+	Library["SPIRV_Tools_Debug"] = "%{LibraryDir.VulkanSDK}/SPIRV-Toolsd.lib"
+
+	Library["ShaderC_Release"] = "%{LibraryDirectories.VulkanSDK}/shaderc_shared.lib"
+	Library["SPIRV_Cross_Release"] = "%{LibraryDirectories.VulkanSDK}/spirv-cross-core.lib"
+	Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDirectories.VulkanSDK}/spirv-cross-glsl.lib"
+end
+
 workspace "GLoPhysX"
 	architecture "x64"
 	startproject "GLoPhysX-Editor"
@@ -69,7 +90,8 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/STB",
 		"%{prj.name}/dependencies/ENTT",
 		"%{prj.name}/dependencies/YAML/yaml/include",
-		"%{prj.name}/dependencies/IMGUIZMO/imguizmo"
+		"%{prj.name}/dependencies/IMGUIZMO/imguizmo",
+		"%{VULKAN_SDK}/Include"
 	}
 
 	libdirs
@@ -139,9 +161,23 @@ project "GLoPhysX"
 		defines "GLOP_DEBUG"
 		symbols "On"
 
+		-- links
+		-- {
+		-- 	Library["ShaderC_Debug"],
+		-- 	Library["SPIRV_Cross_Debug"],
+		-- 	Library["SPIRV_Cross_GLSL_Debug"]
+		-- }
+
 	filter "configurations:Release"
 		defines "GLOP_RELEASE"
 		optimize "On"
+
+		-- links
+		-- {
+		-- 	Library["ShaderC_Release"],
+		-- 	Library["SPIRV_Cross_Release"],
+		-- 	Library["SPIRV_Cross_GLSL_Release"]
+		-- }
 
 project "Sandbox"
 	location "Sandbox"
@@ -213,6 +249,13 @@ project "Sandbox"
 		runtime "Debug"
 		defines "GLOP_DEBUG"
 		symbols "On"
+
+		links
+		{
+			Library["ShaderC_Debug"],
+			Library["SPIRV_Cross_Debug"],
+			Library["SPIRV_Cross_GLSL_Debug"]
+		}
 
 	filter "configurations:Release"
 		defines "GLOP_RELEASE"
@@ -289,6 +332,20 @@ project "GLoPhysX-Editor"
 		defines "GLOP_DEBUG"
 		symbols "On"
 
+		links
+		{
+			Library["ShaderC_Debug"],
+			Library["SPIRV_Cross_Debug"],
+			Library["SPIRV_Cross_GLSL_Debug"]
+		}
+
 	filter "configurations:Release"
 		defines "GLOP_RELEASE"
 		optimize "On"
+
+		-- links
+		-- {
+		-- 	Library["ShaderC_Release"],
+		-- 	Library["SPIRV_Cross_Release"],
+		-- 	Library["SPIRV_Cross_GLSL_Release"]
+		-- }

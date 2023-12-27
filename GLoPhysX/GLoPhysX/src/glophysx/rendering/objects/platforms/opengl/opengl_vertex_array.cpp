@@ -56,37 +56,11 @@ namespace GLOPHYSX {
 			const auto& layout = vertex_buffer->GetLayout();
 			for (const auto& element : layout) {
 
-				switch (element.type)
+				if (element.type == ShaderDataType::Float ||
+					element.type == ShaderDataType::Float2 ||
+					element.type == ShaderDataType::Float3 ||
+					element.type == ShaderDataType::Float4)
 				{
-				case ShaderDataType::Int:
-				{
-					glEnableVertexAttribArray(m_index);
-					glVertexAttribIPointer(
-						m_index,
-						element.GetComponentCount(),
-						GL_INT,
-						layout.GetStride(),
-						(const void*)(UINT_PTR)element.offset
-					);
-					m_index++;
-					break;
-				}
-
-				case ShaderDataType::Bool:
-				{
-					glEnableVertexAttribArray(m_index);
-					glVertexAttribIPointer(
-						m_index,
-						element.GetComponentCount(),
-						GL_INT,
-						layout.GetStride(),
-						(const void*)(UINT_PTR)element.offset
-					);
-					m_index++;
-					break;
-				}
-
-				default:
 					glEnableVertexAttribArray(m_index);
 					glVertexAttribPointer(
 						m_index,
@@ -97,7 +71,22 @@ namespace GLOPHYSX {
 						(const void*)(UINT_PTR)element.offset
 					);
 					m_index++;
-					break;
+				}
+				else if (element.type == ShaderDataType::Int ||
+					element.type == ShaderDataType::Int2 ||
+					element.type == ShaderDataType::Int3 ||
+					element.type == ShaderDataType::Int4 ||
+					element.type == ShaderDataType::Bool)
+				{
+					glEnableVertexAttribArray(m_index);
+					glVertexAttribIPointer(
+						m_index,
+						element.GetComponentCount(),
+						GL_INT,
+						layout.GetStride(),
+						(const void*)(UINT_PTR)element.offset
+					);
+					m_index++;
 				}
 
 			}

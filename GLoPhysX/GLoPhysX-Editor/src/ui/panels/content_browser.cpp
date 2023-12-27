@@ -26,7 +26,7 @@ namespace GLOPHYSX {
 			if (m_current_directory != std::filesystem::path("assets"))
 			{	
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-				if (ImGui::ImageButton((ImTextureID)m_back_icon->GetID(), { 16, 16 }, { 0, 1 }, { 1, 0 }))
+				if (ImGui::ImageButton((ImTextureID)(UINT_PTR)m_back_icon->GetID(), { 16, 16 }, { 0, 1 }, { 1, 0 }))
 				{
 					m_current_directory = m_current_directory.parent_path();
 				}
@@ -52,7 +52,7 @@ namespace GLOPHYSX {
 				Shared<Texture2D> icon = directory_entry.is_directory() ? m_directory_icon : m_file_icon;
 				ImGui::PushID(filename_string.c_str());
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-				ImGui::ImageButton((ImTextureID)icon->GetID(), { m_thumbnail_size, m_thumbnail_size }, { 0, 1 }, { 1, 0 });
+				ImGui::ImageButton((ImTextureID)(UINT_PTR)icon->GetID(), { m_thumbnail_size, m_thumbnail_size }, { 0, 1 }, { 1, 0 });
 				if (ImGui::BeginDragDropSource())
 				{
 					const wchar_t* item_path = relative_path.c_str();

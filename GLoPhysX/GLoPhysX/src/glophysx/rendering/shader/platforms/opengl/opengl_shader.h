@@ -1,43 +1,10 @@
 #pragma once
 
-#include "glophysx/rendering/shader/shader.h"
-
-#include "glm.hpp"
-#include "glad/glad.h"
+#include "opengl_shader_utils.h"
 
 namespace GLOPHYSX {
 
 	namespace RENDERING {
-
-		static GLenum GetShaderType(ShaderType type) {
-			switch (type)
-			{
-			case GLOPHYSX::RENDERING::NONE:
-				GLOP_CORE_WARN("Please spicify a shader type");
-				exit(-1);
-			case GLOPHYSX::RENDERING::VERTEX:
-				return GL_VERTEX_SHADER;
-			case GLOPHYSX::RENDERING::GEOMETRY:
-				return GL_GEOMETRY_SHADER;
-			case GLOPHYSX::RENDERING::TESSELATION:
-				GLOP_CORE_WARN("Unsupported shader type by the current API");
-				exit(-1);
-			case GLOPHYSX::RENDERING::COMPUTE:
-				GLOP_CORE_WARN("Unsupported shader type by the current API");
-				exit(-1);
-			case GLOPHYSX::RENDERING::FRAGMENT:
-				return GL_FRAGMENT_SHADER;
-			case GLOPHYSX::RENDERING::PIXEL:
-				GLOP_CORE_WARN("Unsupported shader type by the current API");
-				exit(-1);
-			case GLOPHYSX::RENDERING::HULL:
-				GLOP_CORE_WARN("Unsupported shader type by the current API");
-				exit(-1);
-			default:
-				GLOP_CORE_WARN("Unkown shader type");
-				exit(-1);
-			}
-		}
 
 		class OpenglShader : public Shader
 		{
@@ -86,10 +53,23 @@ namespace GLOPHYSX {
 			void SendUniformMat4(const std::string& name, const glm::mat4& value) const;
 
 		private:
-			void Compile(const std::unordered_map<ShaderType, std::string>& shader_sources);
+			void CompileOrGetVulkanBinaries(const std::unordered_map<ShaderType, std::string>& shader_sources);
+			void CompileOrGetOpenglBinaries();
+
+			void CreateProgram();
+
+			void Reflect(GLenum stage, const std::vector<uint32_t>& shader_data);
 
 		private:
 			uint32_t m_id;
+
+			std::filesystem::path m_file_path;
+			std::string m_name;
+
+			std::unordered_map<GLenum, std::vector<uint32_t>> m_vulkan_SPIRV;
+			std::unordered_map<GLenum, std::vector<uint32_t>> m_opengl_SPIRV;
+
+			std::unordered_map<GLenum, std::string> m_opengl_source_code;
 		};
 	}
 }

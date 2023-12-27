@@ -1,5 +1,5 @@
 #type VERTEX
-#version 460 core
+#version 450 core
 
 layout(location = 0) in vec3 a_position;
 layout(location = 1) in vec4 a_color;
@@ -8,14 +8,16 @@ layout(location = 3) in float a_texture_index;
 layout(location = 4) in float a_tiling_factor;
 layout(location = 5) in int a_entity_id;
 
-out vec4 v_color;
-out vec2 v_texture_coord;
-flat out float v_texture_index;
-out float v_tiling_factor;
-out int v_entity_id;
+layout(location = 0) out vec4 v_color;
+layout(location = 1) out vec2 v_texture_coord;
+layout(location = 2) out flat float v_texture_index;
+layout(location = 3) out float v_tiling_factor;
+layout(location = 4) out int v_entity_id;
 
-uniform mat4 u_view_projection;
-uniform mat4 u_model;
+layout(std140, binding = 0) uniform camera
+{
+	mat4 u_view_projection;
+};
 
 void main()
 {
@@ -29,22 +31,22 @@ void main()
 }
 
 #type FRAGMENT
-#version 460 core
+#version 450 core
 
-layout(location = 0) out vec4 color1;
-layout(location = 1) out int color2;
+layout(location = 0) out vec4 color;
+layout(location = 1) out int entity_id;
 
-uniform sampler2D u_textures[32];
+layout(location = 0) in vec4 v_color;
+layout(location = 1) in vec2 v_texture_coord;
+layout(location = 2) in flat float v_texture_index;
+layout(location = 3) in float v_tiling_factor;
+layout(location = 4) in flat int v_entity_id;
 
-in vec4 v_color;
-in vec2 v_texture_coord;
-flat in float v_texture_index;
-in float v_tiling_factor;
-in flat int v_entity_id;
+layout(binding = 0) uniform sampler2D u_textures[32];
 
 void main()
 {
-	color1 = texture(u_textures[int(v_texture_index)], v_texture_coord * v_tiling_factor) * v_color;
+	color = texture(u_textures[int(v_texture_index)], v_texture_coord * v_tiling_factor) * v_color;
 
-	color2 = v_entity_id;
+	entity_id = v_entity_id;
 }

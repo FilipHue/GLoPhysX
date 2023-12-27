@@ -3,6 +3,8 @@
 #include "utils/glop_config.h"
 #include "glophysx/core/logger/logger.h"
 
+#include <memory>
+
 namespace GLOPHYSX {
 
 	template<typename T>

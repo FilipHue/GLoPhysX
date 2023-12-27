@@ -7,8 +7,8 @@
 */
 
 // Core
-#include "glophysx/core/application/application.h"
 #include "glophysx/core/logger/logger.h"
+#include "glophysx/core/application/application.h"
 #include "glophysx/core/layers/layer.h"
 #include "glophysx/core/gui/gui_layer.h" 
 #include "glophysx/core/input/input.h"
@@ -17,21 +17,22 @@
 
 // Rendering
 #include "glophysx/rendering/renderer/renderer.h"
-#include "glophysx/rendering/renderer/2d/renderer_2d.h"
 #include "glophysx/rendering/renderer/commands/renderer_commands.h"
+#include "glophysx/rendering/renderer/2d/renderer_2d.h"
 #include "glophysx/rendering/camera/orthographic/orthographic_camera.h"
 #include "glophysx/rendering/camera/orthographic/ortographic_camera_controller.h"
 #include "glophysx/rendering/shader/shader.h"
 #include "glophysx/rendering/shader/shader_library.h"
 #include "glophysx/rendering/objects/texture/texture.h"
 #include "glophysx/rendering/objects/framebuffer/framebuffer.h"
+#include "glophysx/rendering/objects/uniform_buffer/uniform_buffer.h"
 
 // Components
-#include "glophysx/components/scene/scene.h"
 #include "glophysx/components/ecs/components.h"
 #include "glophysx/components/ecs/entity.h"
-#include "glophysx/components/mesh/mesh.h"
 #include "glophysx/components/script/scriptable_entity.h"
+#include "glophysx/components/scene/scene.h"
+#include "glophysx/components/mesh/mesh.h"
 
 // Physics
 #include "glophysx/physics/particles/particle.h"
