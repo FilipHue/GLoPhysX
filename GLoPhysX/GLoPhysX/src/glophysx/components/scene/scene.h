@@ -2,10 +2,9 @@
 
 #include "glophysx/core/core.h"
 #include "glophysx/core/time/time.h"
+#include "glophysx/core/uuid/uuid.h"
 
 #include "glophysx/rendering/camera/editor/editor_camera.h"
-
-#include "glophysx/core/uuid/uuid.h"
 
 #include "entt/entt.h"
 

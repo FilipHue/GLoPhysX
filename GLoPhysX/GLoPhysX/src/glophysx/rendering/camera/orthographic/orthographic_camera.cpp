@@ -1,11 +1,11 @@
 #include "gxpch.h"
 #include "orthographic_camera.h"
 
-#include "gtc/matrix_transform.hpp"
-
 #ifdef GLOP_DEBUG
 	#include "glophysx/debug/debug.h"
 #endif
+
+#include "gtc/matrix_transform.hpp"
 
 namespace GLOPHYSX {
 

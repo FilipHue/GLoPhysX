@@ -1,12 +1,15 @@
 #pragma once
 
 #include "glophysx.h"
-#include "ui/editor_ui.h"
+
 #include "glophysx/rendering/camera/editor/editor_camera.h"
+
+#include "ui/editor_ui.h"
 
 using namespace GLOPHYSX;
 using namespace RENDERING;
 using namespace COMPONENTS;
+using namespace PHYSICS;
 using namespace EDITOR;
 
 class EditorLayer : public Layer {

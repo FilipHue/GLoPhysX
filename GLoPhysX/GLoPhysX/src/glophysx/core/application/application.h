@@ -22,9 +22,7 @@
 */
 
 #include "glophysx/core/core.h"
-
 #include "glophysx/core/window/platforms/windows/wwindow.h"
-
 #include "glophysx/core/layers/layers_container.h"
 #include "glophysx/core/gui/gui_layer.h"
 

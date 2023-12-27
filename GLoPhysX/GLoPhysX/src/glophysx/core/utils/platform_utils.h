@@ -1,12 +1,11 @@
 #pragma once
 
-#include <string>
-
-#include <commdlg.h>
-#include "glophysx/core/application/application.h"
+#include "glophysx/core/application/application.h" 
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include "glfw3native.h"
 
+#include <string>
+#include <commdlg.h>
 
 namespace GLOPHYSX {
 

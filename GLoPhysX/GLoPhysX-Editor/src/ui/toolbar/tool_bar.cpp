@@ -32,7 +32,7 @@ namespace GLOPHYSX {
 
 			float size = ImGui::GetWindowHeight() - 4.0f;
 			Shared<Texture2D> icon = m_scene_state == SceneState::EDIT ? m_play_icon : m_stop_icon;
-			ImGui::SameLine(ImGui::GetWindowContentRegionMax().x * 0.5 - size * 0.5);
+			ImGui::SameLine(ImGui::GetWindowContentRegionMax().x * 0.5f - size * 0.5f);
 			if (ImGui::ImageButton((ImTextureID)icon->GetID(), ImVec2{ size, size }, ImVec2(0, 0), ImVec2(1, 1), 0))
 			{
 				if (m_scene_state == SceneState::EDIT)

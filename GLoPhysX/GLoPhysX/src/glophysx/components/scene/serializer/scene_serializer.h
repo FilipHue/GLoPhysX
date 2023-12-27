@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glophysx/components/scene/scene.h"
+
 #include "yaml-cpp/yaml.h"
 
 namespace GLOPHYSX {

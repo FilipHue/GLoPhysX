@@ -20,6 +20,7 @@
 */
 
 #include "glophysx/core/core.h"
+
 #include "commands/renderer_commands.h"
 #include "glophysx/rendering/shader/shader.h"
 #include "glophysx/rendering/camera/camera.h"

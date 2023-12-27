@@ -1,8 +1,8 @@
 #include "gxpch.h"
 #include "buffer.h"
-#include "glophysx/rendering/objects/platforms/opengl/opengl_buffer.h"
 
 #include "glophysx/rendering/renderer/api/renderer_api.h"
+#include "glophysx/rendering/objects/platforms/opengl/opengl_buffer.h"
 
 namespace GLOPHYSX {
 

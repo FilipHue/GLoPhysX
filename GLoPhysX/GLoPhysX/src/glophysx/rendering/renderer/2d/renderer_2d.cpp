@@ -1,15 +1,14 @@
 #include "gxpch.h"
 #include "renderer_2d.h"
 
-#include "glophysx/rendering/renderer/commands/renderer_commands.h"
-
 #include "renderer_2d_data.h"
-
-#include "gtc/matrix_transform.hpp"
+#include "glophysx/rendering/renderer/commands/renderer_commands.h"
 
 #ifdef GLOP_DEBUG
 	#include "glophysx/debug/debug.h"
 #endif
+
+#include "gtc/matrix_transform.hpp"
 
 namespace GLOPHYSX {
 

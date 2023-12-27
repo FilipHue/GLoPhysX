@@ -1,9 +1,10 @@
 #pragma once
 
-#include "glophysx/rendering/camera/simple_camera.h"
-#include "glophysx/core/time/time.h"
 #include "glophysx/core/events/event.h"
 #include "glophysx/core/events/mouse_events.h"
+#include "glophysx/core/time/time.h"
+
+#include "glophysx/rendering/camera/simple_camera.h"
 
 namespace GLOPHYSX {
 

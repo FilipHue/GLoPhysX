@@ -1,9 +1,8 @@
 #pragma once
 
-#include "glophysx/rendering/camera/camera.h"
-#include "glophysx/rendering/camera/simple_camera.h"
-#include "glophysx/rendering/camera/editor/editor_camera.h"
 #include "renderer_2d_data.h"
+#include "glophysx/rendering/camera/camera.h"
+#include "glophysx/rendering/camera/editor/editor_camera.h"
 
 #include "glophysx/components/ecs/components.h"
 

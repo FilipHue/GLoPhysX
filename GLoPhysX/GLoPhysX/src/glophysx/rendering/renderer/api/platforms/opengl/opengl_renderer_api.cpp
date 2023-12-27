@@ -1,11 +1,11 @@
 #include "gxpch.h"
 #include "opengl_renderer_api.h"
 
-#include "glad/glad.h"
-
 #ifdef GLOP_DEBUG
 	#include "glophysx/debug/debug.h"
 #endif
+
+#include "glad/glad.h"
 
 namespace GLOPHYSX {
 

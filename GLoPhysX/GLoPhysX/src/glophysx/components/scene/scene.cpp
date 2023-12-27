@@ -1,12 +1,12 @@
 #include "gxpch.h"
 #include "scene.h"
 
-#include "glm.hpp"
+#include "glophysx/rendering/renderer/2d/renderer_2d.h"
 
 #include "glophysx/components/ecs/entity.h"
 #include "glophysx/components/script/scriptable_entity.h"
 
-#include "glophysx/rendering/renderer/2d/renderer_2d.h"
+#include "glm.hpp"
 
 namespace GLOPHYSX {
 
@@ -55,7 +55,6 @@ namespace GLOPHYSX {
 			auto id_view = src_scene_reg.view<IDComponent>();
 			for (auto entity : id_view)
 			{
-				std::cout << "1\n";
 				UUID uuid = src_scene_reg.get<IDComponent>(entity).m_id;
 				const auto& name = src_scene_reg.get<TagComponent>(entity).m_tag;
 				Entity new_entity = new_scene->CreateEntityWithUUID(uuid, name);

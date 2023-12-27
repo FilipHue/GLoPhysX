@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glophysx/core/core.h"
+#include <string>
 
 namespace GLOPHYSX {
 

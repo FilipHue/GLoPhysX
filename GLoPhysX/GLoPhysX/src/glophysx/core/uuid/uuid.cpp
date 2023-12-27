@@ -19,4 +19,3 @@ namespace GLOPHYSX {
 		m_uuid = uuid;
 	}
 }
-

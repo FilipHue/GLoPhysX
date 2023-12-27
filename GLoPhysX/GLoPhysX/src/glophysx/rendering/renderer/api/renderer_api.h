@@ -15,6 +15,7 @@
 */
 
 #include "glophysx/core/core.h"
+
 #include "glophysx/rendering/objects/vertex_array.h"
 
 #include "glm.hpp"

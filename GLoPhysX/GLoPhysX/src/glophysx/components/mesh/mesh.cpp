@@ -14,8 +14,8 @@ namespace GLOPHYSX {
 			GLOP_PROFILE_FUNCTION();
 
 			m_vertex_array		= VertexArray::Create();
-			m_vertex_buffer		= VertexBuffer::Create(vertices.data(), sizeof(*vertices.data()) * vertices.size());
-			m_index_buffer		= IndexBuffer::Create(indices.data(), indices.size());
+			m_vertex_buffer		= VertexBuffer::Create(vertices.data(), sizeof(*vertices.data()) * (uint32_t)vertices.size());
+			m_index_buffer		= IndexBuffer::Create(indices.data(), (uint32_t)indices.size());
 
 			m_vertex_buffer->SetLayout(layout);
 

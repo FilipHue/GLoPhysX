@@ -1,11 +1,11 @@
 #pragma once
 
-#include "orthographic_camera.h"
-
-#include "glophysx/core/time/time.h"
 #include "glophysx/core/events/event.h"
-#include "glophysx/core/events/application_events.h"
 #include "glophysx/core/events/mouse_events.h"
+#include "glophysx/core/events/application_events.h"
+#include "glophysx/core/time/time.h"
+
+#include "orthographic_camera.h"
 
 namespace GLOPHYSX {
 

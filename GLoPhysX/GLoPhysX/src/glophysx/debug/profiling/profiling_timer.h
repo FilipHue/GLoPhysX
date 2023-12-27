@@ -1,8 +1,9 @@
 #pragma once
 
-#include "gxpch.h"
-
 #include "profiler.h"
+
+#include <thread>
+#include <chrono>
 
 namespace GLOPHYSX {
 

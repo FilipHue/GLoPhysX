@@ -1,7 +1,5 @@
 #pragma once
 
-#include "gxpch.h"
-
 namespace GLOPHYSX {
 
 	struct WindowProperties {

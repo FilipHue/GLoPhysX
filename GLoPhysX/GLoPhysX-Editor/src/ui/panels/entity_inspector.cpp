@@ -1,4 +1,5 @@
 #include "entity_inspector.h"
+
 #include <filesystem>
 
 namespace GLOPHYSX {

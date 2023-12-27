@@ -20,20 +20,6 @@
 */
 
 /*
-* The inclusion order of headers is crucial to prevent compilation issues and warnings.
-* core.h includes windows.h, which defines various macros, including APIENTRY.
-* However, glad.h, responsible for providing OpenGL function pointers, explicitly
-* undefines the APIENTRY macro to ensure proper compilation across different platforms
-* and environments.
-*
-* To avoid any potential warnings or redefinition issues due to this macro manipulation,
-* it is necessary to include core.h before glad.h. This ensures that windows.h is processed
-* first, followed by the adjustments made by glad.h, maintaining a clean and warning-free
-* compilation process.
-*/
-#include "glophysx/core/core.h"
-
-/*
 * It is crucial to include glad.h before glfw3.h because glad provides the necessary
 * function pointers for interacting with OpenGL functions. The inclusion order ensures
 * that these function pointers are available and properly configured before any other
@@ -53,7 +39,6 @@
 #include "glfw3.h"
 
 #include "glophysx/core/window/window.h"
-
 #include "glophysx/core/events/application_events.h"
 #include "glophysx/core/events/key_events.h"
 #include "glophysx/core/events/mouse_events.h"

@@ -16,7 +16,8 @@
 * @author Secareanu Filip
 */
 
-#include "gxpch.h"
+#include <string>
+#include <sstream>
 
 namespace GLOPHYSX {
 

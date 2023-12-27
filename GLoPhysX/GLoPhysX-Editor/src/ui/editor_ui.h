@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glophysx.h"
+
 #include "panels/scene_hierarchy.h"
 #include "panels/entity_inspector.h"
 #include "panels/content_browser.h"

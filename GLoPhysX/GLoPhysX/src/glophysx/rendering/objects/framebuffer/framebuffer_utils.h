@@ -1,7 +1,5 @@
 #pragma once
 
-#include "glophysx/core/core.h"
-
 namespace GLOPHYSX {
 
 	namespace RENDERING {

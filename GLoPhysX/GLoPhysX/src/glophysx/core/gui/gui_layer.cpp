@@ -1,13 +1,13 @@
 #include "gxpch.h"
 #include "gui_layer.h"
 
+#include "glophysx/core/application/application.h"
+
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
 #include "ImGuizmo.h"
-
-#include "glophysx/core/application/application.h"
 
 namespace GLOPHYSX {
 

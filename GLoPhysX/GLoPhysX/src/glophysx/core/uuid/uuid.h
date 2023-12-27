@@ -1,7 +1,6 @@
 #pragma once
 
-#include "glophysx/core/core.h"
-#include "xhash"
+#include <xhash>
 
 namespace GLOPHYSX {
 

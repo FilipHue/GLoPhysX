@@ -1,12 +1,12 @@
 #include "gxpch.h"
 #include "opengl_texture_2D.h"
 
-#include "glad/glad.h"
-#include "stb_image.h"
-
 #ifdef GLOP_DEBUG
 	#include "glophysx/debug/debug.h"
 #endif
+
+#include "glad/glad.h"
+#include "stb_image.h"
 
 namespace GLOPHYSX {
 

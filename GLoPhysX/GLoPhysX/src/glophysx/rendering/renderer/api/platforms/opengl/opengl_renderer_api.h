@@ -14,6 +14,7 @@
 */
 
 #include "glophysx/core/core.h"
+
 #include "glophysx/rendering/renderer/api/renderer_api.h"
 
 namespace GLOPHYSX {

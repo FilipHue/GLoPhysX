@@ -1,6 +1,7 @@
 #include "content_browser.h"
 
 #include "imgui.h"
+
 #include <iostream>
 
 namespace GLOPHYSX {

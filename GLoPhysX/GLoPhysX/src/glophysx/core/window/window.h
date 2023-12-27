@@ -29,8 +29,9 @@
 */
 
 #include "glophysx/core/core.h"
-#include "window_properties.h"
 #include "glophysx/core/events/event.h"
+#include "window_properties.h"
+
 
 namespace GLOPHYSX {
 

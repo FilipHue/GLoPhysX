@@ -5,6 +5,7 @@
 using namespace GLOPHYSX;
 using namespace RENDERING;
 using namespace COMPONENTS;
+using namespace PHYSICS;
 
 class Example2D : public Layer {
 public:
@@ -23,7 +24,10 @@ private:
 
 	Unique<Mesh> m_square;
 	Shared<Texture2D> m_checkerboard;
+	Shared<Texture2D> m_face;
 	Unique<ShaderLibrary> m_shader_library;
 
 	glm::vec4 m_square_color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	Particle* m_particle;
 };

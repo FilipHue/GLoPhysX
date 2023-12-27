@@ -1,12 +1,14 @@
 #include "EditorLayer.h"
 
-#include "glophysx/components/scene/serializer/scene_serializer.h"
 #include "glophysx/core/utils/platform_utils.h"
+
+#include "glophysx/components/scene/serializer/scene_serializer.h"
 
 #include "ImGuizmo.h"
 
 #include "gtc/type_ptr.hpp"
-#include "math/utils.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include <gtx/matrix_decompose.hpp>
 
 namespace GLOPHYSX {
 

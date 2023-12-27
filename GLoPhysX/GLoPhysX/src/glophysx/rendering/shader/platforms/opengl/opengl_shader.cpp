@@ -1,12 +1,12 @@
 #include "gxpch.h"
 #include "opengl_shader.h"
 
-#include "glad/glad.h"
-#include "gtc/type_ptr.hpp"
-
 #ifdef GLOP_DEBUG
 	#include "glophysx/debug/debug.h"
 #endif
+
+#include "glad/glad.h"
+#include "gtc/type_ptr.hpp"
 
 namespace GLOPHYSX {
 

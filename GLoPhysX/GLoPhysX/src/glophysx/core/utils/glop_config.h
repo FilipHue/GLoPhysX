@@ -20,6 +20,6 @@
 	#error "GLoPhysX only supports Windows!"
 #endif
 
-#define GLOP_VERSION_MAJOR 1
-#define GLOP_VERSION_MINOR 0
-#define GLOP_VERSION_PATCH 0
+constexpr auto GLOP_VERSION_MAJOR = 1;
+constexpr auto GLOP_VERSION_MINOR = 0;
+constexpr auto GLOP_VERSION_PATCH = 0;

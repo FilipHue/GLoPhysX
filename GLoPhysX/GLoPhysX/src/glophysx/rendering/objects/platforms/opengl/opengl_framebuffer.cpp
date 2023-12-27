@@ -125,7 +125,7 @@ namespace GLOPHYSX {
 		OpenglFramebuffer::~OpenglFramebuffer()
 		{
 			glDeleteFramebuffers(1, &m_id);
-			glDeleteTextures(m_color_attachments.size(), m_color_attachments.data());
+			glDeleteTextures((GLsizei)m_color_attachments.size(), m_color_attachments.data());
 			glDeleteTextures(1, &m_depth_attachment);
 		}
 
@@ -133,7 +133,7 @@ namespace GLOPHYSX {
 		{
 			if (m_id) {
 				glDeleteFramebuffers(1, &m_id);
-				glDeleteTextures(m_color_attachments.size(), m_color_attachments.data());
+				glDeleteTextures((GLsizei)m_color_attachments.size(), m_color_attachments.data());
 				glDeleteTextures(1, &m_depth_attachment);
 
 				m_color_attachments.clear();
@@ -149,7 +149,7 @@ namespace GLOPHYSX {
 			if (m_color_attachment_specs.size())
 			{
 				m_color_attachments.resize(m_color_attachment_specs.size());
-				CreateTextures(multisampled, m_color_attachments.data(), m_color_attachments.size());
+				CreateTextures(multisampled, m_color_attachments.data(), (GLuint)m_color_attachments.size());
 
 				for (size_t i = 0; i < m_color_attachment_specs.size(); i++)
 				{
@@ -157,14 +157,13 @@ namespace GLOPHYSX {
 					switch (m_color_attachment_specs[i].m_format)
 					{
 					case FramebufferTextureFormat::RGBA8:
-						AttachColorTexture(m_color_attachments[i], m_specs.samples, GL_RGBA8, GL_RGBA, m_specs.width, m_specs.height, i);
+						AttachColorTexture(m_color_attachments[i], m_specs.samples, GL_RGBA8, GL_RGBA, m_specs.width, m_specs.height, (GLuint)i);
 						break;
 					case FramebufferTextureFormat::RED_INTEGER:
-						AttachColorTexture(m_color_attachments[i], m_specs.samples, GL_R32I, GL_RED_INTEGER, m_specs.width, m_specs.height, i);
+						AttachColorTexture(m_color_attachments[i], m_specs.samples, GL_R32I, GL_RED_INTEGER, m_specs.width, m_specs.height, (GLuint)i);
 						break;
 					}
 				}
-
 			}
 
 			// Depth Attachment
@@ -185,7 +184,7 @@ namespace GLOPHYSX {
 			if (m_color_attachments.size() > 1)
 			{
 				GLenum buffers[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
-				glDrawBuffers(m_color_attachments.size(), buffers);
+				glDrawBuffers((GLsizei)m_color_attachments.size(), buffers);
 			}
 			else if (m_color_attachments.empty())
 			{

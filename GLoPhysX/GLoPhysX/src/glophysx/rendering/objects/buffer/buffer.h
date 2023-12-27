@@ -12,7 +12,6 @@
 * @author Secareanu Filip
 */
 
-#include "glophysx/core/core.h"
 #include "buffer_layout.h"
 
 namespace GLOPHYSX {

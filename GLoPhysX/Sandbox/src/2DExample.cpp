@@ -1,17 +1,27 @@
 #include "2DExample.h"
 
+#include "imgui.h"
+
 #include "gtc/type_ptr.hpp"
 
 Example2D::Example2D() : Layer("Example2D")
 {
-	m_camera_controller = MakeShared<OrthographicCameraController>(1280.f / 720.f);
+	m_camera_controller = MakeShared<OrthographicCameraController>(1600.0f / 900.0f);
 	m_shader_library = MakeUnique<ShaderLibrary>();
 	m_checkerboard = Texture2D::Create("assets/textures/checkerboard.png");
+	m_face = Texture2D::Create("assets/textures/smileyface.png", 1);
 }
 
 void Example2D::OnAttach()
 {	
 	GLOP_PROFILE_FUNCTION();
+
+	m_particle = new Particle(
+		glm::vec3{ 0.0f, 0.0f, 0.0f },
+		glm::vec3{ 0.0f, 0.0f, 0.0f },
+		glm::vec3{ 0.5f, 1.0f, 0.0f },
+		0.999f
+	);
 }
 
 void Example2D::OnDetach()
@@ -39,13 +49,17 @@ void Example2D::OnUpdate(DeltaTime dt)
 	{
 		GLOP_PROFILE_SCOPE("Render draw");
 
+		m_particle->Integrate(dt);
+
 		static float rotation = 0.f;
 
 		rotation += dt * 20.f;
 
 		Renderer2D::BeginScene(m_camera_controller->GetCamera());
 
-		Renderer2D::DrawRotatedQuad({ -1.f, 0.5f }, { 0.7f, 0.3f }, rotation, m_square_color);
+		Renderer2D::DrawQuad(m_particle->GetPosition(), { 0.25f, 0.25f }, m_face, 1.0f);
+
+		/*Renderer2D::DrawRotatedQuad({ -1.f, 0.5f }, { 0.7f, 0.3f }, rotation, m_square_color);
 		Renderer2D::DrawQuad({ 0.f, 0.f }, { 0.5f, 0.5f }, m_square_color);
 		Renderer2D::DrawRotatedQuad({ 1.f, 0.5f }, { 0.7f, 0.3f }, -rotation, m_square_color);
 
@@ -57,7 +71,7 @@ void Example2D::OnUpdate(DeltaTime dt)
 				color = { (x + size) / (2 * size), (y + size) / (2 * size), 0.f, 0.7f };
 				Renderer2D::DrawQuad({ x, y, -0.05f }, { 0.45f, 0.45f }, color);
 			}
-		}
+		}*/
 
 		Renderer2D::DrawQuad({ 0.f, 0.f, -0.1f }, { 30.f, 30.f }, m_checkerboard, 10.f);
 

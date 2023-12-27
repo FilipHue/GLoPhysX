@@ -33,6 +33,9 @@
 #include "glophysx/components/mesh/mesh.h"
 #include "glophysx/components/script/scriptable_entity.h"
 
+// Physics
+#include "glophysx/physics/particles/particle.h"
+
 #ifdef GLOP_DEBUG
 	#include "glophysx/debug/debug.h"
 #endif

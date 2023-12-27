@@ -1,7 +1,8 @@
 #pragma once
 
-#include "glophysx/components/scene/scene.h"
 #include "glophysx/rendering/objects/texture/texture.h"
+
+#include "glophysx/components/scene/scene.h"
 
 class EditorLayer;
 

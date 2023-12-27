@@ -1,5 +1,7 @@
 #pragma once
 
+#include "glophysx/core/core.h"
+
 #include "shader_utils.h"
 
 #include "glm.hpp"

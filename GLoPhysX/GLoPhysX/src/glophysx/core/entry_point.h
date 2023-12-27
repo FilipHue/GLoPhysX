@@ -1,6 +1,7 @@
 #pragma once
 
 #include "application/application.h"
+
 #include "glophysx/debug/debug.h"
 
 #if defined(GLOP_PLATFORM_WINDOWS)

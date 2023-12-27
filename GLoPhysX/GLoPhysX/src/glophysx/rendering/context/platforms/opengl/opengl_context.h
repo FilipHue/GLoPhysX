@@ -14,7 +14,6 @@
 */
 
 #include "glophysx/rendering/context/graphics_context.h"
-#include "glophysx/core/core.h"
 
 #include "glad/glad.h"
 #include "glfw3.h"

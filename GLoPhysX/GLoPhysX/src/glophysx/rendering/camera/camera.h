@@ -1,8 +1,8 @@
 #pragma once
 
 #include "glophysx/core/core.h"
+
 #include "simple_camera.h"
-#include "glm.hpp"
 
 namespace GLOPHYSX {
 

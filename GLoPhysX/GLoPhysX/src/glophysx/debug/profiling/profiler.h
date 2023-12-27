@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gxpch.h"
+#include <gxpch.h>
 
 #include "glophysx/core/core.h"
 
