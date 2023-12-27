@@ -69,7 +69,8 @@ namespace GLOPHYSX {
 				samplers[i] = i;
 			}
 
-			s_data->shader = Shader::Create("assets/shaders/normal.glsl");
+			s_data->quad_shader = Shader::Create("assets/shaders/normal.glsl");
+			s_data->particle_shader = Shader::Create("assets/shaders/particle.glsl");
 
 			s_data->texture_slots[0] = s_data->white_texture;
 
@@ -148,7 +149,7 @@ namespace GLOPHYSX {
 			uint32_t data_size = (uint32_t)((uint8_t*)s_data->quad_data->VB_ptr - (uint8_t*)s_data->quad_data->VB_base);
 			if (data_size)
 			{
-				s_data->shader->Bind();
+				s_data->quad_shader->Bind();
 
 				for (uint32_t i = 0; i < s_data->texture_slot_index; i++) {
 					s_data->texture_slots[i]->Bind(i);

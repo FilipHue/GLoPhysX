@@ -24,8 +24,8 @@
 #include "glophysx/rendering/shader/shader.h"
 #include "glophysx/rendering/shader/shader_library.h"
 #include "glophysx/rendering/objects/texture/texture.h"
-#include "glophysx/rendering/objects/framebuffer/framebuffer.h"
-#include "glophysx/rendering/objects/uniform_buffer/uniform_buffer.h"
+#include "glophysx/rendering/objects/buffer/framebuffer/framebuffer.h"
+#include "glophysx/rendering/objects/buffer/uniform_buffer/uniform_buffer.h"
 
 // Components
 #include "glophysx/components/ecs/components.h"

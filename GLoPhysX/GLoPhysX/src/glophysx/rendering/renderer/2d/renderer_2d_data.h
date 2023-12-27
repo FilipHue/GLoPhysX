@@ -4,7 +4,7 @@
 
 #include "glophysx/rendering/objects/vertex_array.h"
 #include "glophysx/rendering/objects/texture/texture.h"
-#include "glophysx/rendering/objects/uniform_buffer/uniform_buffer.h"
+#include "glophysx/rendering/objects/buffer/uniform_buffer/uniform_buffer.h"
 #include "glophysx/rendering/shader/shader.h"
 
 #include "glm.hpp"
@@ -12,6 +12,20 @@
 namespace GLOPHYSX {
 
 	namespace RENDERING {
+
+		struct ParticleData
+		{
+			glm::vec3 position;
+			glm::vec3 velocity;
+			glm::vec3 acceleration;
+
+			float delay;
+
+			float age;
+			float max_age;
+
+			glm::vec3 max_velocity;
+		};
 
 		struct QuadVertexData
 		{
@@ -70,7 +84,8 @@ namespace GLOPHYSX {
 			std::array<Shared<Texture2D>, maximum_texture_slots> texture_slots;
 			uint32_t texture_slot_index = 1;
 
-			Shared<Shader> shader;
+			Shared<Shader> quad_shader;
+			Shared<Shader> particle_shader;
 			Shared<Texture2D> white_texture;
 
 			struct CameraData

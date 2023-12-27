@@ -3,6 +3,9 @@
 #include "glophysx/core/time/time.h"
 
 #include "glm.hpp"
+#include "gtc/matrix_transform.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "gtx/quaternion.hpp"
 
 namespace glm {
 

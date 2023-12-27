@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glophysx/rendering/objects/uniform_buffer/uniform_buffer.h"
+#include "glophysx/rendering/objects/buffer/uniform_buffer/uniform_buffer.h"
 
 namespace GLOPHYSX {
 

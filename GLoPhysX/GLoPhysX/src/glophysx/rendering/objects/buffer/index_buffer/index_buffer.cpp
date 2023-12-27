@@ -1,14 +1,14 @@
 #include "gxpch.h"
-#include "vertex_array.h"
+#include "index_buffer.h"
 
 #include "glophysx/rendering/renderer/api/renderer_api.h"
-#include "glophysx/rendering/objects/buffer/platforms/opengl/opengl_vertex_array.h"
+#include "glophysx/rendering/objects/buffer/platforms/opengl/opengl_index_buffer.h"
 
 namespace GLOPHYSX {
 
 	namespace RENDERING {
 
-		Shared<VertexArray> VertexArray::Create()
+		Shared<IndexBuffer> IndexBuffer::Create(uint32_t* vertices, uint32_t size)
 		{
 			switch (RendererAPI::GetApi())
 			{
@@ -16,7 +16,7 @@ namespace GLOPHYSX {
 				GLOP_CORE_CRITICAL("Please specify a rendering API");
 				return nullptr;
 			case API::OPENGL:
-				return MakeShared<OpenglVertexArray>();
+				return MakeShared<OpenglIndexBuffer>(vertices, size);
 			default:
 				break;
 			}

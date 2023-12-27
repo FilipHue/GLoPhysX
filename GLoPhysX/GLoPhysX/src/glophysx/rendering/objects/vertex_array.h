@@ -14,7 +14,8 @@
 
 #include "glophysx/core/core.h"
 
-#include "buffer/buffer.h"
+#include "buffer/vertex_buffer/vertex_buffer.h"
+#include "buffer/index_buffer/index_buffer.h"
 
 namespace GLOPHYSX {
 

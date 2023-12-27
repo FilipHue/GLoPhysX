@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glophysx/rendering/objects/framebuffer/framebuffer.h"
+#include "glophysx/rendering/objects/buffer/framebuffer/framebuffer.h"
 
 #include "glad/glad.h"
 

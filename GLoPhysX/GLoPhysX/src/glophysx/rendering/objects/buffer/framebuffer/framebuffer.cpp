@@ -2,7 +2,7 @@
 #include "framebuffer.h"
 
 #include "glophysx/rendering/renderer/api/renderer_api.h"
-#include "glophysx/rendering/objects/platforms/opengl/opengl_framebuffer.h"
+#include "glophysx/rendering/objects/buffer/platforms/opengl/opengl_framebuffer.h"
 
 namespace GLOPHYSX {
 

@@ -60,6 +60,7 @@ namespace GLOPHYSX {
 			switch (stage)
 			{
 			case GL_VERTEX_SHADER:    return ".cached_opengl.vert";
+			case GL_GEOMETRY_SHADER:    return ".cached_opengl.geom";
 			case GL_FRAGMENT_SHADER:  return ".cached_opengl.frag";
 			}
 			GLOP_CORE_CRITICAL("Unkown opengl stage: {0}", std::to_string(stage).c_str());
@@ -71,6 +72,7 @@ namespace GLOPHYSX {
 			switch (stage)
 			{
 			case GL_VERTEX_SHADER:    return ".cached_vulkan.vert";
+			case GL_GEOMETRY_SHADER:    return ".cached_vulkan.geom";
 			case GL_FRAGMENT_SHADER:  return ".cached_vulkan.frag";
 			}
 			GLOP_CORE_CRITICAL("Unkown vulkan stage: {0}", std::to_string(stage).c_str());
@@ -82,6 +84,7 @@ namespace GLOPHYSX {
 			switch (stage)
 			{
 			case GL_VERTEX_SHADER:   return shaderc_glsl_vertex_shader;
+			case GL_GEOMETRY_SHADER:    return shaderc_glsl_geometry_shader;
 			case GL_FRAGMENT_SHADER: return shaderc_glsl_fragment_shader;
 			}
 			GLOP_CORE_CRITICAL("Unkown shaderc stage {0}", std::to_string(stage).c_str());
@@ -93,6 +96,7 @@ namespace GLOPHYSX {
 			switch (stage)
 			{
 			case GL_VERTEX_SHADER:   return "GL_VERTEX_SHADER";
+			case GL_GEOMETRY_SHADER:   return "GL_GEOMETRY_SHADER";
 			case GL_FRAGMENT_SHADER: return "GL_FRAGMENT_SHADER";
 			}
 			GLOP_CORE_CRITICAL("Unkown shader stage: {0}", std::to_string(stage).c_str());
