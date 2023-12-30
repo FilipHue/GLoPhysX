@@ -57,6 +57,19 @@ namespace GLOPHYSX {
 					}
 				}
 			}
+
+			template<typename T>
+			void static DisplayAddComponentEntry(const std::string& entry_name, Entity& entity) {
+				if (!entity.HasComponent<T>())
+				{
+					if (ImGui::MenuItem(entry_name.c_str()))
+					{
+						entity.AddComponent<T>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
+			}
+
 			static void DrawComponents(Entity& entity);
 
 			static void DrawVec3Controls(const std::string& label, glm::vec3& value, float reset_value = 0.f, float column_width = 100.f);

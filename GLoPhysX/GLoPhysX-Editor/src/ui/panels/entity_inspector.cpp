@@ -14,10 +14,10 @@ namespace GLOPHYSX {
 			{
 				auto& tag = entity.GetComponent<TagComponent>().m_tag;
 
-				static char buffer[512];
+				static char buffer[256];
 				memset(buffer, 0, sizeof(buffer));
 				strcpy_s(buffer, sizeof(buffer), tag.c_str());
-				if (ImGui::InputText("Tag", buffer, sizeof(buffer))) {
+				if (ImGui::InputText("##Tag", buffer, sizeof(buffer))) {
 					tag = std::string(buffer);
 				}
 			}
@@ -32,17 +32,8 @@ namespace GLOPHYSX {
 
 			if (ImGui::BeginPopup("AddComponent"))
 			{
-				if (ImGui::MenuItem("Camera"))
-				{
-					entity.AddComponent<CameraComponent>();
-					ImGui::CloseCurrentPopup();
-				}
-
-				if (ImGui::MenuItem("Sprite"))
-				{
-					entity.AddComponent<SpriteComponent>();
-					ImGui::CloseCurrentPopup();
-				}
+				DisplayAddComponentEntry<CameraComponent>("Camera", entity);
+				DisplayAddComponentEntry<SpriteComponent>("Sprite", entity);
 
 				ImGui::EndPopup();
 			}
