@@ -245,7 +245,7 @@ namespace GLOPHYSX {
 			ClearAttachment(1, (const void*)(-1));
 		}
 
-		void OpenglFramebuffer::Unbind()
+		void OpenglFramebuffer::Unbind() const 
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}

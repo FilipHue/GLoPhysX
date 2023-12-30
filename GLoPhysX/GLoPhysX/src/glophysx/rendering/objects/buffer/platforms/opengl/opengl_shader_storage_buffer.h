@@ -12,7 +12,11 @@ namespace GLOPHYSX {
 			OpenglShaderStorageBuffer(uint32_t size, uint32_t binding);
 			~OpenglShaderStorageBuffer();
 
-			void SetData(const void* data, uint32_t size, uint32_t offset) override;
+			void Bind() const override;
+			void Unbind() const override;
+
+			void SetData(const void* data, uint32_t size, uint32_t offset = 0) override;
+			void Synchronise();
 
 		private:
 			uint32_t m_id;

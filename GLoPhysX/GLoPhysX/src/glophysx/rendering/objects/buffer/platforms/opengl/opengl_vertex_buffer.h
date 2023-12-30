@@ -11,15 +11,15 @@ namespace GLOPHYSX {
 		public:
 			OpenglVertexBuffer(uint32_t size);
 			OpenglVertexBuffer(float* vertices, uint32_t size);
-			virtual ~OpenglVertexBuffer();
+			~OpenglVertexBuffer();
 
-			virtual void Bind() const override;
-			virtual void Unbind() const override;
+			void Bind() const override;
+			void Unbind() const override;
 
-			virtual void OpenglVertexBuffer::SetData(const void* data, uint32_t size) override;
+			void OpenglVertexBuffer::SetData(const void* data, uint32_t size, uint32_t offset = 0) override;
 
-			virtual void SetLayout(const BufferLayout& layout) override { m_layout = layout; }
-			virtual const BufferLayout& GetLayout() const override { return m_layout; }
+			void SetLayout(const BufferLayout& layout) override { m_layout = layout; }
+			const BufferLayout& GetLayout() const override { return m_layout; }
 
 		private:
 			uint32_t m_buffer_id;

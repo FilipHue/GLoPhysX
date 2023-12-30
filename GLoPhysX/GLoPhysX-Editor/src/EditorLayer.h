@@ -9,7 +9,6 @@
 using namespace GLOPHYSX;
 using namespace RENDERING;
 using namespace COMPONENTS;
-using namespace PHYSICS;
 using namespace EDITOR;
 
 class EditorLayer : public Layer {

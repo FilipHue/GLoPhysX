@@ -2,18 +2,18 @@
 
 #include "glophysx/core/core.h"
 
+#include "glophysx/rendering/objects/buffer/buffer.h"
+
 namespace GLOPHYSX {
 
 	namespace RENDERING {
 
-		class ShaderStorageBuffer
+		class ShaderStorageBuffer : public Buffer
 		{
 		public:
 			virtual ~ShaderStorageBuffer() {};
 
-			virtual void SetData(const void* data, uint32_t size, uint32_t offset) = 0;
-
-			static Shared<ShaderStorageBuffer> Create(uint32_t size, uint32_t binding);
+			static Shared<ShaderStorageBuffer> Create(uint32_t size, uint32_t binding = 0);
 		};
 	}
 }

@@ -20,8 +20,7 @@ namespace GLOPHYSX {
 
 			m_projection_matrix = glm::ortho(left, right, bottom, top, m_z_near, m_z_far);
 
-			m_view_matrix = glm::mat4(1.f);
-			m_view_projection_matrix = m_view_matrix * m_projection_matrix;
+			RecalculateVPMatrix();
 		}
 
 		GLOP_API void OrthographicCamera::SetProjection(float left, float right, float bottom, float top)

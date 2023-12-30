@@ -26,8 +26,8 @@ namespace GLOPHYSX {
 		public:
 			GLOP_API virtual ~VertexArray() = default;
 
-			GLOP_API virtual void Bind() = 0;
-			GLOP_API virtual void Unbind() = 0;
+			GLOP_API virtual void Bind() const = 0;
+			GLOP_API virtual void Unbind() const = 0;
 
 			GLOP_API virtual void AddVertexBuffer(const Shared<VertexBuffer>& vertex_buffer) = 0;
 			GLOP_API virtual void AddIndexBuffer(const Shared<IndexBuffer>& index_buffer) = 0;

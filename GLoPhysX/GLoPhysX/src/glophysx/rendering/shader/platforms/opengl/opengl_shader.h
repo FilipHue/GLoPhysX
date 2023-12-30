@@ -53,6 +53,8 @@ namespace GLOPHYSX {
 			void SendUniformMat4(const std::string& name, const glm::mat4& value) const;
 
 		private:
+			void Compile(const std::unordered_map<ShaderType, std::string>& shader_sources);
+
 			void CompileOrGetVulkanBinaries(const std::unordered_map<ShaderType, std::string>& shader_sources);
 			void CompileOrGetOpenglBinaries();
 

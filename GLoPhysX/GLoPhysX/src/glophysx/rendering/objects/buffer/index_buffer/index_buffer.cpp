@@ -8,7 +8,7 @@ namespace GLOPHYSX {
 
 	namespace RENDERING {
 
-		Shared<IndexBuffer> IndexBuffer::Create(uint32_t* vertices, uint32_t size)
+		Shared<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t size)
 		{
 			switch (RendererAPI::GetApi())
 			{
@@ -16,7 +16,7 @@ namespace GLOPHYSX {
 				GLOP_CORE_CRITICAL("Please specify a rendering API");
 				return nullptr;
 			case API::OPENGL:
-				return MakeShared<OpenglIndexBuffer>(vertices, size);
+				return MakeShared<OpenglIndexBuffer>(indices, size);
 			default:
 				break;
 			}

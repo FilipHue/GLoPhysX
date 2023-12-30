@@ -41,7 +41,7 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			if (m_shaders.find(shader_name) != m_shaders.end()) {
+			if (m_shaders.find(shader_name) == m_shaders.end()) {
 				auto shader = Shader::Create(file_path);
 				m_shaders[shader_name] = shader;
 			}

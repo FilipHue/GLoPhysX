@@ -24,16 +24,16 @@ namespace GLOPHYSX {
 		{
 		public:
 			OpenglVertexArray();
-			virtual ~OpenglVertexArray();
+			~OpenglVertexArray();
 
-			virtual void Bind() override;
-			virtual void Unbind() override;
+			void Bind() const override;
+			void Unbind() const override;
 
-			virtual void AddVertexBuffer(const Shared<VertexBuffer>& vertex_buffer) override;
-			virtual void AddIndexBuffer(const Shared<IndexBuffer>& index_buffer) override;
+			void AddVertexBuffer(const Shared<VertexBuffer>& vertex_buffer) override;
+			void AddIndexBuffer(const Shared<IndexBuffer>& index_buffer) override;
 
-			virtual const std::vector<Shared<VertexBuffer>>& GetVertexBuffers() const override { return m_vertex_buffers; }
-			virtual const Shared<IndexBuffer>& GetIndexBuffer() const override { return m_index_buffer; }
+			const std::vector<Shared<VertexBuffer>>& GetVertexBuffers() const override { return m_vertex_buffers; }
+			const Shared<IndexBuffer>& GetIndexBuffer() const override { return m_index_buffer; }
 
 		private:
 			uint32_t m_id;

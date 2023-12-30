@@ -23,7 +23,7 @@ namespace GLOPHYSX {
 			virtual uint32_t GetColorAttachmentId(uint32_t index = 0) const = 0;
 
 			virtual void Bind() = 0;
-			virtual void Unbind() = 0;
+			virtual void Unbind() const = 0;
 
 			static Shared<Framebuffer> Create(const FramebufferSpecs& specs);
 		};

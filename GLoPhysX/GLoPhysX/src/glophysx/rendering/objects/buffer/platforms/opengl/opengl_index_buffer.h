@@ -10,12 +10,12 @@ namespace GLOPHYSX {
 		{
 		public:
 			OpenglIndexBuffer(uint32_t* indices, uint32_t count);
-			virtual ~OpenglIndexBuffer();
+			~OpenglIndexBuffer();
 
-			virtual void Bind() const override;
-			virtual void Unbind() const override;
+			void Bind() const override;
+			void Unbind() const override;
 
-			virtual uint32_t GetCount() const override { return m_count; }
+			uint32_t GetCount() const override { return m_count; }
 
 		private:
 			uint32_t m_buffer_id;

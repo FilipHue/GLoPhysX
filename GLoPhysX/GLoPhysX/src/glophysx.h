@@ -26,6 +26,7 @@
 #include "glophysx/rendering/objects/texture/texture.h"
 #include "glophysx/rendering/objects/buffer/framebuffer/framebuffer.h"
 #include "glophysx/rendering/objects/buffer/uniform_buffer/uniform_buffer.h"
+#include "glophysx/rendering/objects/buffer/ssbo/shader_strorage_buffer.h"
 
 // Components
 #include "glophysx/components/ecs/components.h"
@@ -33,9 +34,6 @@
 #include "glophysx/components/script/scriptable_entity.h"
 #include "glophysx/components/scene/scene.h"
 #include "glophysx/components/mesh/mesh.h"
-
-// Physics
-#include "glophysx/physics/particles/particle.h"
 
 #ifdef GLOP_DEBUG
 	#include "glophysx/debug/debug.h"

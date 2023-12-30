@@ -27,14 +27,14 @@ namespace GLOPHYSX {
 			glDeleteVertexArrays(1, &m_id);
 		}
 
-		void OpenglVertexArray::Bind()
+		void OpenglVertexArray::Bind() const
 		{
 			GLOP_PROFILE_FUNCTION();
 
 			glBindVertexArray(m_id);
 		}
 
-		void OpenglVertexArray::Unbind()
+		void OpenglVertexArray::Unbind() const
 		{
 			GLOP_PROFILE_FUNCTION();
 

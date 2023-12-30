@@ -19,6 +19,14 @@ namespace GLOPHYSX {
 			glDeleteBuffers(1, &m_id);
 		}
 
+		void OpenglUniformBuffer::Bind() const
+		{
+		}
+
+		void OpenglUniformBuffer::Unbind() const
+		{
+		}
+
 		void OpenglUniformBuffer::SetData(const void* data, uint32_t size, uint32_t offset)
 		{
 			glNamedBufferSubData(m_id, offset, size, data);

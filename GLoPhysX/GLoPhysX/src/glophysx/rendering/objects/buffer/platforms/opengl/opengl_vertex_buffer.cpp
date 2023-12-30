@@ -52,7 +52,7 @@ namespace GLOPHYSX {
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 
-		void OpenglVertexBuffer::SetData(const void* data, uint32_t size)
+		void OpenglVertexBuffer::SetData(const void* data, uint32_t size, uint32_t offset)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, m_buffer_id);
 			glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);

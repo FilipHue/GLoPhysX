@@ -13,20 +13,6 @@ namespace GLOPHYSX {
 
 	namespace RENDERING {
 
-		struct ParticleData
-		{
-			glm::vec3 position;
-			glm::vec3 velocity;
-			glm::vec3 acceleration;
-
-			float delay;
-
-			float age;
-			float max_age;
-
-			glm::vec3 max_velocity;
-		};
-
 		struct QuadVertexData
 		{
 			glm::vec3 position;

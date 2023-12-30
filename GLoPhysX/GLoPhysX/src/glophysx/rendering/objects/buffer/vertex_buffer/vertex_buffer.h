@@ -12,9 +12,6 @@ namespace GLOPHYSX {
 		public:
 			GLOP_API virtual ~VertexBuffer() {};
 
-			GLOP_API virtual void Bind() const = 0;
-			GLOP_API virtual void Unbind() const = 0;
-
 			GLOP_API virtual void SetLayout(const BufferLayout& layout) = 0;
 			GLOP_API virtual const BufferLayout& GetLayout() const = 0;
 

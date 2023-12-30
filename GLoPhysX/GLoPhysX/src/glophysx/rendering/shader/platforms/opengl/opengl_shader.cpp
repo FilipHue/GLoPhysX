@@ -16,6 +16,9 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
+//#define SPIRV
+
+#ifdef SPIRV
 			CreateCacheDirectoryIfNeeded();
 
 			std::string source = ReadShaderSource(file_path);
@@ -34,6 +37,24 @@ namespace GLOPHYSX {
 			auto lastDot = file_path.rfind('.');
 			auto count = lastDot == std::string::npos ? file_path.size() - lastSlash : lastDot - lastSlash;
 			m_name = file_path.substr(lastSlash, count);
+
+#else
+			auto last_separator = file_path.find_last_of("/\\");
+			last_separator = last_separator == std::string::npos ? 0 : last_separator + 1;
+
+			auto last_dot = file_path.rfind(".");
+			auto name_size = last_dot == std::string::npos ? file_path.size() - last_separator : last_dot - last_separator;
+			m_name = file_path.substr(last_separator, name_size);
+
+			std::string source = ReadShaderSource(file_path);
+
+			std::unordered_map<ShaderType, std::string> shader_sources = ProcessShaderSource(source);
+
+			Compile(shader_sources);
+#endif
+
+
+			
 		}
 
 		OpenglShader::OpenglShader(const std::string& name, std::string& source_vs, std::string& source_fs)
@@ -244,6 +265,73 @@ namespace GLOPHYSX {
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 		}
 
+		// OPENGL Specific
+		void OpenglShader::Compile(const std::unordered_map<ShaderType, std::string>& shader_sources)
+		{
+			GLuint program = glCreateProgram();
+			std::vector<GLenum> shader_ids;
+			shader_ids.reserve(shader_sources.size());
+
+			for (std::pair<ShaderType, std::string> pair : shader_sources) {
+				GLenum type = GetShaderType(pair.first);
+				GLuint shader = glCreateShader(type);
+
+				const GLchar* source = (const GLchar*)pair.second.c_str();
+				glShaderSource(shader, 1, &source, 0);
+
+				glCompileShader(shader);
+
+				GLint compiled = 0;
+				glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+				if (compiled == GL_FALSE) {
+					GLint log_length = 0;
+					glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
+
+					std::vector<GLchar> info_log(log_length);
+					glGetShaderInfoLog(shader, log_length, &log_length, &info_log[0]);
+
+					glDeleteShader(shader);
+
+					GLOP_CORE_WARN("{0} SHADER COMPILATION FAILED\n{1}", ShaderTypeToString(pair.first), info_log.data());
+
+					return;
+				}
+
+				shader_ids.push_back(shader);
+				type |= ShaderTypeFromString(ShaderTypeToString(pair.first));
+
+				glAttachShader(program, shader);
+			}
+
+			m_id = program;
+
+			glLinkProgram(m_id);
+
+			GLint linked = 0;
+			glGetProgramiv(m_id, GL_LINK_STATUS, (int*)&linked);
+			if (linked == GL_FALSE) {
+				GLint log_length = 0;
+				glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &log_length);
+
+				std::vector<GLchar> info_log(log_length);
+				glGetProgramInfoLog(m_id, log_length, &log_length, &info_log[0]);
+
+				glDeleteProgram(m_id);
+
+				for (GLenum id : shader_ids) {
+					glDeleteShader(id);
+				}
+
+				GLOP_CORE_WARN("SHADER PROGRAM LINKING FAILED\n{0}", info_log.data());
+
+				return;
+			}
+
+			for (GLenum id : shader_ids) {
+				glDetachShader(m_id, id);
+			}
+		}
+
 		// SPIRV Specific
 		void OpenglShader::CompileOrGetVulkanBinaries(const std::unordered_map<ShaderType, std::string>& shader_sources)
 		{
@@ -451,7 +539,7 @@ namespace GLOPHYSX {
 				const auto& type = compiler.get_type(input.base_type_id);
 				GLOP_CORE_TRACE(" {0}", compiler.get_fallback_name(input.id));
 				GLOP_CORE_TRACE("  Location: {0}", compiler.get_decoration(input.id, spv::DecorationLocation));
-				GLOP_CORE_TRACE("  Type: {0}", GetTypeName(type));
+				GLOP_CORE_TRACE("  Type: {0}", GetSPIRVTypeName(type));
 			}
 
 			GLOP_CORE_TRACE("Output variables:");
@@ -460,7 +548,7 @@ namespace GLOPHYSX {
 				const auto& type = compiler.get_type(output.base_type_id);
 				GLOP_CORE_TRACE(" {0}", compiler.get_fallback_name(output.id));
 				GLOP_CORE_TRACE("  Location: {0}", compiler.get_decoration(output.id, spv::DecorationLocation));
-				GLOP_CORE_TRACE("  Type: {0}", GetTypeName(type));
+				GLOP_CORE_TRACE("  Type: {0}", GetSPIRVTypeName(type));
 			}
 #endif
 			std::cout << "\n";

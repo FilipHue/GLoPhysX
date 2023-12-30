@@ -12,7 +12,7 @@ namespace GLOPHYSX {
 		{
 		public:
 			OpenglFramebuffer(const FramebufferSpecs& specs);
-			virtual ~OpenglFramebuffer();
+			~OpenglFramebuffer();
 
 			void Create();
 			void Resize(uint32_t width, uint32_t height) override;
@@ -25,7 +25,7 @@ namespace GLOPHYSX {
 			uint32_t GetColorAttachmentId(uint32_t index = 0) const { return m_color_attachments[index]; }
 
 			void Bind() override;
-			void Unbind() override;
+			void Unbind() const override;
 			 
 		private:
 			uint32_t m_id = 0;

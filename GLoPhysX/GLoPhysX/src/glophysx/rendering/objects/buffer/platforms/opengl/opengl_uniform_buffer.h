@@ -12,6 +12,9 @@ namespace GLOPHYSX {
 			OpenglUniformBuffer(uint32_t size, uint32_t binding);
 			~OpenglUniformBuffer();
 
+			void Bind() const override;
+			void Unbind() const override;
+
 			void SetData(const void* data, uint32_t size, uint32_t offset = 0) override;
 
 		private:
