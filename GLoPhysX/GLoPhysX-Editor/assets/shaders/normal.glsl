@@ -12,7 +12,7 @@ layout(location = 0) out vec4 v_color;
 layout(location = 1) out vec2 v_texture_coord;
 layout(location = 2) out flat float v_texture_index;
 layout(location = 3) out float v_tiling_factor;
-layout(location = 4) out int v_entity_id;
+layout(location = 4) out flat int v_entity_id;
 
 layout(std140, binding = 0) uniform camera
 {

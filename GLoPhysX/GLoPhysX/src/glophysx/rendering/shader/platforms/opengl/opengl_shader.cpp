@@ -52,9 +52,6 @@ namespace GLOPHYSX {
 
 			Compile(shader_sources);
 #endif
-
-
-			
 		}
 
 		OpenglShader::OpenglShader(const std::string& name, std::string& source_vs, std::string& source_fs)

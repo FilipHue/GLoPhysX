@@ -1,6 +1,17 @@
 Scene: example.glop
 Entities:
-  - Entity: 12929298679824862398
+  - Entity: 1975540143056846362
+    TagComponent:
+      Tag: Circle
+    TransformComponent:
+      Translation: [-1.42225671, 0.573618352, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    CircleRendererComponent:
+      Color: [0.637065649, 0.223833889, 0.223833889, 1]
+      Thickness: 1
+      Fade: 0.00499999989
+  - Entity: 16562591989339124133
     TagComponent:
       Tag: Camera
     TransformComponent:
@@ -18,14 +29,13 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 2852272484901215245
+  - Entity: 8022212669754876390
     TagComponent:
       Tag: Square
     TransformComponent:
-      Translation: [0.919358909, 1.17080986, 0]
-      Rotation: [0, -0, 0]
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteComponent:
       Color: [1, 1, 1, 1]
-      TexturePath: assets\textures\smileyface.png
       TilingFactor: 1

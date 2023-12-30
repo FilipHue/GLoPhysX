@@ -38,6 +38,12 @@ namespace GLOPHYSX {
 			static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture, float tiling_factor = 1.f);
 			static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, Shared<Texture2D>& texture, float tiling_factor = 1.f);
 
+			static void DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness, float fade, uint32_t entity_id);
+
+			static void DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, uint32_t entity_id);
+			static void DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, uint32_t entity_id);
+			static void DrawRect(const glm::mat4& transform, const glm::vec4& color, uint32_t entity_id);
+
 			static void DrawSprite(const glm::mat4& transform, SpriteComponent& sprite, uint32_t entity_id);
 
 			static void ResetStats();

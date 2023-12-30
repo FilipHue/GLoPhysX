@@ -4,5 +4,6 @@
 #include "components/tag.h"
 #include "components/transform.h"
 #include "components/sprite.h"
+#include "components/circle_renderer.h"
 #include "components/camera.h"
 #include "components/native_script.h"

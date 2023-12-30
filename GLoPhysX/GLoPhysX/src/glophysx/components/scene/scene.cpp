@@ -63,6 +63,7 @@ namespace GLOPHYSX {
 
 			CopyComponent<TransformComponent>(dst_scene_reg, src_scene_reg, entt_map);
 			CopyComponent<SpriteComponent>(dst_scene_reg, src_scene_reg, entt_map);
+			CopyComponent<CircleRendererComponent>(dst_scene_reg, src_scene_reg, entt_map);
 			CopyComponent<CameraComponent>(dst_scene_reg, src_scene_reg, entt_map);
 			CopyComponent<NativeScriptComponent>(dst_scene_reg, src_scene_reg, entt_map);
 
@@ -95,13 +96,29 @@ namespace GLOPHYSX {
 		{
 			Renderer2D::BeginScene(camera);
 
-			auto group = m_registry.group<TransformComponent>(entt::get<SpriteComponent>);
+			{
+				auto group = m_registry.group<TransformComponent>(entt::get<SpriteComponent>);
 
-			for (auto entity : group) {
-				auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
+				for (auto entity : group) {
+					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
 
-				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+					Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), (int)entity);
+				}
 			}
+
+			{
+				auto view = m_registry.view<TransformComponent, CircleRendererComponent>();
+
+				for (auto entity : view) {
+					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+
+					Renderer2D::DrawCircle(transform.GetTransform(), circle.m_color, circle.m_thickness, circle.m_fade, (int)entity);
+				}
+			}
+
+			Renderer2D::DrawLine(glm::vec3(0.0f), glm::vec3(5.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), -1);
+			Renderer2D::DrawRect(glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(2.0f, 2.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), -1);
 
 			Renderer2D::EndScene();
 		}
@@ -137,11 +154,24 @@ namespace GLOPHYSX {
 			{
 				Renderer2D::BeginScene(*main_camera, camera_transform);
 
-				auto group = m_registry.group<TransformComponent>(entt::get<SpriteComponent>);
-				for (auto entity : group) {
-					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
+				{
+					auto group = m_registry.group<TransformComponent>(entt::get<SpriteComponent>);
 
-					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+					for (auto entity : group) {
+						auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
+
+						Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+					}
+				}
+
+				{
+					auto view = m_registry.view<TransformComponent, CircleRendererComponent>();
+
+					for (auto entity : view) {
+						auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+
+						Renderer2D::DrawCircle(transform.GetTransform(), circle.m_color, circle.m_thickness, circle.m_fade, (int)entity);
+					}
 				}
 
 				Renderer2D::EndScene();
@@ -169,6 +199,7 @@ namespace GLOPHYSX {
 
 			CopyComponentIfExists<TransformComponent>(new_entity, entity);
 			CopyComponentIfExists<SpriteComponent>(new_entity, entity);
+			CopyComponentIfExists<CircleRendererComponent>(new_entity, entity);
 			CopyComponentIfExists<CameraComponent>(new_entity, entity);
 			CopyComponentIfExists<NativeScriptComponent>(new_entity, entity);
 
@@ -213,6 +244,11 @@ namespace GLOPHYSX {
 
 		template<>
 		void Scene::OnComponentAdded<SpriteComponent>(Entity entity, SpriteComponent& component)
+		{
+		}
+
+		template<>
+		void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component)
 		{
 		}
 

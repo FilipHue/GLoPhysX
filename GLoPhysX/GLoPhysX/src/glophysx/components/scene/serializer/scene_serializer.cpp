@@ -97,6 +97,20 @@ namespace GLOPHYSX {
 				out << YAML::EndMap;
 			}
 
+			if (entity.HasComponent<CircleRendererComponent>())
+			{
+				out << YAML::Key << "CircleRendererComponent";
+				out << YAML::BeginMap;
+
+				auto& sc = entity.GetComponent<CircleRendererComponent>();
+
+				out << YAML::Key << "Color" << YAML::Value << sc.m_color;
+				out << YAML::Key << "Thickness" << YAML::Value << sc.m_thickness;
+				out << YAML::Key << "Fade" << YAML::Value << sc.m_fade;
+
+				out << YAML::EndMap;
+			}
+
 			out << YAML::EndMap;
 		}
 
@@ -206,6 +220,15 @@ namespace GLOPHYSX {
 
 						if (sprite_component["TilingFactor"])
 							src.m_tiling = sprite_component["TilingFactor"].as<float>();
+					}
+
+					auto circle_renderer_component = entity["CircleRendererComponent"];
+					if (circle_renderer_component)
+					{
+						auto& src = deserialized_entity.AddComponent<CircleRendererComponent>();
+						src.m_color = circle_renderer_component["Color"].as<glm::vec4>();
+						src.m_thickness = circle_renderer_component["Thickness"].as<float>();
+						src.m_fade = circle_renderer_component["Fade"].as<float>();
 					}
 				}
 			}

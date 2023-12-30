@@ -25,6 +25,7 @@ namespace GLOPHYSX {
 				s_data = new Renderer2DData();
 			}
 
+			// QUAD
 			s_data->quad_data = MakeShared<QuadData>();
 
 			s_data->quad_data->VA = VertexArray::Create();
@@ -60,6 +61,57 @@ namespace GLOPHYSX {
 			s_data->quad_data->VA->AddIndexBuffer(s_data->quad_data->IB);
 			delete[] quad_data_indices;
 
+			// CIRCLE
+			s_data->circle_data = MakeShared<CircleData>();
+
+			s_data->circle_data->VA = VertexArray::Create();
+
+			s_data->circle_data->VB = VertexBuffer::Create(s_data->maximum_vertices * sizeof(CircleVertexData));
+			s_data->circle_data->VB->SetLayout({
+				{ShaderDataType::Float3, "a_world_position"},
+				{ShaderDataType::Float3, "a_local_position"},
+				{ShaderDataType::Float4, "a_color"},
+				{ShaderDataType::Float, "a_thickness"},
+				{ShaderDataType::Float, "a_fade"},
+				{ShaderDataType::Int, "a_entity_id"}
+				});
+			s_data->circle_data->VA->AddVertexBuffer(s_data->circle_data->VB);
+			s_data->circle_data->VB_base = new CircleVertexData[s_data->maximum_vertices];
+
+			offset = 0;
+			uint32_t* circle_data_indices = new uint32_t[s_data->maximum_indices];
+			if (s_data->maximum_indices >= 6) {
+				for (uint32_t i = 0; i < s_data->maximum_indices; i += 6) {
+					circle_data_indices[i + 0] = offset + 0;
+					circle_data_indices[i + 1] = offset + 1;
+					circle_data_indices[i + 2] = offset + 2;
+
+					circle_data_indices[i + 3] = offset + 2;
+					circle_data_indices[i + 4] = offset + 3;
+					circle_data_indices[i + 5] = offset + 0;
+
+					offset += 4;
+				}
+			}
+			s_data->circle_data->IB = IndexBuffer::Create(circle_data_indices, s_data->maximum_indices);
+			s_data->circle_data->VA->AddIndexBuffer(s_data->circle_data->IB);
+			delete[] circle_data_indices;
+
+			// LINES
+			s_data->line_data = MakeShared<LineData>();
+
+			s_data->line_data->VA = VertexArray::Create();
+
+			s_data->line_data->VB = VertexBuffer::Create(s_data->maximum_vertices * sizeof(LineVertexData));
+			s_data->line_data->VB->SetLayout({
+				{ShaderDataType::Float3, "a_position"},
+				{ShaderDataType::Float4, "a_color"},
+				{ShaderDataType::Int, "a_entity_id"}
+				});
+			s_data->line_data->VA->AddVertexBuffer(s_data->line_data->VB);
+			s_data->line_data->VB_base = new LineVertexData[s_data->maximum_vertices];
+
+			// TEXTURES
 			s_data->white_texture = Texture2D::Create(1, 1);
 			uint32_t white_texture_data = 0xffffffff;
 			s_data->white_texture->SetData(&white_texture_data, sizeof(uint32_t));
@@ -68,12 +120,14 @@ namespace GLOPHYSX {
 			for (uint32_t i = 0; i < s_data->maximum_texture_slots; i++) {
 				samplers[i] = i;
 			}
+			s_data->texture_slots[0] = s_data->white_texture; 
 
+			// SHADERS
 			s_data->quad_shader = Shader::Create("assets/shaders/normal.glsl");
-			s_data->particle_shader = Shader::Create("assets/shaders/particle.glsl");
+			s_data->circle_shader = Shader::Create("assets/shaders/circle.glsl");
+			s_data->line_shader = Shader::Create("assets/shaders/line.glsl");
 
-			s_data->texture_slots[0] = s_data->white_texture;
-
+			// UNIFORMS
 			s_data->camera_uniform_buffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
 		}
 
@@ -132,6 +186,12 @@ namespace GLOPHYSX {
 			s_data->quad_data->index_count = 0;
 			s_data->quad_data->VB_ptr = s_data->quad_data->VB_base;
 
+			s_data->circle_data->index_count = 0;
+			s_data->circle_data->VB_ptr = s_data->circle_data->VB_base;
+
+			s_data->line_data->index_count = 0;
+			s_data->line_data->VB_ptr = s_data->line_data->VB_base;
+
 			s_data->texture_slot_index = 1;
 		}
 
@@ -146,20 +206,53 @@ namespace GLOPHYSX {
 		{
 			GLOP_PROFILE_FUNCTION();
 
-			uint32_t data_size = (uint32_t)((uint8_t*)s_data->quad_data->VB_ptr - (uint8_t*)s_data->quad_data->VB_base);
-			if (data_size)
+			if (s_data->quad_data->index_count)
 			{
-				s_data->quad_shader->Bind();
+				uint32_t data_size = (uint32_t)((uint8_t*)s_data->quad_data->VB_ptr - (uint8_t*)s_data->quad_data->VB_base);
+				if (data_size)
+				{
+					s_data->quad_shader->Bind();
 
-				for (uint32_t i = 0; i < s_data->texture_slot_index; i++) {
-					s_data->texture_slots[i]->Bind(i);
+					for (uint32_t i = 0; i < s_data->texture_slot_index; i++) {
+						s_data->texture_slots[i]->Bind(i);
+					}
+
+					s_data->quad_data->VB->SetData(s_data->quad_data->VB_base, data_size);
+
+					RendererCommands::DrawIndexed(s_data->quad_data->VA, s_data->quad_data->index_count);
+
+					s_stats->draw_calls++;
 				}
+			}
 
-				s_data->quad_data->VB->SetData(s_data->quad_data->VB_base, data_size);
+			if (s_data->circle_data->index_count)
+			{
+				uint32_t data_size = (uint32_t)((uint8_t*)s_data->circle_data->VB_ptr - (uint8_t*)s_data->circle_data->VB_base);
+				if (data_size)
+				{
+					s_data->circle_shader->Bind();
 
-				RendererCommands::DrawIndexed(s_data->quad_data->VA, s_data->quad_data->index_count);
+					s_data->circle_data->VB->SetData(s_data->circle_data->VB_base, data_size);
 
-				s_stats->draw_calls++;
+					RendererCommands::DrawIndexed(s_data->circle_data->VA, s_data->circle_data->index_count);
+
+					s_stats->draw_calls++;
+				}
+			}
+
+			if (s_data->line_data->index_count)
+			{
+				uint32_t data_size = (uint32_t)((uint8_t*)s_data->line_data->VB_ptr - (uint8_t*)s_data->line_data->VB_base);
+				if (data_size)
+				{
+					s_data->line_shader->Bind();
+
+					s_data->line_data->VB->SetData(s_data->line_data->VB_base, data_size);
+
+					RendererCommands::DrawLines(s_data->line_data->VA, s_data->line_data->index_count);
+
+					s_stats->draw_calls++;
+				}
 			}
 		}
 
@@ -367,6 +460,71 @@ namespace GLOPHYSX {
 			model_matrix = glm::scale(model_matrix, { size.x, size.y, 1.0f });
 
 			DrawQuad(model_matrix, texture, tiling_factor);
+		}
+
+		void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness, float fade, uint32_t entity_id)
+		{
+			if (s_data->circle_data->index_count >= s_data->maximum_indices) {
+				EndBatch();
+				StartBatch();
+			}
+
+			for (int i = 0; i < 4; i++) {
+				s_data->circle_data->VB_ptr->world_position = transform * s_data->circle_data->vertex_positions_default[i];
+				s_data->circle_data->VB_ptr->local_position = s_data->circle_data->vertex_positions_default[i] * 2.0f;
+				s_data->circle_data->VB_ptr->color = color;
+				s_data->circle_data->VB_ptr->thickness = thickness;
+				s_data->circle_data->VB_ptr->fade = fade;
+				s_data->circle_data->VB_ptr->entity_id = entity_id;
+				s_data->circle_data->VB_ptr++;
+			}
+
+			s_data->circle_data->index_count += 6;
+
+			s_stats->quad_count++;
+		}
+
+		void Renderer2D::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, uint32_t entity_id)
+		{
+			s_data->line_data->VB_ptr->position = p0;
+			s_data->line_data->VB_ptr->color = color;
+			s_data->line_data->VB_ptr->entity_id = -1;
+			s_data->line_data->VB_ptr++;
+
+			s_data->line_data->VB_ptr->position = p1;
+			s_data->line_data->VB_ptr->color = color;
+			s_data->line_data->VB_ptr->entity_id = -1;
+			s_data->line_data->VB_ptr++;
+
+			s_data->line_data->index_count += 2;
+		}
+
+		void Renderer2D::DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, uint32_t entity_id)
+		{
+			glm::vec3 p0 = glm::vec3(position.x - size.x * 0.5f, position.y - size.y * 0.5f, position.z);
+			glm::vec3 p1 = glm::vec3(position.x + size.x * 0.5f, position.y - size.y * 0.5f, position.z);
+			glm::vec3 p2 = glm::vec3(position.x + size.x * 0.5f, position.y + size.y * 0.5f, position.z);
+			glm::vec3 p3 = glm::vec3(position.x - size.x * 0.5f, position.y + size.y * 0.5f, position.z);
+
+			DrawLine(p0, p1, color, -1);
+			DrawLine(p1, p2, color, -1);
+			DrawLine(p2, p3, color, -1);
+			DrawLine(p3, p0, color, -1);
+		}
+
+		void Renderer2D::DrawRect(const glm::mat4& transform, const glm::vec4& color, uint32_t entity_id)
+		{
+			glm::vec3 line_points[4];
+
+			for (size_t i = 0; i < 4; i++)
+			{
+				line_points[i] = transform * s_data->quad_data->vertex_positions_default[i];
+			}
+
+			DrawLine(line_points[0], line_points[1], color, -1);
+			DrawLine(line_points[1], line_points[2], color, -1);
+			DrawLine(line_points[2], line_points[3], color, -1);
+			DrawLine(line_points[3], line_points[0], color, -1);
 		}
 
 		void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteComponent& sprite, uint32_t entity_id)

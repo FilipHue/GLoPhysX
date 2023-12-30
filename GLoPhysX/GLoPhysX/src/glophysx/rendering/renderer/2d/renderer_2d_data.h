@@ -25,6 +25,27 @@ namespace GLOPHYSX {
 			uint32_t entity_id;
 		};
 
+		struct CircleVertexData
+		{
+			glm::vec3 world_position;
+			glm::vec3 local_position;
+			glm::vec4 color;
+			float thickness;
+			float fade;
+
+			// Editor data
+			uint32_t entity_id;
+		};
+
+		struct LineVertexData
+		{
+			glm::vec3 position;
+			glm::vec4 color;
+
+			// Editor data
+			uint32_t entity_id;
+		};
+
 		struct QuadData
 		{
 			Shared<VertexArray> VA;
@@ -36,7 +57,7 @@ namespace GLOPHYSX {
 			QuadVertexData* VB_ptr = VB_base;
 
 			// (0, 0) IN THE LOWER LEFT
-			/*glm::vec4 vertex_positions[4] = {
+			/*glm::vec4 vertex_positions_default[4] = {
 				{0.f, 0.f, 0.f, 1.f},
 				{1.f, 0.f, 0.f, 1.f},
 				{1.f, 1.f, 0.f, 1.f},
@@ -59,6 +80,51 @@ namespace GLOPHYSX {
 			};
 		};
 
+		struct CircleData
+		{
+			Shared<VertexArray> VA;
+			Shared<VertexBuffer> VB;
+			Shared<IndexBuffer> IB;
+
+			uint32_t index_count = 0;
+			CircleVertexData* VB_base = nullptr;
+			CircleVertexData* VB_ptr = VB_base;
+
+			// (0, 0) IN THE LOWER LEFT
+			/*glm::vec4 vertex_positions_default[4] = {
+				{0.f, 0.f, 0.f, 1.f},
+				{1.f, 0.f, 0.f, 1.f},
+				{1.f, 1.f, 0.f, 1.f},
+				{0.f, 1.f, 0.f, 1.f}
+			};*/
+
+			// (0, 0) IN THE CENTER
+			glm::vec4 vertex_positions_default[4] = {
+				{-0.5f, -0.5f, 0.0f, 1.0f},
+				{ 0.5f, -0.5f, 0.0f, 1.0f},
+				{ 0.5f,  0.5f, 0.0f, 1.0f},
+				{-0.5f,  0.5f, 0.0f, 1.0f}
+			};
+
+			glm::vec2 vertex_tex_coords_default[4] = {
+				{0.0f, 0.0f},
+				{1.0f, 0.0f},
+				{1.0f, 1.0f},
+				{0.0f, 1.0f}
+			};
+		};
+
+		struct LineData
+		{
+			Shared<VertexArray> VA;
+			Shared<VertexBuffer> VB;
+			Shared<IndexBuffer> IB;
+
+			uint32_t index_count = 0;
+			LineVertexData* VB_base = nullptr;
+			LineVertexData* VB_ptr = VB_base;
+		};
+
 		struct Renderer2DData {
 			static const uint32_t maximum_quads = 10000;
 			static const uint32_t maximum_vertices = maximum_quads * 4;
@@ -66,12 +132,16 @@ namespace GLOPHYSX {
 			static const uint32_t maximum_texture_slots = 32;
 
 			Shared<QuadData> quad_data;
+			Shared<CircleData> circle_data;
+			Shared<LineData> line_data;
 
 			std::array<Shared<Texture2D>, maximum_texture_slots> texture_slots;
 			uint32_t texture_slot_index = 1;
 
 			Shared<Shader> quad_shader;
-			Shared<Shader> particle_shader;
+			Shared<Shader> circle_shader;
+			Shared<Shader> line_shader;
+
 			Shared<Texture2D> white_texture;
 
 			struct CameraData

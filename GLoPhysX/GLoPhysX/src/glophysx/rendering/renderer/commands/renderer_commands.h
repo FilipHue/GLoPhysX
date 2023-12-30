@@ -29,6 +29,7 @@ namespace GLOPHYSX {
 			GLOP_API static void Clear() { s_renderer_api->Clear(); }
 
 			GLOP_API static void DrawIndexed(const Shared<VertexArray>& vertex_array, uint32_t index_count = 0) { s_renderer_api->DrawIndexed(vertex_array, index_count); }
+			GLOP_API static void DrawLines(const Shared<VertexArray>& vertex_array, uint32_t vertex_count = 0) { s_renderer_api->DrawLines(vertex_array, vertex_count); }
 
 			GLOP_API static void SetApi() { s_renderer_api = RendererAPI::Create(); }
 

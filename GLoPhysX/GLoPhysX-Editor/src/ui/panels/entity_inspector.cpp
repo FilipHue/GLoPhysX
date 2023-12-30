@@ -34,6 +34,7 @@ namespace GLOPHYSX {
 			{
 				DisplayAddComponentEntry<CameraComponent>("Camera", entity);
 				DisplayAddComponentEntry<SpriteComponent>("Sprite", entity);
+				DisplayAddComponentEntry<CircleRendererComponent>("Circle Renderer", entity);
 
 				ImGui::EndPopup();
 			}
@@ -50,6 +51,7 @@ namespace GLOPHYSX {
 
 					DrawVec3Controls("Scale", component.m_scale, 1.f);
 				});
+
 			DrawComponent<CameraComponent>("Camera", entity, [](auto& component)
 				{
 					auto& camera = component.m_camera;
@@ -129,6 +131,7 @@ namespace GLOPHYSX {
 						}
 					}
 				});
+
 			DrawComponent<SpriteComponent>("Sprite", entity, [](auto& component)
 				{
 					ImGui::ColorEdit4("Color", glm::value_ptr(component.m_color));
@@ -147,6 +150,13 @@ namespace GLOPHYSX {
 					}
 
 					ImGui::DragFloat("Tiling", &component.m_tiling, 0.1f, 0.0f, 100.f, "%.3f");
+				});
+
+			DrawComponent<CircleRendererComponent>("Circle Renderer", entity, [](auto& component)
+				{
+					ImGui::ColorEdit4("Color", glm::value_ptr(component.m_color));
+					ImGui::DragFloat("Thickness", &component.m_thickness, 0.025f, 0.0f, 1.0f, "%.3f");
+					ImGui::DragFloat("Fade", &component.m_fade, 0.00025f, 0.0f, 1.0f, "%.3f");
 				});
 		}
 

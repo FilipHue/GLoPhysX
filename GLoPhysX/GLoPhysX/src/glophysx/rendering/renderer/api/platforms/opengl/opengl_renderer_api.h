@@ -30,6 +30,7 @@ namespace GLOPHYSX {
 			virtual void Clear() override;
 
 			virtual void DrawIndexed(const Shared<VertexArray>& vertex_array, uint32_t index_count = 0) override;
+			virtual void DrawLines(const Shared<VertexArray>& vertex_array, uint32_t vertex_count = 0) override;
 		};
 	}
 }

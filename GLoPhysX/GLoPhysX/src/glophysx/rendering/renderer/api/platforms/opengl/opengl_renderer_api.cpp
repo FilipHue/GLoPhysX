@@ -50,5 +50,13 @@ namespace GLOPHYSX {
 			uint32_t count = index_count ? index_count : vertex_array->GetIndexBuffer()->GetCount();
 			glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 		}
+
+		void OpenglRendererAPI::DrawLines(const Shared<VertexArray>& vertex_array, uint32_t vertex_count)
+		{
+			GLOP_PROFILE_FUNCTION();
+
+			vertex_array->Bind();
+			glDrawArrays(GL_LINES, 0, vertex_count);
+		}
 	}
 }

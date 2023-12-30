@@ -43,6 +43,7 @@ namespace GLOPHYSX {
 
 			// Method used to draw vertices on the screen using and index buffer
 			virtual void DrawIndexed(const Shared<VertexArray>& vertex_array, uint32_t index_count = 0) = 0;
+			virtual void DrawLines(const Shared<VertexArray>& vertex_array, uint32_t vertex_count = 0) = 0;
 
 			GLOP_API static API GetApi() { return s_API; }
 			GLOP_API static void SetApi(API graphics_api) { s_API = graphics_api; }
