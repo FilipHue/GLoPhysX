@@ -8,6 +8,8 @@
 
 #include "entt/entt.h"
 
+class b2World;
+
 namespace GLOPHYSX {
 
 	namespace EDITOR {
@@ -32,8 +34,12 @@ namespace GLOPHYSX {
 			Entity CreateEntityWithUUID(UUID id, const std::string& name = std::string());
 			void DestroyEntity(Entity& entity);
 
+			void OnRuntimeStart();
+			void OnRuntimeShutdown();
+
 			void OnUpdateEditor(DeltaTime dt, EditorCamera& camera);
 			void OnUpdateRuntime(DeltaTime dt);
+			void OnUpdatePhysics(DeltaTime dt);
 			void OnViewportResize(uint32_t width, uint32_t height);
 
 			Entity DuplicateEntity(Entity entity);
@@ -53,6 +59,8 @@ namespace GLOPHYSX {
 			uint32_t m_viewport_height;
 
 			std::string m_name = "Untitled";
+
+			b2World* m_physics_world = nullptr;
 
 			friend class Entity;
 			friend class SceneSerializer;

@@ -76,7 +76,10 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/YAML/yaml/**.cpp",
 
 		"%{prj.name}/dependencies/IMGUIZMO/imguizmo/**.h",
-		"%{prj.name}/dependencies/IMGUIZMO/imguizmo/**.cpp"
+		"%{prj.name}/dependencies/IMGUIZMO/imguizmo/**.cpp",
+
+		"%{prj.name}/dependencies/BOX2D/src/**.h",
+		"%{prj.name}/dependencies/BOX2D/src/**.cpp"
 	}
 
 	includedirs
@@ -91,6 +94,7 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/ENTT",
 		"%{prj.name}/dependencies/YAML/yaml/include",
 		"%{prj.name}/dependencies/IMGUIZMO/imguizmo",
+		"%{prj.name}/dependencies/BOX2D/include",
 		"%{VULKAN_SDK}/Include"
 	}
 
@@ -120,6 +124,9 @@ project "GLoPhysX"
 		flags { "NoPCH" }
 
 	filter "files:GLoPhysX/dependencies/IMGUIZMO/imguizmo/**.cpp"
+		flags { "NoPCH" }
+
+	filter "files:GLoPhysX/dependencies/BOX2D/src/**.cpp"
 		flags { "NoPCH" }
 
 	filter "system:windows"
@@ -206,7 +213,8 @@ project "Sandbox"
 		"GLoPhysX/dependencies/STB",
 		"GLoPhysX/dependencies/ENTT",
 		"GLoPhysX/dependencies/YAML/yaml/include",
-		"GLoPhysX/dependencies/IMGUIZMO/imguizmo"
+		"GLoPhysX/dependencies/IMGUIZMO/imguizmo",
+		"GLoPhysX/dependencies/BOX2D/include"
 	}
 
 	-- UNCOMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --
@@ -288,7 +296,8 @@ project "GLoPhysX-Editor"
 		"GLoPhysX/dependencies/STB",
 		"GLoPhysX/dependencies/ENTT",
 		"GLoPhysX/dependencies/YAML/yaml/include",
-		"GLoPhysX/dependencies/IMGUIZMO/imguizmo"
+		"GLoPhysX/dependencies/IMGUIZMO/imguizmo",
+		"GLoPhysX/dependencies/BOX2D/include"
 	}
 
 	-- UNCOMMENT THIS IF YOU WANT TO LINK AGAINST THE STATIC LIBRARY --

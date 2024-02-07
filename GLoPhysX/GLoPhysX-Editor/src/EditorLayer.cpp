@@ -139,6 +139,7 @@ void EditorLayer::OnUpdate(DeltaTime dt)
             }
 
             m_current_scene->OnUpdateRuntime(dt);
+            m_current_scene->OnUpdatePhysics(dt);
 
         }
 

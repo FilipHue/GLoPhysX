@@ -52,11 +52,13 @@ namespace GLOPHYSX {
 		void ToolBar::OnScenePlay()
 		{
 			m_scene_state = SceneState::PLAY;
+			m_context->OnRuntimeStart();
 		}
 
 		void ToolBar::OnSceneStop()
 		{
 			m_scene_state = SceneState::EDIT;
+			m_context->OnRuntimeShutdown();
 		}
 	}
 }

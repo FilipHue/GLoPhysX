@@ -35,6 +35,8 @@ namespace GLOPHYSX {
 				DisplayAddComponentEntry<CameraComponent>("Camera", entity);
 				DisplayAddComponentEntry<SpriteComponent>("Sprite", entity);
 				DisplayAddComponentEntry<CircleRendererComponent>("Circle Renderer", entity);
+				DisplayAddComponentEntry<RigidBody2DComponent>("RigidBody 2D", entity);
+				DisplayAddComponentEntry<BoxCollider2DComponent>("BoxCollider 2D", entity);
 
 				ImGui::EndPopup();
 			}
@@ -157,6 +159,43 @@ namespace GLOPHYSX {
 					ImGui::ColorEdit4("Color", glm::value_ptr(component.m_color));
 					ImGui::DragFloat("Thickness", &component.m_thickness, 0.025f, 0.0f, 1.0f, "%.3f");
 					ImGui::DragFloat("Fade", &component.m_fade, 0.00025f, 0.0f, 1.0f, "%.3f");
+				});
+
+			DrawComponent<RigidBody2DComponent>("RigidBody 2D", entity, [](auto& component)
+				{
+					const char* body_type_str[] = { "Static", "Kinematic", "Dynamic"};
+					const char* current_body_type_str = body_type_str[(int)component.type];
+					if (ImGui::BeginCombo("BodyType", current_body_type_str))
+					{
+						for (int i = 0; i < 3; i++) {
+							bool is_selected = current_body_type_str == body_type_str[i];
+
+							if (ImGui::Selectable(body_type_str[i], is_selected))
+							{
+								current_body_type_str = body_type_str[i];
+								component.type = (BodyType)i;
+							}
+
+							if (is_selected) {
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+
+						ImGui::EndCombo();
+					}
+
+					ImGui::Checkbox("Fixed Rotation", &component.fixed_rotation);
+				});
+
+			DrawComponent<BoxCollider2DComponent>("BoxCollider 2D", entity, [](auto& component)
+				{
+					ImGui::DragFloat2("Offset", glm::value_ptr(component.offset));
+					ImGui::DragFloat2("Size", glm::value_ptr(component.size));
+
+					ImGui::DragFloat("Density", &component.density, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Friction", &component.friction, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Restitution", &component.restitution, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Restitution Treshold", &component.restitution_treshold, 0.01f, 0.0f);
 				});
 		}
 

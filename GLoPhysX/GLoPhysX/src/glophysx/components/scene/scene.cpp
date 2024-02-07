@@ -8,6 +8,11 @@
 
 #include "glm.hpp"
 
+#include "box2d/b2_world.h"
+#include "box2d/b2_body.h"
+#include "box2d/b2_fixture.h"
+#include "box2d/b2_polygon_shape.h"
+
 namespace GLOPHYSX {
 
 	using namespace RENDERING;
@@ -23,7 +28,7 @@ namespace GLOPHYSX {
 				UUID uuid = src.get<IDComponent>(src_entity).m_id;
 				if (entt_map.find(uuid) == entt_map.end())
 				{
-					GLOP_CORE_CRITICAL("Entityt isn't in the map.");
+					GLOP_CORE_CRITICAL("Entity isn't in the map.");
 				}
 				entt::entity dst_entt_id = entt_map.at(uuid);
 
@@ -44,6 +49,8 @@ namespace GLOPHYSX {
 		Shared<Scene> Scene::Copy(Shared<Scene> other)
 		{
 			Shared<Scene> new_scene = MakeShared<Scene>();
+
+			new_scene->m_physics_world = other->m_physics_world;
 
 			new_scene->m_viewport_width = other->m_viewport_width;
 			new_scene->m_viewport_width = other->m_viewport_width;
@@ -66,6 +73,9 @@ namespace GLOPHYSX {
 			CopyComponent<CircleRendererComponent>(dst_scene_reg, src_scene_reg, entt_map);
 			CopyComponent<CameraComponent>(dst_scene_reg, src_scene_reg, entt_map);
 			CopyComponent<NativeScriptComponent>(dst_scene_reg, src_scene_reg, entt_map);
+
+			CopyComponent<RigidBody2DComponent>(dst_scene_reg, src_scene_reg, entt_map);
+			CopyComponent<BoxCollider2DComponent>(dst_scene_reg, src_scene_reg, entt_map);
 
 			return new_scene;
 		}
@@ -92,6 +102,54 @@ namespace GLOPHYSX {
 			m_registry.destroy(entity);
 		}
 
+		void Scene::OnRuntimeStart()
+		{
+			m_physics_world = new b2World({ 0.0f, -9.8f });
+
+			auto view = m_registry.view<RigidBody2DComponent>();
+			for (auto e : view)
+			{
+				Entity entity = { e, this };
+				auto& transform = entity.GetComponent<TransformComponent>();
+				auto& rigidbody_2d = entity.GetComponent<RigidBody2DComponent>();
+
+				b2BodyDef body_definition;
+
+				body_definition.type = (b2BodyType)rigidbody_2d.type;
+				body_definition.position.Set(transform.m_translation.x, transform.m_translation.y);
+				body_definition.angle = transform.m_rotation.z;
+				body_definition.fixedRotation = rigidbody_2d.fixed_rotation;
+
+				b2Body* body = m_physics_world->CreateBody(&body_definition);
+
+				rigidbody_2d.runtime_bodies = body;
+
+				if (entity.HasComponent<BoxCollider2DComponent>())
+				{
+					auto& boxcollider_2d = entity.GetComponent<BoxCollider2DComponent>();
+
+					b2PolygonShape collider_shape;
+					collider_shape.SetAsBox(boxcollider_2d.size.x * transform.m_scale.x, boxcollider_2d.size.y * transform.m_scale.y);
+
+					b2FixtureDef fixture_definition;
+					fixture_definition.shape = &collider_shape;
+					fixture_definition.density = boxcollider_2d.density;
+					fixture_definition.friction = boxcollider_2d.friction;
+					fixture_definition.restitution = boxcollider_2d.restitution;
+					fixture_definition.restitutionThreshold = boxcollider_2d.restitution_treshold;
+
+					body->CreateFixture(&fixture_definition);
+				}
+			}
+		}
+
+		void Scene::OnRuntimeShutdown()
+		{
+			delete m_physics_world;
+
+			m_physics_world = nullptr;
+		}
+
 		void Scene::OnUpdateEditor(DeltaTime dt, EditorCamera& camera)
 		{
 			Renderer2D::BeginScene(camera);
@@ -103,7 +161,6 @@ namespace GLOPHYSX {
 					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
 
 					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
-					Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), (int)entity);
 				}
 			}
 
@@ -116,9 +173,6 @@ namespace GLOPHYSX {
 					Renderer2D::DrawCircle(transform.GetTransform(), circle.m_color, circle.m_thickness, circle.m_fade, (int)entity);
 				}
 			}
-
-			Renderer2D::DrawLine(glm::vec3(0.0f), glm::vec3(5.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), -1);
-			Renderer2D::DrawRect(glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(2.0f, 2.0f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), -1);
 
 			Renderer2D::EndScene();
 		}
@@ -137,6 +191,25 @@ namespace GLOPHYSX {
 
 						nsc.m_instance->OnUpdate(dt);
 					});
+			}
+
+			const int32_t velocity_iterations = 6;
+			const int32_t position_iterations = 2;
+			m_physics_world->Step(dt, velocity_iterations, position_iterations);
+
+			auto view = m_registry.view<RigidBody2DComponent>();
+			for (auto e : view)
+			{
+				Entity entity = { e, this };
+
+				auto& transform = entity.GetComponent<TransformComponent>();
+				auto& rigidbody_2d = entity.GetComponent<RigidBody2DComponent>();
+
+				b2Body* body = (b2Body*)rigidbody_2d.runtime_bodies;
+				const auto& position = body->GetPosition();
+				transform.m_translation.x = position.x;
+				transform.m_translation.y = position.y;
+				transform.m_rotation.z = body->GetAngle();
 			}
 
 			SceneCamera* main_camera = nullptr;
@@ -178,6 +251,10 @@ namespace GLOPHYSX {
 			}
 		}
 
+		void Scene::OnUpdatePhysics(DeltaTime dt)
+		{
+		}
+
 		void Scene::OnViewportResize(uint32_t width, uint32_t height)
 		{
 			m_viewport_width = width;
@@ -202,6 +279,9 @@ namespace GLOPHYSX {
 			CopyComponentIfExists<CircleRendererComponent>(new_entity, entity);
 			CopyComponentIfExists<CameraComponent>(new_entity, entity);
 			CopyComponentIfExists<NativeScriptComponent>(new_entity, entity);
+
+			CopyComponentIfExists<RigidBody2DComponent>(new_entity, entity);
+			CopyComponentIfExists<BoxCollider2DComponent>(new_entity, entity);
 
 			return new_entity;
 		}
@@ -260,6 +340,16 @@ namespace GLOPHYSX {
 
 		template<>
 		void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
+		{
+		}
+
+		template<>
+		void Scene::OnComponentAdded<RigidBody2DComponent>(Entity entity, RigidBody2DComponent& component)
+		{
+		}
+
+		template<>
+		void Scene::OnComponentAdded<BoxCollider2DComponent>(Entity entity, BoxCollider2DComponent& component)
 		{
 		}
 	}

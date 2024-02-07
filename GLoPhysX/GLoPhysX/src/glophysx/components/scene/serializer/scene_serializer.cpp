@@ -102,11 +102,42 @@ namespace GLOPHYSX {
 				out << YAML::Key << "CircleRendererComponent";
 				out << YAML::BeginMap;
 
-				auto& sc = entity.GetComponent<CircleRendererComponent>();
+				auto& cc = entity.GetComponent<CircleRendererComponent>();
 
-				out << YAML::Key << "Color" << YAML::Value << sc.m_color;
-				out << YAML::Key << "Thickness" << YAML::Value << sc.m_thickness;
-				out << YAML::Key << "Fade" << YAML::Value << sc.m_fade;
+				out << YAML::Key << "Color" << YAML::Value << cc.m_color;
+				out << YAML::Key << "Thickness" << YAML::Value << cc.m_thickness;
+				out << YAML::Key << "Fade" << YAML::Value << cc.m_fade;
+
+				out << YAML::EndMap;
+			}
+
+			if (entity.HasComponent<RigidBody2DComponent>())
+			{
+				out << YAML::Key << "RigidBody2DComponent";
+				out << YAML::BeginMap;
+
+				auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+
+				out << YAML::Key << "BodyType" << YAML::Value << COMPONENTS::BodyTypeToString(rb2d.type);
+				out << YAML::Key << "FixedRotation" << YAML::Value << rb2d.fixed_rotation;
+
+				out << YAML::EndMap;
+			}
+
+			if (entity.HasComponent<BoxCollider2DComponent>())
+			{
+				out << YAML::Key << "BoxCollider2DComponent";
+				out << YAML::BeginMap;
+
+				auto& rb2d = entity.GetComponent<BoxCollider2DComponent>();
+
+				out << YAML::Key << "Offset" << YAML::Value << glm::vec2(rb2d.offset.x, rb2d.offset.y);
+				out << YAML::Key << "Size" << YAML::Value << glm::vec2(rb2d.size.x, rb2d.size.y);
+
+				out << YAML::Key << "Density" << YAML::Value << rb2d.density;
+				out << YAML::Key << "Friction" << YAML::Value << rb2d.friction;
+				out << YAML::Key << "Restitution" << YAML::Value << rb2d.restitution;
+				out << YAML::Key << "RestitutionTreshold" << YAML::Value << rb2d.restitution_treshold;
 
 				out << YAML::EndMap;
 			}
@@ -229,6 +260,27 @@ namespace GLOPHYSX {
 						src.m_color = circle_renderer_component["Color"].as<glm::vec4>();
 						src.m_thickness = circle_renderer_component["Thickness"].as<float>();
 						src.m_fade = circle_renderer_component["Fade"].as<float>();
+					}
+
+					auto rigidbody2d_component = entity["RigidBody2DComponent"];
+					if (rigidbody2d_component)
+					{
+						auto& src = deserialized_entity.AddComponent<RigidBody2DComponent>();
+						src.type = COMPONENTS::StringToBodyType(rigidbody2d_component["BodyType"].as<std::string>());
+						src.fixed_rotation = rigidbody2d_component["FixedRotation"].as<bool>();
+					}
+
+					auto boxcollider2d_component = entity["BoxCollider2DComponent"];
+					if (boxcollider2d_component)
+					{
+						auto& src = deserialized_entity.AddComponent<BoxCollider2DComponent>();
+						src.offset = boxcollider2d_component["Offset"].as<glm::vec2>();
+						src.size = boxcollider2d_component["Size"].as<glm::vec2>();
+
+						src.density = boxcollider2d_component["Density"].as<float>();
+						src.friction = boxcollider2d_component["Friction"].as<float>();
+						src.restitution = boxcollider2d_component["Restitution"].as<float>();
+						src.restitution_treshold = boxcollider2d_component["RestitutionTreshold"].as<float>();
 					}
 				}
 			}
