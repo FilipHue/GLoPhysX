@@ -280,7 +280,7 @@ namespace GLOPHYSX {
 			s_stats->quad_count++;
 		}
 
-		void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, uint32_t entity_id)
+		void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entity_id)
 		{
 			GLOP_PROFILE_FUNCTION();
 
@@ -344,7 +344,7 @@ namespace GLOPHYSX {
 			s_stats->quad_count++;
 		}
 
-		void Renderer2D::DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, float tiling_factor, uint32_t entity_id)
+		void Renderer2D::DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, float tiling_factor, int entity_id)
 		{
 			GLOP_PROFILE_FUNCTION();
 
@@ -462,7 +462,7 @@ namespace GLOPHYSX {
 			DrawQuad(model_matrix, texture, tiling_factor);
 		}
 
-		void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness, float fade, uint32_t entity_id)
+		void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness, float fade, int entity_id)
 		{
 			if (s_data->circle_data->index_count >= s_data->maximum_indices) {
 				EndBatch();
@@ -512,7 +512,7 @@ namespace GLOPHYSX {
 			DrawLine(p3, p0, color, -1);
 		}
 
-		void Renderer2D::DrawRect(const glm::mat4& transform, const glm::vec4& color, uint32_t entity_id)
+		void Renderer2D::DrawRect(const glm::mat4& transform, const glm::vec4& color, int entity_id)
 		{
 			glm::vec3 line_points[4];
 

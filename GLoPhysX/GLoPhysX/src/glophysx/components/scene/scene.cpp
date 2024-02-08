@@ -149,7 +149,7 @@ namespace GLOPHYSX {
 
 					b2CircleShape circle_shape;
 					circle_shape.m_p.Set(circle_collider.offset.x, circle_collider.offset.y);
-					circle_shape.m_radius = circle_collider.radius;
+					circle_shape.m_radius = circle_collider.radius * transform.m_scale.x;
 
 					b2FixtureDef fixture_definition;
 					fixture_definition.shape = &circle_shape;

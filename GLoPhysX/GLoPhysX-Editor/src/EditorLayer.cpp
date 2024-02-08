@@ -158,6 +158,8 @@ void EditorLayer::OnUpdate(DeltaTime dt)
             m_selected_entity = m_framebuffer->ReadPixel(1, mouse_x, mouse_y);
         }
 
+        DebugUtils();
+
         m_framebuffer->Unbind();
 	}
 }
@@ -388,6 +390,8 @@ void EditorLayer::Options()
             m_show_editor_camera_properties = true;
         }
 
+        ImGui::Checkbox("Show colliders", &m_show_colliders);
+
         ImGui::EndMenu();
     }
 }
@@ -483,6 +487,58 @@ void EditorLayer::ShowGizmos()
             tc.m_scale = scale;
         }
     }
+}
+
+void EditorLayer::DebugUtils()
+{
+    if (!m_show_colliders)
+    {
+        return;
+    }
+
+    if (m_editor_ui.m_ui_tool_bar->m_scene_state == SceneState::PLAY)
+    {
+        Entity main_camera_entity = m_current_scene->GetPrimaryCameraEntity();
+        Renderer2D::BeginScene(main_camera_entity.GetComponent<CameraComponent>().m_camera, main_camera_entity.GetComponent<TransformComponent>().GetTransform());
+    }
+    else
+    {
+        Renderer2D::BeginScene(m_editor_camera);
+    }
+
+    {
+        auto view = m_current_scene->GetAllEntitiesWith<TransformComponent, BoxCollider2DComponent>();
+        for (auto e : view)
+        {
+            auto [tc, bc] = view.get<TransformComponent, BoxCollider2DComponent>(e);
+
+            glm::vec3 translation = tc.m_translation + glm::vec3(bc.offset, 0.001f);
+            glm::vec3 scale = tc.m_scale * glm::vec3(bc.size * 2.0f, 1.0f);
+
+            glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation) *
+                glm::rotate(glm::mat4(1.0f), tc.m_rotation.z, glm::vec3(0, 0, 1)) *
+                glm::scale(glm::mat4(1.0f), scale);
+            Renderer2D::DrawRect(transform, glm::vec4(0, 1, 0, 1));
+        }
+    }
+
+    {
+        auto view = m_current_scene->GetAllEntitiesWith<TransformComponent, CircleColliderComponent>();
+        for (auto e : view)
+        {
+            auto [tc, cc] = view.get<TransformComponent, CircleColliderComponent>(e);
+
+            glm::vec3 translation = tc.m_translation + glm::vec3(cc.offset, 0.001f);
+            glm::vec3 scale = tc.m_scale * glm::vec3(cc.radius * 2.0f);
+
+            glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation) *
+                glm::scale(glm::mat4(1.0f), scale);
+            
+            Renderer2D::DrawCircle(transform, glm::vec4(0, 1, 0, 1), 0.03f, 0.0f);
+        }
+    }
+
+    Renderer2D::EndScene();
 }
 
 bool EditorLayer::OnKeyPress(KeyPressEvent& e)

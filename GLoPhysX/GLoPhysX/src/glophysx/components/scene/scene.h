@@ -48,6 +48,12 @@ namespace GLOPHYSX {
 			std::string& GetSceneName() { return m_name; };
 			void SetSceneName(std::string& name) { m_name = name; };
 
+			template<typename... Components>
+			auto GetAllEntitiesWith()
+			{
+				return m_registry.view<Components...>();
+			}
+
 		private:
 			template<typename T>
 			void OnComponentAdded(Entity entity, T& component);
