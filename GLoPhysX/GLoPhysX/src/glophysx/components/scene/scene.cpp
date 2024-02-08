@@ -12,6 +12,7 @@
 #include "box2d/b2_body.h"
 #include "box2d/b2_fixture.h"
 #include "box2d/b2_polygon_shape.h"
+#include "box2d/b2_circle_shape.h"
 
 namespace GLOPHYSX {
 
@@ -76,6 +77,7 @@ namespace GLOPHYSX {
 
 			CopyComponent<RigidBody2DComponent>(dst_scene_reg, src_scene_reg, entt_map);
 			CopyComponent<BoxCollider2DComponent>(dst_scene_reg, src_scene_reg, entt_map);
+			CopyComponent<CircleColliderComponent>(dst_scene_reg, src_scene_reg, entt_map);
 
 			return new_scene;
 		}
@@ -137,6 +139,24 @@ namespace GLOPHYSX {
 					fixture_definition.friction = boxcollider_2d.friction;
 					fixture_definition.restitution = boxcollider_2d.restitution;
 					fixture_definition.restitutionThreshold = boxcollider_2d.restitution_treshold;
+
+					body->CreateFixture(&fixture_definition);
+				}
+
+				if (entity.HasComponent<CircleColliderComponent>())
+				{
+					auto& circle_collider = entity.GetComponent<CircleColliderComponent>();
+
+					b2CircleShape circle_shape;
+					circle_shape.m_p.Set(circle_collider.offset.x, circle_collider.offset.y);
+					circle_shape.m_radius = circle_collider.radius;
+
+					b2FixtureDef fixture_definition;
+					fixture_definition.shape = &circle_shape;
+					fixture_definition.density = circle_collider.density;
+					fixture_definition.friction = circle_collider.friction;
+					fixture_definition.restitution = circle_collider.restitution;
+					fixture_definition.restitutionThreshold = circle_collider.restitution_treshold;
 
 					body->CreateFixture(&fixture_definition);
 				}
@@ -282,6 +302,7 @@ namespace GLOPHYSX {
 
 			CopyComponentIfExists<RigidBody2DComponent>(new_entity, entity);
 			CopyComponentIfExists<BoxCollider2DComponent>(new_entity, entity);
+			CopyComponentIfExists<CircleColliderComponent>(new_entity, entity);
 
 			return new_entity;
 		}
@@ -350,6 +371,11 @@ namespace GLOPHYSX {
 
 		template<>
 		void Scene::OnComponentAdded<BoxCollider2DComponent>(Entity entity, BoxCollider2DComponent& component)
+		{
+		}
+
+		template<>
+		void Scene::OnComponentAdded<CircleColliderComponent>(Entity entity, CircleColliderComponent& component)
 		{
 		}
 	}

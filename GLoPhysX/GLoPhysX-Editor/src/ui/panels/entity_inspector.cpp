@@ -37,6 +37,7 @@ namespace GLOPHYSX {
 				DisplayAddComponentEntry<CircleRendererComponent>("Circle Renderer", entity);
 				DisplayAddComponentEntry<RigidBody2DComponent>("RigidBody 2D", entity);
 				DisplayAddComponentEntry<BoxCollider2DComponent>("BoxCollider 2D", entity);
+				DisplayAddComponentEntry<CircleColliderComponent>("Circle Collider", entity);
 
 				ImGui::EndPopup();
 			}
@@ -192,6 +193,17 @@ namespace GLOPHYSX {
 					ImGui::DragFloat2("Offset", glm::value_ptr(component.offset));
 					ImGui::DragFloat2("Size", glm::value_ptr(component.size));
 
+					ImGui::DragFloat("Density", &component.density, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Friction", &component.friction, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Restitution", &component.restitution, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Restitution Treshold", &component.restitution_treshold, 0.01f, 0.0f);
+				});
+
+			DrawComponent<CircleColliderComponent>("Circle Collider", entity, [](auto& component)
+				{
+					ImGui::DragFloat2("Offset", glm::value_ptr(component.offset));
+
+					ImGui::DragFloat("Radius", &component.radius);
 					ImGui::DragFloat("Density", &component.density, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Friction", &component.friction, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution", &component.restitution, 0.01f, 0.0f, 1.0f);

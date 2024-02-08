@@ -129,15 +129,33 @@ namespace GLOPHYSX {
 				out << YAML::Key << "BoxCollider2DComponent";
 				out << YAML::BeginMap;
 
-				auto& rb2d = entity.GetComponent<BoxCollider2DComponent>();
+				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
 
-				out << YAML::Key << "Offset" << YAML::Value << glm::vec2(rb2d.offset.x, rb2d.offset.y);
-				out << YAML::Key << "Size" << YAML::Value << glm::vec2(rb2d.size.x, rb2d.size.y);
+				out << YAML::Key << "Offset" << YAML::Value << glm::vec2(bc2d.offset.x, bc2d.offset.y);
+				out << YAML::Key << "Size" << YAML::Value << glm::vec2(bc2d.size.x, bc2d.size.y);
 
-				out << YAML::Key << "Density" << YAML::Value << rb2d.density;
-				out << YAML::Key << "Friction" << YAML::Value << rb2d.friction;
-				out << YAML::Key << "Restitution" << YAML::Value << rb2d.restitution;
-				out << YAML::Key << "RestitutionTreshold" << YAML::Value << rb2d.restitution_treshold;
+				out << YAML::Key << "Density" << YAML::Value << bc2d.density;
+				out << YAML::Key << "Friction" << YAML::Value << bc2d.friction;
+				out << YAML::Key << "Restitution" << YAML::Value << bc2d.restitution;
+				out << YAML::Key << "RestitutionTreshold" << YAML::Value << bc2d.restitution_treshold;
+
+				out << YAML::EndMap;
+			}
+
+			if (entity.HasComponent<CircleColliderComponent>())
+			{
+				out << YAML::Key << "CircleColliderComponent";
+				out << YAML::BeginMap;
+
+				auto& cc = entity.GetComponent<CircleColliderComponent>();
+
+				out << YAML::Key << "Offset" << YAML::Value << glm::vec2(cc.offset.x, cc.offset.y);
+				out << YAML::Key << "Radius" << YAML::Value << cc.radius;
+
+				out << YAML::Key << "Density" << YAML::Value << cc.density;
+				out << YAML::Key << "Friction" << YAML::Value << cc.friction;
+				out << YAML::Key << "Restitution" << YAML::Value << cc.restitution;
+				out << YAML::Key << "RestitutionTreshold" << YAML::Value << cc.restitution_treshold;
 
 				out << YAML::EndMap;
 			}
@@ -281,6 +299,19 @@ namespace GLOPHYSX {
 						src.friction = boxcollider2d_component["Friction"].as<float>();
 						src.restitution = boxcollider2d_component["Restitution"].as<float>();
 						src.restitution_treshold = boxcollider2d_component["RestitutionTreshold"].as<float>();
+					}
+
+					auto circlecollider_component = entity["CircleColliderComponent"];
+					if (circlecollider_component)
+					{
+						auto& src = deserialized_entity.AddComponent<CircleColliderComponent>();
+						src.offset = circlecollider_component["Offset"].as<glm::vec2>();
+						src.radius = circlecollider_component["Radius"].as<float>();
+
+						src.density = circlecollider_component["Density"].as<float>();
+						src.friction = circlecollider_component["Friction"].as<float>();
+						src.restitution = circlecollider_component["Restitution"].as<float>();
+						src.restitution_treshold = circlecollider_component["RestitutionTreshold"].as<float>();
 					}
 				}
 			}
