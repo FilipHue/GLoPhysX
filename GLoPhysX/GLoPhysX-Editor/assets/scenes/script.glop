@@ -1,0 +1,32 @@
+Scene: script.glop
+Entities:
+  - Entity: 2714968579992695202
+    TagComponent:
+      Tag: Square
+    TransformComponent:
+      Translation: [4.76837158e-07, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    NativeScriptComponent:
+      Script: "\nfunction OnCreate()\nend\n\nrotation = 0\ninc = 100\nfunction OnUpdate(deltaTime)\n    RotateZ(rotation)\n    rotation = rotation + inc * deltaTime\nend\n\nfunction OnDestroy()\nend\n"
+  - Entity: 12052188356039962921
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.52359879
+        PerspectiveNear: 0.100000001
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false

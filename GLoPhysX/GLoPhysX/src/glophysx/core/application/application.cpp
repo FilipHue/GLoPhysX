@@ -90,7 +90,13 @@ namespace GLOPHYSX {
 		while (m_running)
 		{
 			float current_time = (float)glfwGetTime();
-			m_dt = current_time - m_previous_time;
+
+			// EMA dt
+			double alpha = 0.9f;
+			m_dt = alpha * m_dt + (1 - alpha) * (current_time - m_previous_time);
+
+			// Normal dt
+			//m_dt = current_time - m_previous_time;
 			m_previous_time = current_time;
 
 			{

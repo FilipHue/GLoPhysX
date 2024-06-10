@@ -5,6 +5,11 @@
 
 #include "glophysx/components/ecs/entity.h"
 #include "glophysx/components/script/scriptable_entity.h"
+#include "glophysx/components/script/lua_script.h"
+
+#include "glophysx/components/scene/debug/scene_debug_draw.h"
+
+#include "glophysx/debug/debug.h"
 
 #include "glm.hpp"
 
@@ -13,6 +18,9 @@
 #include "box2d/b2_fixture.h"
 #include "box2d/b2_polygon_shape.h"
 #include "box2d/b2_circle_shape.h"
+#include "box2d/b2_edge_shape.h"
+
+SceneDebugDraw m_scene_db_draw;
 
 namespace GLOPHYSX {
 
@@ -78,6 +86,7 @@ namespace GLOPHYSX {
 			CopyComponent<RigidBody2DComponent>(dst_scene_reg, src_scene_reg, entt_map);
 			CopyComponent<BoxCollider2DComponent>(dst_scene_reg, src_scene_reg, entt_map);
 			CopyComponent<CircleColliderComponent>(dst_scene_reg, src_scene_reg, entt_map);
+			CopyComponent<EdgeColliderComponent>(dst_scene_reg, src_scene_reg, entt_map);
 
 			return new_scene;
 		}
@@ -101,12 +110,18 @@ namespace GLOPHYSX {
 
 		void Scene::DestroyEntity(Entity& entity)
 		{
-			m_registry.destroy(entity);
+			if (m_registry.valid(entity)) {
+				m_registry.destroy(entity);
+			}
 		}
 
 		void Scene::OnRuntimeStart()
 		{
 			m_physics_world = new b2World({ 0.0f, -9.8f });
+			m_scene_db_draw.Init();
+
+			m_scene_db_draw.SetFlags(0x0001 | 0x0002);
+			m_physics_world->SetDebugDraw(&m_scene_db_draw);
 
 			auto view = m_registry.view<RigidBody2DComponent>();
 			for (auto e : view)
@@ -121,10 +136,15 @@ namespace GLOPHYSX {
 				body_definition.position.Set(transform.m_translation.x, transform.m_translation.y);
 				body_definition.angle = transform.m_rotation.z;
 				body_definition.fixedRotation = rigidbody_2d.fixed_rotation;
+				body_definition.bullet = rigidbody_2d.is_bullet;
+
+				if (rigidbody_2d.linear_velocity != glm::vec2(0.f)) {
+					body_definition.linearVelocity = b2Vec2(rigidbody_2d.linear_velocity.x, rigidbody_2d.linear_velocity.y);
+				}
 
 				b2Body* body = m_physics_world->CreateBody(&body_definition);
 
-				rigidbody_2d.runtime_bodies = body;
+				rigidbody_2d.runtime_body = body;
 
 				if (entity.HasComponent<BoxCollider2DComponent>())
 				{
@@ -159,6 +179,19 @@ namespace GLOPHYSX {
 					fixture_definition.restitutionThreshold = circle_collider.restitution_treshold;
 
 					body->CreateFixture(&fixture_definition);
+				}
+
+				if (entity.HasComponent<EdgeColliderComponent>())
+				{
+					auto& circle_collider = entity.GetComponent<EdgeColliderComponent>();
+
+					b2EdgeShape edge_shape;
+					edge_shape.SetTwoSided(
+						b2Vec2(circle_collider.start.x * transform.m_scale.x, circle_collider.start.y * transform.m_scale.y),
+						b2Vec2(circle_collider.stop.x * transform.m_scale.x, circle_collider.stop.y * transform.m_scale.y)
+						);
+
+					body->CreateFixture(&edge_shape, 0.0f);
 				}
 			}
 		}
@@ -200,12 +233,14 @@ namespace GLOPHYSX {
 		void Scene::OnUpdateRuntime(DeltaTime dt)
 		{
 			{
+				GLOP_PROFILE_SCOPE("Native Script")
 				m_registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
 					{
 						if (!nsc.m_instance)
 						{
 							nsc.m_instance = nsc.InstantiateScript();
 							nsc.m_instance->m_entity = Entity{ entity, this };
+							nsc.m_instance->InitLua(nsc.m_script_file);
 							nsc.m_instance->OnCreate();
 						}
 
@@ -213,24 +248,7 @@ namespace GLOPHYSX {
 					});
 			}
 
-			const int32_t velocity_iterations = 6;
-			const int32_t position_iterations = 2;
-			m_physics_world->Step(dt, velocity_iterations, position_iterations);
-
-			auto view = m_registry.view<RigidBody2DComponent>();
-			for (auto e : view)
-			{
-				Entity entity = { e, this };
-
-				auto& transform = entity.GetComponent<TransformComponent>();
-				auto& rigidbody_2d = entity.GetComponent<RigidBody2DComponent>();
-
-				b2Body* body = (b2Body*)rigidbody_2d.runtime_bodies;
-				const auto& position = body->GetPosition();
-				transform.m_translation.x = position.x;
-				transform.m_translation.y = position.y;
-				transform.m_rotation.z = body->GetAngle();
-			}
+			OnUpdatePhysics(dt);
 
 			SceneCamera* main_camera = nullptr;
 			glm::mat4 camera_transform;
@@ -252,7 +270,6 @@ namespace GLOPHYSX {
 
 					for (auto entity : group) {
 						auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
-
 						Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 					}
 				}
@@ -267,12 +284,50 @@ namespace GLOPHYSX {
 					}
 				}
 
+				/*{
+					auto view = m_registry.view<TransformComponent, EdgeColliderComponent>();
+
+					for (auto entity : view) {
+						auto [transform, edge] = view.get<TransformComponent, EdgeColliderComponent>(entity);
+
+						Renderer2D::DrawLine(glm::vec3(edge.start, 0.0f) * transform.m_scale + transform.m_translation, glm::vec3(edge.stop, 0.0f) * transform.m_scale + transform.m_translation, glm::vec4(0.f, 1.f, 0.f, 1.f), (int)entity);
+					}
+				}*/
+
+				m_scene_db_draw.SetProjectionMatrix(main_camera->GetProjectionMatrix() * glm::inverse(camera_transform));
+				m_physics_world->DebugDraw();
+
+				m_scene_db_draw.Flush();
+
 				Renderer2D::EndScene();
 			}
 		}
 
 		void Scene::OnUpdatePhysics(DeltaTime dt)
 		{
+			const int32_t velocity_iterations = 8;
+			const int32_t position_iterations = 3;
+			{
+				GLOP_PROFILE_SCOPE("Physic Step")
+				m_physics_world->Step(dt, velocity_iterations, position_iterations);
+			}
+
+			{
+				auto view = m_registry.view<RigidBody2DComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+
+					auto& transform = entity.GetComponent<TransformComponent>();
+					auto& rigidbody_2d = entity.GetComponent<RigidBody2DComponent>();
+
+					b2Body* body = (b2Body*)rigidbody_2d.runtime_body;
+					const auto& position = body->GetPosition();
+					transform.m_translation.x = position.x;
+					transform.m_translation.y = position.y;
+					transform.m_rotation.z = body->GetAngle();
+				}
+			}
 		}
 
 		void Scene::OnViewportResize(uint32_t width, uint32_t height)
@@ -362,6 +417,23 @@ namespace GLOPHYSX {
 		template<>
 		void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
 		{
+			class Script : public ScriptableEntity
+			{
+			public:
+				void OnCreate() override {
+					m_lua_script->OnCreate();
+				}
+
+				void OnUpdate(DeltaTime dt) override {
+					m_lua_script->OnUpdate(dt);
+				}
+
+				void OnDestroy() override {
+					m_lua_script->OnDestroy();
+				}
+			};
+
+			entity.GetComponent<NativeScriptComponent>().Bind<Script>();
 		}
 
 		template<>
@@ -376,6 +448,11 @@ namespace GLOPHYSX {
 
 		template<>
 		void Scene::OnComponentAdded<CircleColliderComponent>(Entity entity, CircleColliderComponent& component)
+		{
+		}
+
+		template<>
+		void Scene::OnComponentAdded<EdgeColliderComponent	>(Entity entity, EdgeColliderComponent& component)
 		{
 		}
 	}

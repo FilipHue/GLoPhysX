@@ -52,10 +52,10 @@ namespace GLOPHYSX {
 			}
 
 			if (m_projection_type == ProjectionType::ORTHOGRAPHIC) {
-				float ortho_left = -m_ortho_size * m_aspect_ratio * 0.5f;
-				float ortho_right = m_ortho_size * m_aspect_ratio * 0.5f;
-				float ortho_bottom = -m_ortho_size * 0.5f;
-				float ortho_up = m_ortho_size * 0.5f;
+				float ortho_left = -m_ortho_size * m_aspect_ratio * 0.5f * m_zoom;
+				float ortho_right = m_ortho_size * m_aspect_ratio * 0.5f * m_zoom;
+				float ortho_bottom = -m_ortho_size * 0.5f * m_zoom;
+				float ortho_up = m_ortho_size * 0.5f * m_zoom;
 
 				m_projection_matrix = glm::ortho(ortho_left, ortho_right, ortho_bottom, ortho_up, m_ortho_near, m_ortho_far);
 			}

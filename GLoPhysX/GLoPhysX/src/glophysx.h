@@ -36,5 +36,5 @@
 #include "glophysx/components/mesh/mesh.h"
 
 #ifdef GLOP_DEBUG
-	#include "glophysx/debug/debug.h"
 #endif
+#include "glophysx/debug/debug.h"

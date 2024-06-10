@@ -38,6 +38,7 @@ namespace GLOPHYSX {
 				DisplayAddComponentEntry<RigidBody2DComponent>("RigidBody 2D", entity);
 				DisplayAddComponentEntry<BoxCollider2DComponent>("BoxCollider 2D", entity);
 				DisplayAddComponentEntry<CircleColliderComponent>("Circle Collider", entity);
+				DisplayAddComponentEntry<NativeScriptComponent>("Script", entity);
 
 				ImGui::EndPopup();
 			}
@@ -164,6 +165,10 @@ namespace GLOPHYSX {
 
 			DrawComponent<RigidBody2DComponent>("RigidBody 2D", entity, [](auto& component)
 				{
+					DrawVec2Controls("Linear velocity", component.linear_velocity, 0.0f);
+
+					ImGui::Dummy(ImVec2(0.0f, 5.0f));
+
 					const char* body_type_str[] = { "Static", "Kinematic", "Dynamic"};
 					const char* current_body_type_str = body_type_str[(int)component.type];
 					if (ImGui::BeginCombo("BodyType", current_body_type_str))
@@ -186,6 +191,8 @@ namespace GLOPHYSX {
 					}
 
 					ImGui::Checkbox("Fixed Rotation", &component.fixed_rotation);
+					ImGui::SameLine();
+					ImGui::Checkbox("Bullet", &component.is_bullet);
 				});
 
 			DrawComponent<BoxCollider2DComponent>("BoxCollider 2D", entity, [](auto& component)
@@ -208,6 +215,12 @@ namespace GLOPHYSX {
 					ImGui::DragFloat("Friction", &component.friction, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution", &component.restitution, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution Treshold", &component.restitution_treshold, 0.01f, 0.0f);
+				});
+			
+			DrawComponent<NativeScriptComponent>("Script", entity, [](auto& component)
+				{
+					char* buf = component.m_script_file;
+					ImGui::InputTextMultiline("##X", buf, sizeof(component.m_script_file), ImVec2(512, 1024));
 				});
 		}
 
@@ -274,6 +287,62 @@ namespace GLOPHYSX {
 
 			ImGui::SameLine();
 			ImGui::DragFloat("##Z", &value.z, 0.1f, 0.f, 0.f, "%.2f");
+			ImGui::PopItemWidth();
+
+			ImGui::PopStyleVar();
+
+			ImGui::Columns(1);
+
+			ImGui::PopID();
+		}
+
+		void EntityInspector::DrawVec2Controls(const std::string& label, glm::vec2& value, float reset_value, float column_width)
+		{
+			ImGuiIO& io = ImGui::GetIO();
+			auto bold_font = io.Fonts->Fonts[0];
+
+			ImGui::PushID(label.c_str());
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, column_width);
+			ImGui::Text(label.c_str());
+			ImGui::NextColumn();
+
+			ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+			float line_height = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.f;
+			ImVec2 button_size = { line_height + 3.f, line_height };
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.f });
+			ImGui::PushFont(bold_font);
+			if (ImGui::Button("X", button_size))
+			{
+				value.x = reset_value;
+			}
+			ImGui::PopFont();
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##X", &value.x, 0.1f, 0.f, 0.f, "%.2f");
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.3f, 1.f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.f });
+			ImGui::PushFont(bold_font);
+			if (ImGui::Button("Y", button_size))
+			{
+				value.y = reset_value;
+			}
+			ImGui::PopFont();
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Y", &value.y, 0.1f, 0.f, 0.f, "%.2f");
 			ImGui::PopItemWidth();
 
 			ImGui::PopStyleVar();

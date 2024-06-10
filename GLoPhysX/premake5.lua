@@ -78,6 +78,9 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/IMGUIZMO/imguizmo/**.h",
 		"%{prj.name}/dependencies/IMGUIZMO/imguizmo/**.cpp",
 
+		"%{prj.name}/dependencies/LUA/include/**.h",
+		"%{prj.name}/dependencies/LUA/include/**.hpp",
+
 		"%{prj.name}/dependencies/BOX2D/src/**.h",
 		"%{prj.name}/dependencies/BOX2D/src/**.cpp"
 	}
@@ -95,18 +98,21 @@ project "GLoPhysX"
 		"%{prj.name}/dependencies/YAML/yaml/include",
 		"%{prj.name}/dependencies/IMGUIZMO/imguizmo",
 		"%{prj.name}/dependencies/BOX2D/include",
+		"%{prj.name}/dependencies/LUA/include",
 		"%{VULKAN_SDK}/Include"
 	}
 
 	libdirs
 	{
-		"%{prj.name}/dependencies/GLFW"
+		"%{prj.name}/dependencies/GLFW",
+		"%{prj.name}/dependencies/LUA"
 	}
 
 	links
 	{
 		"glfw3.lib",
-		"opengl32.lib"
+		"opengl32.lib",
+		"lua54.lib",
 	}
 
 	linkoptions
@@ -176,7 +182,9 @@ project "GLoPhysX"
 		-- }
 
 	filter "configurations:Release"
-		defines "GLOP_RELEASE"
+		runtime "Release"
+		-- defines "GLOP_RELEASE"
+		defines "GLOP_DEBUG"
 		optimize "On"
 
 		-- links
@@ -214,6 +222,7 @@ project "Sandbox"
 		"GLoPhysX/dependencies/ENTT",
 		"GLoPhysX/dependencies/YAML/yaml/include",
 		"GLoPhysX/dependencies/IMGUIZMO/imguizmo",
+		"GLoPhysX/dependencies/LUA/include",
 		"GLoPhysX/dependencies/BOX2D/include"
 	}
 
@@ -258,15 +267,17 @@ project "Sandbox"
 		defines "GLOP_DEBUG"
 		symbols "On"
 
-		links
-		{
-			Library["ShaderC_Debug"],
-			Library["SPIRV_Cross_Debug"],
-			Library["SPIRV_Cross_GLSL_Debug"]
-		}
+		-- links
+		-- {
+		-- 	Library["ShaderC_Debug"],
+		-- 	Library["SPIRV_Cross_Debug"],
+		-- 	Library["SPIRV_Cross_GLSL_Debug"]
+		-- }
 
 	filter "configurations:Release"
-		defines "GLOP_RELEASE"
+		runtime "Release"
+		-- defines "GLOP_RELEASE"
+		defines "GLOP_DEBUG"
 		optimize "On"
 
 project "GLoPhysX-Editor"
@@ -297,6 +308,7 @@ project "GLoPhysX-Editor"
 		"GLoPhysX/dependencies/ENTT",
 		"GLoPhysX/dependencies/YAML/yaml/include",
 		"GLoPhysX/dependencies/IMGUIZMO/imguizmo",
+		"GLoPhysX/dependencies/LUA/include",
 		"GLoPhysX/dependencies/BOX2D/include"
 	}
 

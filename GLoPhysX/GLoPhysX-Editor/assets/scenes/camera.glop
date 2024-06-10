@@ -1,0 +1,132 @@
+Scene: camera.glop
+Entities:
+  - Entity: 2963164007366379099
+    TagComponent:
+      Tag: Square(copy)(copy)(copy)
+    TransformComponent:
+      Translation: [-0.91260308, 1.80731022, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    RigidBody2DComponent:
+      LinearVelocity: [0, 0]
+      BodyType: Dynamic
+      FixedRotation: false
+      Bullet: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionTreshold: 1
+  - Entity: 1744408331382543467
+    TagComponent:
+      Tag: Square(copy)(copy)
+    TransformComponent:
+      Translation: [-0.518931389, 3.36410189, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    RigidBody2DComponent:
+      LinearVelocity: [0, 0]
+      BodyType: Dynamic
+      FixedRotation: false
+      Bullet: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionTreshold: 1
+  - Entity: 2333574424317885950
+    TagComponent:
+      Tag: Square(copy)
+    TransformComponent:
+      Translation: [0.787343264, 1.61047459, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    RigidBody2DComponent:
+      LinearVelocity: [0, 0]
+      BodyType: Dynamic
+      FixedRotation: false
+      Bullet: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionTreshold: 1
+  - Entity: 1299670646059901228
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [5.96046448e-08, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.52359879
+        PerspectiveNear: 0.100000001
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
+    NativeScriptComponent:
+      Script: "\n--[[\n\tAvailable functions: Translate(x, y, z), RotateZ(degrees), Scale(x, y)\n\tFor key input use ascii codes (ex: 65 - A)\n]]\n\nmoveSpeed = 5\n\nfunction OnCreate()\nend\n\nfunction OnUpdate(deltaTime)\n      if IsKeyPressed(65) then\n          Translate(-moveSpeed * deltaTime, 0, 0)\n      end\n       \n      if IsKeyPressed(68) then\n          Translate(moveSpeed * deltaTime, 0, 0)\n      end\n\n      if IsKeyPressed(87) then\n          Translate(0, moveSpeed * deltaTime, 0)\n      end\n\n      if IsKeyPressed(83) then\n          Translate(0, -moveSpeed * deltaTime, 0)\n      end\nend\n\nfunction OnDestroy()\nend\n"
+  - Entity: 17010960501388682478
+    TagComponent:
+      Tag: Square
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    RigidBody2DComponent:
+      LinearVelocity: [0, 0]
+      BodyType: Dynamic
+      FixedRotation: false
+      Bullet: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionTreshold: 1
+  - Entity: 15366522972711968394
+    TagComponent:
+      Tag: Ground
+    TransformComponent:
+      Translation: [1.86264515e-09, -1.28094935, 0]
+      Rotation: [0, -0, 0]
+      Scale: [17.0632496, 1, 1]
+    SpriteComponent:
+      Color: [0.0525931306, 0.486486495, 0.210067943, 1]
+      TilingFactor: 1
+    RigidBody2DComponent:
+      LinearVelocity: [0, 0]
+      BodyType: Static
+      FixedRotation: false
+      Bullet: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionTreshold: 1

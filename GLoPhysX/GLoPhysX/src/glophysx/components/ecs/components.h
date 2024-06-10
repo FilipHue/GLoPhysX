@@ -11,3 +11,4 @@
 #include "components/rigidbody_2d.h"
 #include "components/box_collider_2d.h"
 #include "components/circle_collider.h"
+#include "components/edge_collider.h"

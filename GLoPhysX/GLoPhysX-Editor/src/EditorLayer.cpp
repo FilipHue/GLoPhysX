@@ -34,6 +34,7 @@ void EditorLayer::OnAttach()
     m_framebuffer = Framebuffer::Create(fb_specs);
 
     m_editor_scene = MakeShared<Scene>();
+    m_editor_scene->OnViewportResize((uint32_t)m_viewport_size.x, (uint32_t)m_viewport_size.y);
     
     m_square = m_editor_scene->CreateEntity("Square");
     m_square.AddComponent<SpriteComponent>();
@@ -79,7 +80,7 @@ void EditorLayer::OnAttach()
         float m_move_speed;
 
     };
-    m_camera.AddComponent<NativeScriptComponent>().Bind<MoveSprite>();
+    //m_camera.AddComponent<NativeScriptComponent>().Bind<MoveSprite>();
 
     m_current_scene = m_editor_scene;
     m_editor_ui.Initialize(m_current_scene);
@@ -90,6 +91,8 @@ void EditorLayer::OnAttach()
 void EditorLayer::OnDetach()
 {
 	GLOP_PROFILE_FUNCTION();
+
+    lua_close(m_lua_vm);
 }
 
 void EditorLayer::OnUpdate(DeltaTime dt)

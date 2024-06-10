@@ -11,7 +11,8 @@ namespace GLOPHYSX {
 		enum class BodyType {
 			STATIC,
 			KINEMATIC,
-			DYNAMIC
+			DYNAMIC,
+			NONE
 		};
 
 		static const std::string BodyTypeToString(BodyType type)
@@ -28,7 +29,7 @@ namespace GLOPHYSX {
 
 			GLOP_CORE_WARN("Unknow rigidbody2d type.");
 
-			return nullptr;
+			return "None";
 		}
 
 		static BodyType StringToBodyType(const std::string type)
@@ -46,15 +47,19 @@ namespace GLOPHYSX {
 				return BodyType::DYNAMIC;
 			}
 
-			GLOP_CORE_WARN("Unknown body type.");
+			GLOP_CORE_WARN("Unknown rigidbody2d type.");
+
+			return BodyType::NONE;
 		}
 
 		struct RigidBody2DComponent {
 
 			BodyType type = BodyType::STATIC;
 			bool fixed_rotation = false;
+			bool is_bullet = false;
+			glm::vec2 linear_velocity = glm::vec2(0.f, 0.f);
 
-			void* runtime_bodies = nullptr;
+			void* runtime_body = nullptr;
 
 			RigidBody2DComponent() = default;
 			RigidBody2DComponent(const RigidBody2DComponent&) = default;

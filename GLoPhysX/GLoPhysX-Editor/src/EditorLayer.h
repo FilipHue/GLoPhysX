@@ -6,6 +6,8 @@
 
 #include "ui/editor_ui.h"
 
+#include "lua.hpp"
+
 using namespace GLOPHYSX;
 using namespace RENDERING;
 using namespace COMPONENTS;
@@ -73,4 +75,7 @@ private:
 	// Other
 	Entity m_square;
 	Entity m_camera;
+
+	// LUA
+	lua_State* m_lua_vm = luaL_newstate();
 };

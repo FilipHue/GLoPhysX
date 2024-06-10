@@ -73,6 +73,7 @@ namespace GLOPHYSX {
 			static void DrawComponents(Entity& entity);
 
 			static void DrawVec3Controls(const std::string& label, glm::vec3& value, float reset_value = 0.f, float column_width = 100.f);
+			static void DrawVec2Controls(const std::string& label, glm::vec2& value, float reset_value = 0.f, float column_width = 100.f);
 
 			static void Render(Entity& context);
 

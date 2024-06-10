@@ -46,6 +46,8 @@ namespace GLOPHYSX {
 
 			static void DrawSprite(const glm::mat4& transform, SpriteComponent& sprite, uint32_t entity_id);
 
+			static void DrawQuadP(const glm::mat4& transform, const glm::vec4& color, int offset);
+
 			static void ResetStats();
 			static const Statistics& GetStats() { return *s_stats; }
 

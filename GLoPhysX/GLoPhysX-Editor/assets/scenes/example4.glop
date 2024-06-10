@@ -1,11 +1,11 @@
-Scene: Untitled
+Scene: example5.glop
 Entities:
-  - Entity: 6804356313884444383
+  - Entity: 9838145351244504270
     TagComponent:
       Tag: Camera
     TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
+      Translation: [-2.16303325, 1.35079384, 0]
+      Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
       Camera:
@@ -18,12 +18,36 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 14035051098010379
+  - Entity: 6857801826246832751
     TagComponent:
-      Tag: Square
+      Tag: Square(copy)(copy)
     TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
+      Translation: [-4.91738319e-07, -1.27133548, 0]
+      Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     SpriteComponent:
       Color: [1, 1, 1, 1]
+      TexturePath: assets\textures\checkerboard.png
+      TilingFactor: 1
+  - Entity: 5322340147012658358
+    TagComponent:
+      Tag: Square(copy)
+    TransformComponent:
+      Translation: [1.5450232, 0.600352705, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: assets\textures\logo.png
+      TilingFactor: 1
+  - Entity: 8563165437658173825
+    TagComponent:
+      Tag: Square
+    TransformComponent:
+      Translation: [-2.41680145, -0.476750135, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: assets\textures\smileyface.png
+      TilingFactor: 1

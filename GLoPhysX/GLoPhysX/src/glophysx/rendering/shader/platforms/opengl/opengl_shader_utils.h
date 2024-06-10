@@ -2,9 +2,9 @@
 
 #include "glophysx/rendering/shader/shader.h"
 
-#include "shaderc/shaderc.hpp"
-#include "spirv_cross/spirv_cross.hpp"
-#include "spirv_cross/spirv_glsl.hpp"
+//#include "shaderc/shaderc.hpp"
+//#include "spirv_cross/spirv_cross.hpp"
+//#include "spirv_cross/spirv_glsl.hpp"
 
 #include "glm.hpp"
 #include "glad/glad.h"
@@ -79,7 +79,7 @@ namespace GLOPHYSX {
 			exit(-1);
 		}
 
-		static shaderc_shader_kind GLShaderStageToShaderC(GLenum stage)
+		/*static shaderc_shader_kind GLShaderStageToShaderC(GLenum stage)
 		{
 			switch (stage)
 			{
@@ -89,7 +89,7 @@ namespace GLOPHYSX {
 			}
 			GLOP_CORE_CRITICAL("Unkown shaderc stage {0}", std::to_string(stage).c_str());
 			exit(-1);
-		}
+		}*/
 
 		static const char* GLShaderStageToString(GLenum stage)
 		{
@@ -103,7 +103,7 @@ namespace GLOPHYSX {
 			return nullptr;
 		}
 
-		static std::string GetSPIRVTypeName(const spirv_cross::SPIRType& type)
+		/*static std::string GetSPIRVTypeName(const spirv_cross::SPIRType& type)
 		{
 			switch (type.basetype)
 			{
@@ -116,6 +116,6 @@ namespace GLOPHYSX {
 			default:
 				return "UNKNOWN";
 			}
-		}
+		}*/
 	}
 }

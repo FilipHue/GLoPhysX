@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
 	auto app = GLOPHYSX::CreateApplication({argc, argv});
 	GLOP_PROFILER_END_SESSION();
 
-	//GLOP_PROFILER_BEGIN_SESSION("Startup", "GLoPhysX-RuntimeProfile.json");
+	//GLOP_PROFILER_BEGIN_SESSION("Run", "GLoPhysX-RuntimeProfile.json");
 	app->Run();
 	//GLOP_PROFILER_END_SESSION();
 

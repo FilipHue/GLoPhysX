@@ -541,6 +541,29 @@ namespace GLOPHYSX {
 			}
 		}
 
+		void Renderer2D::DrawQuadP(const glm::mat4& transform, const glm::vec4& color, int offset)
+		{
+			// TO DO
+			if (s_data->quad_data->index_count >= s_data->maximum_indices) {
+				EndBatch();
+				StartBatch();
+			}
+
+			for (int i = 0; i < 4; i++) {
+				s_data->quad_data->VB_ptr[offset].position = transform * s_data->quad_data->vertex_positions_default[i];
+				s_data->quad_data->VB_ptr[offset].color = color;
+				s_data->quad_data->VB_ptr[offset].texture_coord = s_data->quad_data->vertex_tex_coords_default[i];
+				s_data->quad_data->VB_ptr[offset].texture_index = 0;
+				s_data->quad_data->VB_ptr[offset].tiling_factor = 1.0f;
+				s_data->quad_data->VB_ptr[offset].entity_id = -1;
+				offset++;
+			}
+
+			s_data->quad_data->index_count += 6;
+
+			s_stats->quad_count++;
+		}
+
 		void Renderer2D::ResetStats()
 		{
 			GLOP_PROFILE_FUNCTION();

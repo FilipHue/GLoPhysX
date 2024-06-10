@@ -25,6 +25,7 @@ namespace GLOPHYSX {
 			void SetOrthographicProjection(float size, float near_z, float far_z);
 
 			void SetViewportSize(uint32_t width, uint32_t height);
+			float GetAspectRatio() const { return m_aspect_ratio; }
 
 			// PERSPECTIVE
 			void SetPerspectiveFov(float fov) { m_perspective_fov = fov; RecalculateProjection(); }
@@ -49,6 +50,8 @@ namespace GLOPHYSX {
 			// Projection
 			ProjectionType GetProjectionType() const { return m_projection_type; }
 			void SetProjectionType(ProjectionType projection_type) { m_projection_type = projection_type; RecalculateProjection(); }
+			float GetZoom() const { return m_zoom; }
+			void SetZoom(float zoom) { m_zoom = zoom; RecalculateProjection(); }
 
 		private:
 			void RecalculateProjection();
@@ -63,6 +66,8 @@ namespace GLOPHYSX {
 			float m_ortho_size = 10.f;
 			float m_ortho_near = -1.0f;
 			float m_ortho_far  = 1.0f;
+
+			float m_zoom = 1.0f;
 
 			float m_aspect_ratio = 0.0f;
 		};

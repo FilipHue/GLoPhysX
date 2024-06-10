@@ -48,6 +48,9 @@ namespace GLOPHYSX {
 			std::string& GetSceneName() { return m_name; };
 			void SetSceneName(std::string& name) { m_name = name; };
 
+			b2World* GetPhysicsWorld() { return m_physics_world; }
+			glm::vec2& GetViewportSize() { return glm::vec2(m_viewport_width, m_viewport_height); }
+
 			template<typename... Components>
 			auto GetAllEntitiesWith()
 			{

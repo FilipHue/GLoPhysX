@@ -55,7 +55,7 @@ void Example2D::OnUpdate(DeltaTime dt)
 		Renderer2D::DrawRotatedQuad({ 1.f, 0.5f }, { 0.7f, 0.3f }, -rotation, m_square_color);
 
 		glm::vec4 color;
-		float size = 5.f;
+		float size = 20.f;
 
 		for (float x = -size; x < size; x += 0.5f) {
 			for (float y = -size; y < size; y += 0.5f) {

@@ -118,8 +118,10 @@ namespace GLOPHYSX {
 
 				auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
 
+				out << YAML::Key << "LinearVelocity" << YAML::Value << rb2d.linear_velocity;
 				out << YAML::Key << "BodyType" << YAML::Value << COMPONENTS::BodyTypeToString(rb2d.type);
 				out << YAML::Key << "FixedRotation" << YAML::Value << rb2d.fixed_rotation;
+				out << YAML::Key << "Bullet" << YAML::Value << rb2d.is_bullet;
 
 				out << YAML::EndMap;
 			}
@@ -156,6 +158,18 @@ namespace GLOPHYSX {
 				out << YAML::Key << "Friction" << YAML::Value << cc.friction;
 				out << YAML::Key << "Restitution" << YAML::Value << cc.restitution;
 				out << YAML::Key << "RestitutionTreshold" << YAML::Value << cc.restitution_treshold;
+
+				out << YAML::EndMap;
+			}
+
+			if (entity.HasComponent<NativeScriptComponent>())
+			{
+				out << YAML::Key << "NativeScriptComponent";
+				out << YAML::BeginMap;
+
+				auto& ns = entity.GetComponent<NativeScriptComponent>();
+
+				out << YAML::Key << "Script" << YAML::Value << std::string(ns.m_script_file);
 
 				out << YAML::EndMap;
 			}
@@ -284,8 +298,10 @@ namespace GLOPHYSX {
 					if (rigidbody2d_component)
 					{
 						auto& src = deserialized_entity.AddComponent<RigidBody2DComponent>();
+						src.linear_velocity = rigidbody2d_component["LinearVelocity"].as<glm::vec2>();
 						src.type = COMPONENTS::StringToBodyType(rigidbody2d_component["BodyType"].as<std::string>());
 						src.fixed_rotation = rigidbody2d_component["FixedRotation"].as<bool>();
+						src.is_bullet = rigidbody2d_component["Bullet"].as<bool>();
 					}
 
 					auto boxcollider2d_component = entity["BoxCollider2DComponent"];
@@ -312,6 +328,15 @@ namespace GLOPHYSX {
 						src.friction = circlecollider_component["Friction"].as<float>();
 						src.restitution = circlecollider_component["Restitution"].as<float>();
 						src.restitution_treshold = circlecollider_component["RestitutionTreshold"].as<float>();
+					}
+
+					auto native_script_component = entity["NativeScriptComponent"];
+					if (native_script_component)
+					{
+						std::string script;
+						YAML::convert<std::string>::decode(native_script_component["Script"], script);
+						auto& src = deserialized_entity.AddComponent<NativeScriptComponent>();
+						strcpy_s(src.m_script_file, script.c_str());
 					}
 				}
 			}

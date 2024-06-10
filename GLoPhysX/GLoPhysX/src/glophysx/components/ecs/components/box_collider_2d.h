@@ -14,7 +14,7 @@ namespace GLOPHYSX {
 			float density = 1.0f;
 			float friction = 0.5f;
 			float restitution = 0.0f;
-			float restitution_treshold = 0.05f;
+			float restitution_treshold = 1.0f;
 
 			void* runtime_fixtures = nullptr;
 

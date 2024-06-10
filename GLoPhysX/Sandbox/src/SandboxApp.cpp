@@ -3,7 +3,7 @@
 #include "glophysx.h"
 #include "glophysx/core/entry_point.h"
 
-#include "2DExample.h"
+#include "Test.h"
 
 using namespace GLOPHYSX;
 using namespace RENDERING;
@@ -13,7 +13,7 @@ class Sandbox : public Application {
 public:
 	Sandbox(const GLOPHYSX::ApplicationSpecifications& spec) : Application(spec)
 	{
-		PushLayer(MakeShared<Example2D>());
+		PushLayer(MakeShared<Test>());
 	}
 
 	~Sandbox()
